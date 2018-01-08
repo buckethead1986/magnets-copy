@@ -4,12 +4,9 @@ import "./App.css";
 import Main from "./components/Main";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
+import Navbar from "./components/navbar/Navbar";
 
 const url = "http://localhost:3001/api/v1";
-const headers = {
-  Accept: "application/json",
-  "Content-Type": "application/json"
-};
 
 class App extends Component {
   state = {
@@ -69,7 +66,7 @@ class App extends Component {
           {
             currUser: json
           },
-          () => console.log(json, this.state.currUser)
+          () => console.log(this.state.currUser)
         )
       );
   };
@@ -77,6 +74,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        {this.props.location.pathname !== "/login" &&
+        this.props.location.pathname !== "./signup" ? (
+          <Navbar logout={this.logout} />
+        ) : (
+          ""
+        )}
         <Route
           exact
           path="/signup"
@@ -84,7 +87,6 @@ class App extends Component {
             <Signup
               url={url}
               fetchUsers={this.fetchUserInformation}
-              headers={headers}
               login={this.login}
               {...props}
             />
@@ -97,7 +99,6 @@ class App extends Component {
             <Login
               url={url}
               fetchUsers={this.fetchUserInformation}
-              headers={headers}
               signup={this.signup}
               {...props}
             />

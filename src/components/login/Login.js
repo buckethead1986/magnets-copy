@@ -4,7 +4,8 @@ import { RaisedButton, FlatButton, TextField } from "material-ui";
 class Login extends React.Component {
   state = {
     username: "",
-    password: ""
+    password: "",
+    loginError: false
   };
 
   handleChange = e => {
@@ -14,10 +15,14 @@ class Login extends React.Component {
   };
 
   handleLogin = () => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
     const body = this.state;
     fetch(`${this.props.url}/auth`, {
       method: "POST",
-      headers: this.props.headers,
+      headers: headers,
       body: JSON.stringify(body)
     })
       .then(res => res.json())
@@ -25,6 +30,10 @@ class Login extends React.Component {
         if (!json.error) {
           localStorage.setItem("token", json.jwt);
           this.props.history.push("/");
+        } else {
+          this.setState({
+            loginError: true
+          });
         }
       })
       .then(() => this.props.fetchUsers());
@@ -34,11 +43,20 @@ class Login extends React.Component {
     return (
       <div>
         <h2>Login</h2>
-        <TextField
-          onChange={this.handleChange}
-          name="username"
-          hintText="Username"
-        />
+        {this.state.loginError === true ? (
+          <TextField
+            onChange={this.handleChange}
+            name="username"
+            hintText="Username"
+            errorText="Username or Password incorrect"
+          />
+        ) : (
+          <TextField
+            onChange={this.handleChange}
+            name="username"
+            hintText="Username"
+          />
+        )}
         <br />
         <TextField
           onChange={this.handleChange}

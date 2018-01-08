@@ -4,7 +4,8 @@ import { RaisedButton, FlatButton, TextField } from "material-ui";
 class Signup extends React.Component {
   state = {
     username: "",
-    password: ""
+    password: "",
+    signupError: false
   };
 
   handleChange = e => {
@@ -14,21 +15,29 @@ class Signup extends React.Component {
   };
 
   handleSubmit = () => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
     const body = this.state;
     fetch(`${this.props.url}/users`, {
       method: "POST",
-      headers: this.props.headers,
+      headers: headers,
       body: JSON.stringify(body)
     })
       .then(res => res.json())
       .then(json => {
-        if (!json.error) {
+        if (json.id !== null) {
           localStorage.setItem("token", json.jwt);
           this.props.history.push("/");
+        } else {
+          this.setState({
+            signupError: true
+          });
         }
       })
-      // .then(this.handleSubmitted);
-      .then(this.props.fetchUsers);
+      .then(this.props.fetchUsers());
+    // console.log(json);
   };
 
   // handleSubmitted = () => {
@@ -52,11 +61,20 @@ class Signup extends React.Component {
     return (
       <div>
         <h2>Signup</h2>
-        <TextField
-          onChange={this.handleChange}
-          name="username"
-          hintText="Username"
-        />
+        {this.state.signupError ? (
+          <TextField
+            onChange={this.handleChange}
+            name="username"
+            hintText="Username"
+            errorText="Username already taken!"
+          />
+        ) : (
+          <TextField
+            onChange={this.handleChange}
+            name="username"
+            hintText="Username"
+          />
+        )}
         <br />
         <TextField
           onChange={this.handleChange}
