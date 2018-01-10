@@ -73,37 +73,42 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      // <div className="App">
+      <div>
         {this.props.location.pathname !== "/login" &&
-        this.props.location.pathname !== "./signup" ? (
+        this.props.location.pathname !== "/signup" ? (
           <Navbar logout={this.logout} />
         ) : (
           ""
         )}
-        <Route
-          exact
-          path="/signup"
-          render={props => (
-            <Signup
-              url={url}
-              fetchUsers={this.fetchUserInformation}
-              login={this.login}
-              {...props}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/login"
-          render={props => (
-            <Login
-              url={url}
-              fetchUsers={this.fetchUserInformation}
-              signup={this.signup}
-              {...props}
-            />
-          )}
-        />
+        <div className="App">
+          <Route
+            exact
+            path="/signup"
+            render={props => (
+              <Signup
+                url={url}
+                fetchUsers={this.fetchUserInformation}
+                login={this.login}
+                {...props}
+              />
+            )}
+          />
+        </div>
+        <div className="App">
+          <Route
+            exact
+            path="/login"
+            render={props => (
+              <Login
+                url={url}
+                fetchUsers={this.fetchUserInformation}
+                signup={this.signup}
+                {...props}
+              />
+            )}
+          />
+        </div>
         <Route
           exact
           path="/"
