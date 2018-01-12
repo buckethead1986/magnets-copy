@@ -7,11 +7,18 @@ import Login from "./components/login/Login";
 import Navbar from "./components/navbar/Navbar";
 
 const url = "http://localhost:3001/api/v1";
+let z = 0;
 
 class App extends Component {
   state = {
     users: [],
     currUser: {}
+  };
+
+  increaseZ = () => {
+    console.log("increasing z", z);
+    z++;
+    console.log(z);
   };
 
   componentDidMount() {
@@ -73,11 +80,10 @@ class App extends Component {
 
   render() {
     return (
-      // <div className="App">
       <div>
         {this.props.location.pathname !== "/login" &&
         this.props.location.pathname !== "/signup" ? (
-          <Navbar logout={this.logout} />
+          <Navbar logout={this.logout} increaseZ={this.increaseZ} />
         ) : (
           ""
         )}
@@ -116,7 +122,11 @@ class App extends Component {
             if (this.state.currUser.length !== 0) {
               return (
                 <div>
-                  <Main url={url} users={this.state.users} />
+                  <Main
+                    url={url}
+                    users={this.state.users}
+                    store={this.props.store}
+                  />
                 </div>
               );
             } else {

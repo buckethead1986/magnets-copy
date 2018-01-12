@@ -2,14 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import Reducer from "./components/Custom Drag Layer/Reducer";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 
+const store = createStore(
+  Reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
 ReactDOM.render(
   <Router>
     <MuiThemeProvider>
-      <App />
+      <Provider store={store}>
+        <App store={store} />
+      </Provider>
     </MuiThemeProvider>
   </Router>,
   document.getElementById("root")

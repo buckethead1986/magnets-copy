@@ -28,11 +28,6 @@ function getStyles(props) {
   };
 }
 
-// @DragSource(ItemTypes.BOX, boxSource, (connect, monitor) => ({
-// 	connectDragSource: connect.dragSource(),
-// 	connectDragPreview: connect.dragPreview(),
-// 	isDragging: monitor.isDragging(),
-// }))
 class DraggableBox extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,

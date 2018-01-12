@@ -34,9 +34,10 @@ export default class BoxDragPreview extends Component {
     clearInterval(this.interval);
   }
 
+  // method to flash yellow every 0.5 seconds
   tick() {
     this.setState({
-      tickTock: !this.state.tickTock
+      // tickTock: !this.state.tickTock
     });
   }
 

@@ -6,9 +6,10 @@ import shouldPureComponentUpdate from "./shouldPureComponentUpdate";
 import ItemTypes from "./ItemTypes";
 import DraggableBox from "./DraggableBox";
 import snapToGrid from "./snapToGrid";
+// import { RaisedButton } from "material-ui";
 
 const styles = {
-  width: 500,
+  width: 700,
   height: 500,
   border: "1px solid black",
   position: "relative"
@@ -35,9 +36,6 @@ const arrayToObject = array =>
     return obj;
   }, {});
 
-// @DropTarget(ItemTypes.BOX, boxTarget, connect => ({
-// 	connectDropTarget: connect.dropTarget(),
-// }))
 class Container extends Component {
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
@@ -62,30 +60,25 @@ class Container extends Component {
   componentDidMount() {
     fetch(`${this.props.url}/words`)
       .then(res => res.json())
-      .then(json => this.doStuff(json));
+      .then(json => this.convertBoxArrayToObject(json));
   }
 
-  doStuff = json => {
+  convertBoxArrayToObject = json => {
     const peopleObject = arrayToObject(json);
     console.log(peopleObject);
     this.setState({
       boxes: peopleObject
     });
   };
-  //
-  // composeWords = json => {
-  //   console.log(json);
-  //   // debugger;
-  //   const a = json.filter(object => object.id === 1)[0].id;
-  //   const b = json.filter(object => object.id === 1)[0].word;
-  //   this.setState({
-  //     boxes: {
-  //       a: { top: Math.random() * 500, left: Math.random() * 500, title: b }
-  //     }
-  //   });
-  // };
+
+  addWordsToStore = () => {
+    console.log("addWordsToStore");
+    this.props.store.dispatch({ type: "ADD_WORD", payload: this.state.boxes });
+    console.log(this.props.store.getState().words);
+  };
 
   moveBox(id, left, top) {
+    console.log("moving");
     this.setState(
       update(this.state, {
         boxes: {
@@ -93,7 +86,8 @@ class Container extends Component {
             $merge: { left, top }
           }
         }
-      })
+      }),
+      () => this.addWordsToStore()
     );
   }
 
@@ -102,13 +96,15 @@ class Container extends Component {
   }
 
   render() {
-    console.log(this.state.boxes, this.props);
     const { connectDropTarget } = this.props;
     const { boxes } = this.state;
 
     return connectDropTarget(
-      <div style={styles}>
-        {Object.keys(boxes).map(key => this.renderBox(boxes[key], key))}
+      <div>
+        <div style={styles}>
+          {Object.keys(boxes).map(key => this.renderBox(boxes[key], key))}
+          <div className="test">Make Poem Here</div>
+        </div>
       </div>
     );
   }
