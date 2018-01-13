@@ -59,7 +59,7 @@ class CustomDragLayer extends Component {
   renderItem(type, item) {
     switch (type) {
       case ItemTypes.BOX:
-        return <BoxDragPreview title={item.title} />;
+        return <BoxDragPreview title={item.title} store={this.props.store} />;
       default:
         return null;
     }
@@ -67,13 +67,13 @@ class CustomDragLayer extends Component {
 
   render() {
     const { item, itemType, isDragging } = this.props;
-
+    const zIndex = this.props.store.getState().zIndex + 5;
     if (!isDragging) {
       return null;
     }
 
     return (
-      <div style={layerStyles}>
+      <div style={{ ...layerStyles, zIndex: zIndex }}>
         <div style={getItemStyles(this.props)}>
           {this.renderItem(itemType, item)}
         </div>

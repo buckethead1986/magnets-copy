@@ -8,8 +8,8 @@ import Box from "./Box";
 
 const boxSource = {
   beginDrag(props) {
-    const { id, title, left, top } = props;
-    return { id, title, left, top };
+    const { id, title, left, top, zIndex } = props;
+    return { id, title, left, top, zIndex };
   }
 };
 
@@ -24,7 +24,9 @@ function getStyles(props) {
     // IE fallback: hide the real node using CSS when dragging
     // because IE will ignore our custom "empty image" drag preview.
     opacity: isDragging ? 0 : 1,
-    height: isDragging ? 0 : ""
+    height: isDragging ? 0 : "",
+    zIndex: props.store.getState().zIndex
+    // position: "relative"
   };
 }
 
@@ -52,11 +54,12 @@ class DraggableBox extends Component {
   }
 
   render() {
+    console.log("Draggable box z ", this.props.store.getState().zIndex);
     const { title, connectDragSource } = this.props;
 
     return connectDragSource(
       <div style={getStyles(this.props)}>
-        <Box title={title} />
+        <Box title={title} store={this.props.store} />
       </div>
     );
   }

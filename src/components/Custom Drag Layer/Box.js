@@ -17,7 +17,8 @@ export default class Box extends Component {
   shouldComponentUpdate = shouldPureComponentUpdate;
 
   render() {
-    // console.log(this.props);
+    // const z = this.props.store.getState().z;
+    console.log(this.props);
     const { title, yellow } = this.props;
     const backgroundColor = yellow ? "yellow" : "white";
 

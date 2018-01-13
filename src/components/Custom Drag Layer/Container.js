@@ -72,18 +72,19 @@ class Container extends Component {
   };
 
   addWordsToStore = () => {
-    console.log("addWordsToStore");
+    console.log("addWordsToStore", this.state.boxes);
     this.props.store.dispatch({ type: "ADD_WORD", payload: this.state.boxes });
     console.log(this.props.store.getState().words);
   };
 
   moveBox(id, left, top) {
-    console.log("moving");
+    this.props.store.dispatch({ type: "INCREASE_Z" });
+    console.log("moving", this.state, this.props.store.getState().zIndex);
     this.setState(
       update(this.state, {
         boxes: {
           [id]: {
-            $merge: { left, top }
+            $merge: { left, top, zIndex: this.props.store.getState().zIndex }
           }
         }
       }),
@@ -92,7 +93,10 @@ class Container extends Component {
   }
 
   renderBox(item, key) {
-    return <DraggableBox key={key} id={key} {...item} />;
+    console.log(item);
+    return (
+      <DraggableBox key={key} id={key} {...item} store={this.props.store} />
+    );
   }
 
   render() {

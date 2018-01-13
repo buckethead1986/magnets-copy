@@ -47,14 +47,15 @@ class DragAroundCustomDragLayer extends Component {
   // };
 
   handleClick = () => {
-    this.props.store.dispatch({ type: "ADD_WORD" });
+    this.props.store.dispatch({ type: "INCREASE_Z" });
   };
 
   render() {
-    console.log(this.props);
+    console.log(this.props.store);
+    const showZ = this.props.store.getState().zIndex;
+    console.log(showZ);
     const { snapToGridAfterDrop, snapToGridWhileDragging } = this.state;
-    const z = this.props.store.getState();
-    console.log(z);
+
     return (
       <div>
         <Container
@@ -62,9 +63,13 @@ class DragAroundCustomDragLayer extends Component {
           url={this.props.url}
           store={this.props.store}
         />
-        <CustomDragLayer snapToGrid={snapToGridWhileDragging} />
+        <CustomDragLayer
+          snapToGrid={snapToGridWhileDragging}
+          store={this.props.store}
+          zIndex={this.props.store.getState().zIndex}
+        />
         <RaisedButton label="Test" onClick={this.handleClick} />
-        <p>{this.props.store.getState().z}</p>
+        <p>{this.props.store.getState().zIndex}</p>
         <p>
           <label htmlFor="snapToGridWhileDragging">
             <input

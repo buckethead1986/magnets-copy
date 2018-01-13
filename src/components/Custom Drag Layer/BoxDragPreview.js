@@ -46,7 +46,11 @@ export default class BoxDragPreview extends Component {
     const { tickTock } = this.state;
 
     return (
-      <div style={styles}>
+      <div
+        style={{
+          ...styles
+        }}
+      >
         <Box title={title} yellow={tickTock} />
       </div>
     );
