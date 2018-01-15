@@ -19,8 +19,10 @@ function getStyles(props) {
 
   return {
     position: "absolute",
+    float: "right",
     transform,
     WebkitTransform: transform,
+
     // IE fallback: hide the real node using CSS when dragging
     // because IE will ignore our custom "empty image" drag preview.
     opacity: isDragging ? 0 : 1,
@@ -36,9 +38,9 @@ class DraggableBox extends Component {
     connectDragPreview: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
     id: PropTypes.any.isRequired,
-    title: PropTypes.string.isRequired,
-    left: PropTypes.number.isRequired,
-    top: PropTypes.number.isRequired
+    title: PropTypes.string.isRequired
+    // left: PropTypes.number.isRequired,
+    // top: PropTypes.number.isRequired
   };
 
   shouldComponentUpdate = shouldPureComponentUpdate;
@@ -54,12 +56,18 @@ class DraggableBox extends Component {
   }
 
   render() {
-    console.log("Draggable box z ", this.props.store.getState().zIndex);
     const { title, connectDragSource } = this.props;
 
     return connectDragSource(
       <div style={getStyles(this.props)}>
-        <Box title={title} store={this.props.store} />
+        <Box
+          title={title}
+          store={this.props.store}
+          updateWordsWithWidthAndHeight={
+            this.props.updateWordsWithWidthAndHeight
+          }
+          id={this.props.id}
+        />
       </div>
     );
   }

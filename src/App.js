@@ -7,18 +7,11 @@ import Login from "./components/login/Login";
 import Navbar from "./components/navbar/Navbar";
 
 const url = "http://localhost:3001/api/v1";
-let z = 0;
 
 class App extends Component {
   state = {
     users: [],
     currUser: {}
-  };
-
-  increaseZ = () => {
-    console.log("increasing z", z);
-    z++;
-    console.log(z);
   };
 
   componentDidMount() {
@@ -47,7 +40,7 @@ class App extends Component {
   };
 
   fetchUserInformation = () => {
-    console.log("fetching user information");
+    // console.log("fetching user information");
     fetch(`${url}/users`)
       .then(res => res.json())
       .then(json =>
@@ -59,7 +52,7 @@ class App extends Component {
   };
 
   fetchCurrentUser = () => {
-    console.log("fetchCurrentUser");
+    // console.log("fetchCurrentUser");
     fetch(`${url}/current_user`, {
       headers: {
         "content-type": "application/json",
@@ -69,12 +62,9 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(json =>
-        this.setState(
-          {
-            currUser: json
-          },
-          () => console.log(this.state.currUser)
-        )
+        this.setState({
+          currUser: json
+        })
       );
   };
 
@@ -83,7 +73,7 @@ class App extends Component {
       <div>
         {this.props.location.pathname !== "/login" &&
         this.props.location.pathname !== "/signup" ? (
-          <Navbar logout={this.logout} increaseZ={this.increaseZ} />
+          <Navbar logout={this.logout} />
         ) : (
           ""
         )}

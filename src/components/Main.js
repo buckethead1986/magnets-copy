@@ -47,13 +47,24 @@ class DragAroundCustomDragLayer extends Component {
   // };
 
   handleClick = () => {
-    this.props.store.dispatch({ type: "INCREASE_Z" });
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    const body = this.props.store.getState().words;
+    console.log(body);
+    if (body !== []) {
+      fetch(`${this.props.url}/poems`, {
+        method: "POST",
+        headers: headers,
+        body: body
+      })
+        .then(res => res.json())
+        .then(json => console.log(json));
+    }
   };
 
   render() {
-    console.log(this.props.store);
-    const showZ = this.props.store.getState().zIndex;
-    console.log(showZ);
     const { snapToGridAfterDrop, snapToGridWhileDragging } = this.state;
 
     return (
@@ -68,8 +79,8 @@ class DragAroundCustomDragLayer extends Component {
           store={this.props.store}
           zIndex={this.props.store.getState().zIndex}
         />
-        <RaisedButton label="Test" onClick={this.handleClick} />
-        <p>{this.props.store.getState().zIndex}</p>
+        <RaisedButton label="Submit Poem" onClick={this.handleClick} />
+
         <p>
           <label htmlFor="snapToGridWhileDragging">
             <input
@@ -109,8 +120,7 @@ class DragAroundCustomDragLayer extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("mapStateToProps");
-  return { z: state.z };
+  return { zIndex: state.zIndex };
 };
 
 export default connect(mapStateToProps)(
