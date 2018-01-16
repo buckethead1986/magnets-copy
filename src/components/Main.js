@@ -46,22 +46,114 @@ class DragAroundCustomDragLayer extends Component {
   //   }
   // };
 
-  handleClick = () => {
+  submitPoem = () => {
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
     const body = this.props.store.getState().words;
-    console.log(body);
-    if (body !== []) {
+    // console.log(body);
+    let thisPoem = [];
+    if (Object.keys(body).length !== 0) {
+      thisPoem = this.formatPoem([], body, Object.keys(body).length - 1, {
+        string: ""
+      });
+    }
+    console.log(JSON.stringify(thisPoem));
+    if (thisPoem.length !== 0) {
       fetch(`${this.props.url}/poems`, {
         method: "POST",
         headers: headers,
-        body: body
+        body: JSON.stringify({
+          user_id: 1,
+          content: thisPoem
+        })
       })
         .then(res => res.json())
-        .then(json => console.log(json));
+        .then(json => this.wordRelationships(json, thisPoem));
     }
+    // this.wordRelationships(thisPoem);
+  };
+
+  wordRelationships = (json, thisPoem) => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    for (var box in thisPoem) {
+      console.log(thisPoem[box]);
+      if (box !== "string") {
+        const body = {
+          word_id: box,
+          poem_id: json.id
+        };
+        fetch(`${this.props.url}/poem_words`, {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(body)
+        })
+          .then(res => res.json())
+          .then(json => console.log(json));
+      }
+    }
+  };
+
+  formatPoem = (poem, body, length, content) => {
+    console.log("############# New Recursion #############");
+    // debugger;
+    let x = 700; //Container.js styles.width
+    let y = 500; //Container.js styles.height
+    let currentWord = "";
+
+    for (var word in body) {
+      console.log("The word this round is", body[word].title, y, x);
+      if (body[word].top < y - body[word].height / 2) {
+        console.log("hit first");
+        y = body[word].top;
+        x = body[word].left;
+        currentWord = word;
+      }
+      if (body[word].left < x && body[word].top < y + body[word].height / 2) {
+        console.log("hit second");
+        y = body[word].top;
+        x = body[word].left;
+        currentWord = word;
+      }
+      console.log(
+        "word",
+        '"' + body[word].title + '"',
+        "currentWord",
+        '"' + body[currentWord].title + '"'
+      );
+      console.log("-------------------");
+      // if (body[word].left < x) {
+      //   x = body[word].left;
+      //   currentWord = word;
+      // }
+    }
+    content.string =
+      content.string +
+      body[currentWord].title +
+      "/" +
+      body[currentWord].id +
+      "|";
+    content[body[currentWord].id] = {
+      title: body[currentWord].title,
+      x: body[currentWord].left,
+      y: body[currentWord].top
+    };
+    poem.push(body[currentWord]);
+    delete body[currentWord];
+    if (length > 0) {
+      this.formatPoem(poem, body, length - 1, content);
+    }
+    let poem1 = "";
+    for (var box in poem) {
+      poem1 += poem[box].title;
+    }
+    console.log(poem1);
+    // console.log("Poem:", poem[0].title, poem[1].title, poem[2].title);
+    return content;
   };
 
   render() {
@@ -79,7 +171,7 @@ class DragAroundCustomDragLayer extends Component {
           store={this.props.store}
           zIndex={this.props.store.getState().zIndex}
         />
-        <RaisedButton label="Submit Poem" onClick={this.handleClick} />
+        <RaisedButton label="Submit Poem" onClick={this.submitPoem} />
 
         <p>
           <label htmlFor="snapToGridWhileDragging">
