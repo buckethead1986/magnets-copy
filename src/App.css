@@ -31,16 +31,16 @@
   }
 }
 
-.test {
+.poem-area {
   z-index: -1;
   text-align: center;
-  margin-top: 300px;
+  margin-top: 200px;
   position: relative;
   height: 190px;
   border-top-style: solid;
 }
 
-.horizontalLine {
+/*.horizontal-line {
   position: absolute;
   width: 10px;
   top: 10px;
@@ -49,4 +49,4 @@
 
   background-color: grey;
   transform: rotate(90deg) translateY(-300px) translateX(0px);
-}
+}*/

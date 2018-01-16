@@ -11,9 +11,11 @@ import snapToGrid from "./snapToGrid";
 let counter = 0;
 
 const styles = {
-  width: 700,
-  height: 500,
+  width: window.innerWidth,
+  height: 600,
   border: "1px solid black",
+  borderRightStyle: "",
+  borderLeftStyle: "",
   position: "relative"
 };
 
@@ -190,7 +192,7 @@ class Container extends Component {
       <div>
         <div style={styles}>
           {Object.keys(boxes).map(key => this.renderBox(boxes[key], key))}
-          <div className="test">Make Poem Here</div>
+          <div className="poem-area">Make Poem Here</div>
         </div>
       </div>
     );
