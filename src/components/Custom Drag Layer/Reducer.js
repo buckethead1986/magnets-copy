@@ -13,16 +13,14 @@ export default function reducer(
           poem.push(action.payload[word]);
         }
       }
+      console.log(state.words);
       return Object.assign({}, state, { words: poem });
     case "ADD_ALL_WORDS":
-      console.log(action.payload);
       // debugger;
       return Object.assign({}, state, { allWords: action.payload });
 
     case "ADD_WIDTH_AND_HEIGHT":
       //adds the div height and width in px to the store for spacing when rendering draggable boxes
-      console.log(action.payload, state);
-      console.log(state.allWords);
       return {
         ...state,
         allWords: {

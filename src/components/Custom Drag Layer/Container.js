@@ -101,7 +101,7 @@ class Container extends Component {
 
   updateWordsWithWidthAndHeight = element => {
     counter = counter + 1;
-    console.log("element ", element.offsetWidth, element.offsetHeight);
+    // console.log("element ", element.offsetWidth, element.offsetHeight);
     this.props.store.dispatch({
       type: "ADD_WIDTH_AND_HEIGHT",
       payload: element
@@ -117,7 +117,8 @@ class Container extends Component {
     //
     //   // x += peopleObject[box].title.length + 40;
     // }
-    console.log(this.state.boxes, this.props.store.getState());
+
+    // console.log(this.state.boxes, this.props.store.getState());
     const dimensions = this.props.store.getState().allWords;
     if (
       Object.keys(this.props.store.getState().allWords).length ===
@@ -125,25 +126,20 @@ class Container extends Component {
     ) {
       let x = 0;
       let y = 0;
-      for (var box in this.state.boxes) {
-        this.state.boxes[box].width = dimensions[box].width;
-        this.state.boxes[box].height = dimensions[box].height;
+      const tempBoxes = Object.assign({}, this.state.boxes);
+      for (var box in tempBoxes) {
+        tempBoxes[box].width = dimensions[box].width;
+        tempBoxes[box].height = dimensions[box].height;
         if (x + dimensions[box].width > styles.width) {
           y += dimensions[box].height + 10;
           x = 0;
         }
-        this.state.boxes[box].left = x;
-        this.state.boxes[box].top = y;
+        tempBoxes[box].left = x;
+        tempBoxes[box].top = y;
         x += dimensions[box].width + 10;
-        this.forceUpdate();
       }
-      console.log(this.state.boxes);
-      const newBoxes = this.state.boxes;
-      // this.setState({
-      //   boxes: newBoxes
-      // });
+      this.setState({ boxes: tempBoxes }, () => this.forceUpdate());
     }
-    console.log(this.state.boxes);
   };
 
   addWordsToStore = () => {
