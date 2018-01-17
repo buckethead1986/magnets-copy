@@ -18,13 +18,13 @@ export default class BoxDragPreview extends Component {
 
   shouldComponentUpdate = shouldPureComponentUpdate;
 
-  constructor(props) {
-    super(props);
-    this.tick = this.tick.bind(this);
-    this.state = {
-      tickTock: false
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  // this.tick = this.tick.bind(this);
+  // this.state = {
+  //   tickTock: false
+  // };
+  // }
 
   componentDidMount() {
     this.interval = setInterval(this.tick, 500);
@@ -35,15 +35,16 @@ export default class BoxDragPreview extends Component {
   }
 
   // method to flash yellow every 0.5 seconds
-  tick() {
-    this.setState({
-      // tickTock: !this.state.tickTock
-    });
-  }
+  // tick() {
+  //   this.setState({
+  //     tickTock: !this.state.tickTock
+  //   });
+  // }
 
+  //comment in all 'tick' lines and render <Box title={title} yellow={tickTock} /> if flashing yellow on drag is wanted
   render() {
     const { title } = this.props;
-    const { tickTock } = this.state;
+    // const { tickTock } = this.state;
 
     return (
       <div
@@ -51,7 +52,7 @@ export default class BoxDragPreview extends Component {
           ...styles
         }}
       >
-        <Box title={title} yellow={tickTock} />
+        <Box title={title} />
       </div>
     );
   }

@@ -40,7 +40,6 @@ class App extends Component {
   };
 
   fetchUserInformation = () => {
-    // console.log("fetching user information");
     fetch(`${url}/users`)
       .then(res => res.json())
       .then(json =>
@@ -52,7 +51,6 @@ class App extends Component {
   };
 
   fetchCurrentUser = () => {
-    // console.log("fetchCurrentUser");
     fetch(`${url}/current_user`, {
       headers: {
         "content-type": "application/json",

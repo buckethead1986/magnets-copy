@@ -1,22 +1,21 @@
 export default function reducer(
-  state = { zIndex: 0, words: {}, allWords: {} },
+  state = { zIndex: 0, words: [], allWords: {} },
   action
 ) {
   switch (action.type) {
     case "INCREASE_Z":
-      // console.log("Store is working", state, state.zIndex + 1);
       return Object.assign({}, state, { zIndex: state.zIndex + 1 });
+
     case "ADD_WORD":
       let poem = [];
       for (var word in action.payload) {
-        if (action.payload[word].top > 300) {
+        if (action.payload[word].top > 200) {
           poem.push(action.payload[word]);
         }
       }
-      console.log(state.words);
       return Object.assign({}, state, { words: poem });
+
     case "ADD_ALL_WORDS":
-      // debugger;
       return Object.assign({}, state, { allWords: action.payload });
 
     case "ADD_WIDTH_AND_HEIGHT":
@@ -32,10 +31,9 @@ export default function reducer(
           }
         }
       };
-    // const test = { ...state, allwords: { ...state.allWords, {state.allWords[action.payload.id]} } };
-    // debugger;
-    // return Object.assign({}, state, { allWords: action.payload });
-    // case 'UPDATE_X_AND_Y_COORD':
+
+    case "REMOVE_POEM":
+      return Object.assign({}, state, { words: {} });
 
     default:
       return state;
