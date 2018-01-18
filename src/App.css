@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-.App-logo {
+/*.App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
 }
@@ -29,7 +29,7 @@
   to {
     transform: rotate(360deg);
   }
-}
+}*/
 
 .poem-area {
   z-index: -1;
@@ -40,13 +40,9 @@
   border-top-style: solid;
 }
 
-/*.horizontal-line {
+.show-poem {
   position: absolute;
-  width: 10px;
-  top: 10px;
-  bottom: 0;
-  margin-right: 100px;
-
-  background-color: grey;
-  transform: rotate(90deg) translateY(-300px) translateX(0px);
-}*/
+  height: 200px;
+  width: 200px;
+  border: "1px solid black";
+}

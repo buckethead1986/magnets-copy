@@ -5,6 +5,7 @@ import Main from "./components/Main";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
 import Navbar from "./components/navbar/Navbar";
+import ShowPoem from "./components/showPoem/ShowPoem";
 
 const url = "http://localhost:3001/api/v1";
 
@@ -39,6 +40,14 @@ class App extends Component {
     this.props.history.push("/login");
   };
 
+  showPoem = id => {
+    this.props.history.push(`/poems/${id}`);
+  };
+
+  createPoem = () => {
+    this.props.history.push("/");
+  };
+
   fetchUserInformation = () => {
     fetch(`${url}/users`)
       .then(res => res.json())
@@ -71,7 +80,7 @@ class App extends Component {
       <div>
         {this.props.location.pathname !== "/login" &&
         this.props.location.pathname !== "/signup" ? (
-          <Navbar logout={this.logout} />
+          <Navbar logout={this.logout} createPoem={this.createPoem} />
         ) : (
           ""
         )}
@@ -114,12 +123,25 @@ class App extends Component {
                     url={url}
                     users={this.state.users}
                     store={this.props.store}
+                    currUser={this.state.currUser}
+                    showPoem={this.showPoem}
                   />
                 </div>
               );
             } else {
               return "";
             }
+          }}
+        />
+        <Route
+          exact
+          path="/poems/:id"
+          render={() => {
+            return (
+              <div>
+                <ShowPoem url={url} />
+              </div>
+            );
           }}
         />
       </div>

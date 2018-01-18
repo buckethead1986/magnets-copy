@@ -12,8 +12,9 @@ const Navbar = props => {
     <Toolbar>
       <ToolbarGroup>
         <ToolbarTitle text="test" />
-        <FlatButton label="increaseZ" onClick={props.increaseZ} />
+        <FlatButton label="Make Poem" onClick={props.createPoem} />
       </ToolbarGroup>
+
       <ToolbarGroup lastChild={true}>
         <FlatButton label="logout" onClick={props.logout} />
       </ToolbarGroup>
