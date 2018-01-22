@@ -40,12 +40,28 @@ class App extends Component {
     this.props.history.push("/login");
   };
 
+  profileLink = id => {
+    this.props.history.push("/profile");
+  };
+
+  showPoems = () => {
+    this.props.history.push("/poems");
+  };
+
   showPoem = id => {
     this.props.history.push(`/poems/${id}`);
   };
 
-  createPoem = () => {
-    this.props.history.push("/");
+  makePoem = () => {
+    this.props.history.push("/poem/new");
+  };
+
+  showUsers = () => {
+    this.props.history.push("/users");
+  };
+
+  showUser = id => {
+    this.props.history.push(`/users/${id}`);
   };
 
   fetchUserInformation = () => {
@@ -80,7 +96,13 @@ class App extends Component {
       <div>
         {this.props.location.pathname !== "/login" &&
         this.props.location.pathname !== "/signup" ? (
-          <Navbar logout={this.logout} createPoem={this.createPoem} />
+          <Navbar
+            logout={this.logout}
+            makePoem={this.makePoem}
+            profileLink={this.profileLink}
+            showUsers={this.showUsers}
+            showPoems={this.showPoems}
+          />
         ) : (
           ""
         )}
@@ -114,7 +136,35 @@ class App extends Component {
         </div>
         <Route
           exact
-          path="/"
+          path="/profile"
+          render={() => {
+            return <div>Profile</div>;
+          }}
+        />
+        <Route
+          exact
+          path="/users"
+          render={() => {
+            return <div>Users</div>;
+          }}
+        />
+        <Route
+          exact
+          path="/users/id"
+          render={() => {
+            return <div>Specific User</div>;
+          }}
+        />
+        <Route
+          exact
+          path="/poems"
+          render={() => {
+            return <div>Poems</div>;
+          }}
+        />
+        <Route
+          exact
+          path="/poem/new"
           render={() => {
             if (this.state.currUser.length !== 0) {
               return (

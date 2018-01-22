@@ -13,11 +13,25 @@ let counter = 0;
 //styles.width would be a part of that
 const styles = {
   // width: window.innerWidth,
-  height: 600,
+  height: "600px",
   border: "1px solid black",
   borderRightStyle: "",
   borderLeftStyle: "",
   position: "relative"
+};
+
+const poemStyles = {
+  zIndex: -1,
+  textAlign: "center",
+  marginTop: "200px",
+  marginLeft: window.innerWidth / 2 - 250,
+  marginRight: window.innerWidth / 2 - 250,
+  position: "absolute",
+  height: "398px",
+  width: "500px",
+  borderTopStyle: "solid",
+  borderLeftStyle: "solid",
+  borderRightStyle: "solid"
 };
 
 const boxTarget = {
@@ -41,8 +55,8 @@ const arrayToObject = array =>
 
 class Container extends Component {
   static propTypes = {
-    connectDropTarget: PropTypes.func.isRequired,
-    snapToGrid: PropTypes.bool.isRequired
+    connectDropTarget: PropTypes.func.isRequired
+    // snapToGrid: PropTypes.bool.isRequired
   };
 
   shouldComponentUpdate = shouldPureComponentUpdate;
@@ -82,7 +96,7 @@ class Container extends Component {
       Object.keys(this.state.boxes).length
     ) {
       let x = 0;
-      let y = 0;
+      let y = 5;
       const tempBoxes = Object.assign({}, this.state.boxes);
       for (var box in tempBoxes) {
         tempBoxes[box].width = dimensions[box].width;
@@ -142,7 +156,7 @@ class Container extends Component {
       <div>
         <div style={styles}>
           {Object.keys(boxes).map(key => this.renderBox(boxes[key], key))}
-          <div className="poem-area">Make Poem Here</div>
+          <div style={poemStyles}>Make Poem Here</div>
         </div>
       </div>
     );

@@ -8,7 +8,6 @@ import snapToGrid from "./snapToGrid";
 const layerStyles = {
   position: "fixed",
   pointerEvents: "none",
-
   left: 0,
   top: 0,
   width: "100%",
@@ -52,8 +51,8 @@ class CustomDragLayer extends Component {
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired
     }),
-    isDragging: PropTypes.bool.isRequired,
-    snapToGrid: PropTypes.bool.isRequired
+    isDragging: PropTypes.bool.isRequired
+    // snapToGrid: PropTypes.bool.isRequired
   };
 
   renderItem(type, item) {

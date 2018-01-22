@@ -29,7 +29,7 @@ class Signup extends React.Component {
       .then(json => {
         if (json.id !== null) {
           localStorage.setItem("token", json.jwt);
-          this.props.history.push("/");
+          this.props.history.push("/poem/new");
         } else {
           this.setState({
             signupError: true

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import shouldPureComponentUpdate from "./shouldPureComponentUpdate";
 
 const styles = {
-  border: "1px dashed gray",
+  border: "1px dashed black",
   padding: "0.3rem 0.3rem",
   cursor: "move"
 };

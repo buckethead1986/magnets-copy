@@ -9,7 +9,11 @@ export default function reducer(
     case "ADD_WORD":
       let poem = [];
       for (var word in action.payload) {
-        if (action.payload[word].top > 200) {
+        if (
+          action.payload[word].left > window.innerWidth / 2 - 300 &&
+          action.payload[word].left < window.innerWidth / 2 + 300 &&
+          action.payload[word].top > 200
+        ) {
           poem.push(action.payload[word]);
         }
       }
@@ -33,8 +37,7 @@ export default function reducer(
       };
 
     case "REMOVE_POEM":
-      return Object.assign({}, state, { words: {} });
-
+      return Object.assign({}, state, { words: [] });
     default:
       return state;
   }

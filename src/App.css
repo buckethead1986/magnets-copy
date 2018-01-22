@@ -31,14 +31,18 @@
   }
 }*/
 
-.poem-area {
+/*.poem-area {
   z-index: -1;
   text-align: center;
   margin-top: 200px;
+  margin-left: 20%;
+  margin-right: 20%;
   position: relative;
-  height: 190px;
+  height: 398px;
   border-top-style: solid;
-}
+  border-left-style: solid;
+  border-right-style: solid;
+}*/
 
 .show-poem {
   position: absolute;

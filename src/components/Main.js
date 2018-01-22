@@ -11,22 +11,20 @@ class Main extends Component {
   constructor(props) {
     super(props);
 
-    this.handleSnapToGridAfterDropChange = this.handleSnapToGridAfterDropChange.bind(
-      this
-    );
-    this.handleSnapToGridWhileDraggingChange = this.handleSnapToGridWhileDraggingChange.bind(
-      this
-    );
-
-    this.state = {
-      snapToGridAfterDrop: false,
-      snapToGridWhileDragging: false
-    };
+    // this.handleSnapToGridAfterDropChange = this.handleSnapToGridAfterDropChange.bind(
+    //   this
+    // );
+    // this.handleSnapToGridWhileDraggingChange = this.handleSnapToGridWhileDraggingChange.bind(
+    //   this
+    // );
+    //
+    // this.state = {
+    //   snapToGridAfterDrop: false,
+    //   snapToGridWhileDragging: false
+    // };
   }
 
   submitPoem = () => {
-    console.log(this.props.currUser);
-    let thisPoem = [];
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
@@ -35,7 +33,7 @@ class Main extends Component {
     if (Object.keys(body).length !== 0) {
       this.formatPoem(body, Object.keys(body).length - 1, output);
     }
-    console.log(output);
+    console.log(body, output);
     if (output.length !== 0) {
       fetch(`${this.props.url}/poems`, {
         method: "POST",
@@ -48,7 +46,8 @@ class Main extends Component {
         .then(res => res.json())
         .then(json => {
           this.wordRelationships(json, output);
-          // this.props.showPoem(json.id);
+          this.removePoem();
+          this.props.showPoem(json.id);
         });
     }
   };
@@ -74,17 +73,14 @@ class Main extends Component {
         })
           .then(res => res.json())
           .then(json => console.log(json));
-        // .then(() => this.props.showPoem(json.id));
       }
     }
-    // this.removePoem();
   };
 
-  // removePoem = () => {
-  //   console.log(this.props.store.getState().words);
-  //   this.props.store.dispatch({ type: "REMOVE_POEM" });
-  //   console.log(this.props.store.getState().words);
-  // };
+  removePoem = () => {
+    this.props.store.dispatch({ type: "REMOVE_POEM" });
+    output = "";
+  };
 
   //'content' is the formatted poem for posting to the API, as a human would read it, with word id, title, and x,y coordinates of each word (for later viewing)
   formatPoem = (body, length, content) => {
@@ -103,6 +99,8 @@ class Main extends Component {
         currentWord = word;
       }
     }
+    const newLeft = body[currentWord].left - (window.innerWidth / 2 - 300);
+
     if (content.length === 0) {
       content =
         content +
@@ -110,21 +108,20 @@ class Main extends Component {
         "/" +
         body[currentWord].title +
         "/" +
-        body[currentWord].left +
+        newLeft +
         "/" +
-        body[currentWord].top;
+        (body[currentWord].top - 200);
     } else {
       content =
         content +
-        body[currentWord].top +
         "|" +
         body[currentWord].id +
         "/" +
         body[currentWord].title +
         "/" +
-        body[currentWord].left +
+        newLeft +
         "/" +
-        body[currentWord].top;
+        (body[currentWord].top - 200);
     }
     delete body[currentWord];
     output = content;
@@ -134,59 +131,31 @@ class Main extends Component {
   };
 
   render() {
-    const { snapToGridAfterDrop, snapToGridWhileDragging } = this.state;
+    console.log(this.props.store.getState().words);
+    // const { snapToGridAfterDrop, snapToGridWhileDragging } = this.state;
 
     return (
       <div>
+        <h4 align="center">
+          Create a new poem! Drag words around and click 'Submit Poem' once
+          you're satisfied
+        </h4>
+        <br />
         <Container
-          snapToGrid={snapToGridAfterDrop}
+          // snapToGrid={snapToGridAfterDrop}
           url={this.props.url}
           store={this.props.store}
           changeWindowWidth={this.changeWindowWidth}
           windowWidth={window.innerWidth}
         />
         <CustomDragLayer
-          snapToGrid={snapToGridWhileDragging}
+          // snapToGrid={snapToGridWhileDragging}
           store={this.props.store}
           zIndex={this.props.store.getState().zIndex}
         />
         <RaisedButton label="Submit Poem" onClick={this.submitPoem} />
-
-        <p>
-          <label htmlFor="snapToGridWhileDragging">
-            <input
-              id="snapToGridWhileDragging"
-              type="checkbox"
-              checked={snapToGridWhileDragging}
-              onChange={this.handleSnapToGridWhileDraggingChange}
-            />
-            <small>Snap to grid while dragging</small>
-          </label>
-          <br />
-          <label htmlFor="snapToGridAfterDrop">
-            <input
-              id="snapToGridAfterDrop"
-              type="checkbox"
-              checked={snapToGridAfterDrop}
-              onChange={this.handleSnapToGridAfterDropChange}
-            />
-            <small>Snap to grid after drop</small>
-          </label>
-        </p>
       </div>
     );
-  }
-
-  handleSnapToGridAfterDropChange() {
-    this.setState({
-      snapToGridAfterDrop: !this.state.snapToGridAfterDrop
-    });
-  }
-
-  handleSnapToGridWhileDraggingChange() {
-    this.setState({
-      snapToGridWhileDragging: !this.state.snapToGridWhileDragging
-    });
   }
 }
 
@@ -195,3 +164,38 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(DragDropContext(HTML5Backend)(Main));
+
+//snap to grid code
+// <p>
+//   <label htmlFor="snapToGridWhileDragging">
+//     <input
+//       id="snapToGridWhileDragging"
+//       type="checkbox"
+//       checked={snapToGridWhileDragging}
+//       onChange={this.handleSnapToGridWhileDraggingChange}
+//     />
+//     <small>Snap to grid while dragging</small>
+//   </label>
+//   <br />
+//   <label htmlFor="snapToGridAfterDrop">
+//     <input
+//       id="snapToGridAfterDrop"
+//       type="checkbox"
+//       checked={snapToGridAfterDrop}
+//       onChange={this.handleSnapToGridAfterDropChange}
+//     />
+//     <small>Snap to grid after drop</small>
+//   </label>
+// </p>
+//
+// handleSnapToGridAfterDropChange() {
+//   this.setState({
+//     snapToGridAfterDrop: !this.state.snapToGridAfterDrop
+//   });
+// }
+//
+// handleSnapToGridWhileDraggingChange() {
+//   this.setState({
+//     snapToGridWhileDragging: !this.state.snapToGridWhileDragging
+//   });
+// }
