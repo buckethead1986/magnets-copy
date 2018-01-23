@@ -12,7 +12,8 @@ const url = "http://localhost:3001/api/v1";
 class App extends Component {
   state = {
     users: [],
-    currUser: {}
+    currUser: {},
+    relationships: []
   };
 
   componentDidMount() {
@@ -72,7 +73,8 @@ class App extends Component {
           users: json
         })
       )
-      .then(() => this.fetchCurrentUser());
+      .then(() => this.fetchCurrentUser())
+      .then(() => this.fetchRelationships());
   };
 
   fetchCurrentUser = () => {
@@ -87,6 +89,16 @@ class App extends Component {
       .then(json =>
         this.setState({
           currUser: json
+        })
+      );
+  };
+
+  fetchRelationships = () => {
+    fetch(`${url}/relationships`)
+      .then(res => res.json())
+      .then(json =>
+        this.setState({
+          relationships: json
         })
       );
   };
@@ -187,11 +199,21 @@ class App extends Component {
           exact
           path="/poems/:id"
           render={() => {
-            return (
-              <div>
-                <ShowPoem url={url} />
-              </div>
-            );
+            if (this.state.currUser !== {}) {
+              return (
+                <div>
+                  <ShowPoem
+                    url={url}
+                    currUser={this.state.currUser}
+                    users={this.state.users}
+                    relationships={this.state.relationships}
+                    fetchRelationships={this.fetchRelationships}
+                  />
+                </div>
+              );
+            } else {
+              return "";
+            }
           }}
         />
       </div>
