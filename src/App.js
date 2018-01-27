@@ -6,6 +6,7 @@ import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
 import Navbar from "./components/navbar/Navbar";
 import ShowPoem from "./components/showPoem/ShowPoem";
+import PoemIndex from "./components/showPoem/PoemIndex";
 
 const url = "http://localhost:3001/api/v1";
 
@@ -13,7 +14,8 @@ class App extends Component {
   state = {
     users: [],
     currUser: {},
-    relationships: []
+    relationships: [],
+    poems: []
   };
 
   componentDidMount() {
@@ -50,6 +52,7 @@ class App extends Component {
   };
 
   showPoem = id => {
+    this.fetchPoems();
     this.props.history.push(`/poems/${id}`);
   };
 
@@ -74,7 +77,8 @@ class App extends Component {
         })
       )
       .then(() => this.fetchCurrentUser())
-      .then(() => this.fetchRelationships());
+      .then(() => this.fetchRelationships())
+      .then(() => this.fetchPoems());
   };
 
   fetchCurrentUser = () => {
@@ -101,6 +105,64 @@ class App extends Component {
           relationships: json
         })
       );
+  };
+
+  fetchPoems = () => {
+    fetch(`${url}/poems`)
+      .then(res => res.json())
+      .then(json =>
+        this.setState({
+          poems: json
+        })
+      );
+  };
+
+  followUser = (follower_id, followed_id) => {
+    console.log("following user", follower_id, followed_id);
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    fetch(`${url}/relationships`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        follower_id: follower_id,
+        followed_id: followed_id
+      })
+    }).then(() => this.fetchRelationships());
+    // .then(res => res.json())
+    // .then(json =>
+    //   this.setState(
+    //     {
+    //       relationships: json
+    //     },
+    //     () => console.log(json)
+    //   )
+    // );
+    // .then(json => console.log(json));
+    // this.changeFollowed();
+  };
+
+  unFollowUser = (follower_id, followed_id) => {
+    console.log("unfollowing user", this.state.relationships);
+    const relationshipId = this.state.relationships.filter(relationship => {
+      return (
+        relationship.follower_id === follower_id &&
+        relationship.followed_id === followed_id
+      );
+    })[0].id;
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    fetch(`${url}/relationships/${relationshipId}`, {
+      method: "DELETE",
+      headers: headers
+    }).then(() => this.fetchRelationships());
+    // .then(res => res.json())
+    // .then(json => console.log(json));
+    // this.changeFollowed();
   };
 
   render() {
@@ -171,7 +233,30 @@ class App extends Component {
           exact
           path="/poems"
           render={() => {
-            return <div>Poems</div>;
+            if (
+              this.state.currUser.length !== 0 &&
+              this.state.relationships.length !== 0 &&
+              this.state.users.length !== 0 &&
+              this.state.poems.length !== 0
+            ) {
+              return (
+                <div>
+                  <PoemIndex
+                    url={url}
+                    showPoem={this.showPoem}
+                    currUser={this.state.currUser}
+                    poems={this.state.poems}
+                    users={this.state.users}
+                    followUser={this.followUser}
+                    unFollowUser={this.unFollowUser}
+                    relationships={this.state.relationships}
+                    fetchRelationships={this.fetchRelationships}
+                  />
+                </div>
+              );
+            } else {
+              return "";
+            }
           }}
         />
         <Route
@@ -199,15 +284,18 @@ class App extends Component {
           exact
           path="/poems/:id"
           render={() => {
-            if (this.state.currUser !== {}) {
+            if (
+              this.state.currUser.length !== {} &&
+              this.state.poems.length !== 0
+            ) {
               return (
                 <div>
                   <ShowPoem
                     url={url}
                     currUser={this.state.currUser}
                     users={this.state.users}
+                    poems={this.state.poems}
                     relationships={this.state.relationships}
-                    fetchRelationships={this.fetchRelationships}
                   />
                 </div>
               );

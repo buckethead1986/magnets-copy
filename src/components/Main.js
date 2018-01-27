@@ -7,22 +7,23 @@ import { RaisedButton } from "material-ui";
 import { connect } from "react-redux";
 let output = "";
 
+//snapToGrid changes constant draggability to grid draggability, on drop or while dragging.
 class Main extends Component {
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
 
-    // this.handleSnapToGridAfterDropChange = this.handleSnapToGridAfterDropChange.bind(
-    //   this
-    // );
-    // this.handleSnapToGridWhileDraggingChange = this.handleSnapToGridWhileDraggingChange.bind(
-    //   this
-    // );
-    //
-    // this.state = {
-    //   snapToGridAfterDrop: false,
-    //   snapToGridWhileDragging: false
-    // };
-  }
+  // this.handleSnapToGridAfterDropChange = this.handleSnapToGridAfterDropChange.bind(
+  //   this
+  // );
+  // this.handleSnapToGridWhileDraggingChange = this.handleSnapToGridWhileDraggingChange.bind(
+  //   this
+  // );
+  //
+  // this.state = {
+  //   snapToGridAfterDrop: false,
+  //   snapToGridWhileDragging: false
+  // };
+  // }
 
   submitPoem = () => {
     const headers = {
@@ -99,7 +100,7 @@ class Main extends Component {
         currentWord = word;
       }
     }
-    const newLeft = body[currentWord].left - (window.innerWidth / 2 - 300);
+    const newLeft = body[currentWord].left - (window.innerWidth / 2 - 248);
 
     if (content.length === 0) {
       content =
@@ -132,14 +133,13 @@ class Main extends Component {
 
   render() {
     console.log(this.props.store.getState().words);
+    const intro =
+      "Create a new poem! Drag words around and click 'Submit Poem' once you're satisfied";
     // const { snapToGridAfterDrop, snapToGridWhileDragging } = this.state;
 
     return (
       <div>
-        <h4 align="center">
-          Create a new poem! Drag words around and click 'Submit Poem' once
-          you're satisfied
-        </h4>
+        <h4 align="center">{intro}</h4>
         <br />
         <Container
           // snapToGrid={snapToGridAfterDrop}

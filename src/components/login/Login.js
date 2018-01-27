@@ -64,7 +64,7 @@ class Login extends React.Component {
           hintText="Password"
         />
         <br />
-        <RaisedButton
+        <FlatButton
           label="Login"
           type="submit"
           primary={true}
