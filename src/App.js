@@ -279,8 +279,8 @@ class App extends Component {
                     url={url}
                     showPoem={this.showPoem}
                     currUser={this.state.currUser}
-                    poems={this.state.poems}
                     users={this.state.users}
+                    poems={this.state.poems}
                     followUser={this.followUser}
                     unFollowUser={this.unFollowUser}
                     relationships={this.state.relationships}
@@ -331,7 +331,12 @@ class App extends Component {
                     currUser={this.state.currUser}
                     users={this.state.users}
                     poems={this.state.poems}
+                    followUser={this.followUser}
+                    unFollowUser={this.unFollowUser}
                     relationships={this.state.relationships}
+                    favoritePoem={this.favoritePoem}
+                    unFavoritePoem={this.unFavoritePoem}
+                    favorites={this.state.favorites}
                   />
                 </div>
               );

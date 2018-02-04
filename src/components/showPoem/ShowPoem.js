@@ -8,7 +8,6 @@ class Poem extends React.Component {
 
     this.state = {
       poem: []
-      // relationship: []
     };
   }
 
@@ -20,24 +19,23 @@ class Poem extends React.Component {
       .then(json =>
         this.setState({
           poem: json
-          // relationships: this.props.relationships
         })
       );
   }
 
   render() {
-    // const id = window.location.href.split("/");
-    // const thisPoemId = id[id.length - 1];
-    // const poem = this.props.poems.filter(poem => {
-    //   return poem.id === parseInt(thisPoemId);
-    // })[0];
     return (
       <ShowPoemCard
         url={this.props.url}
         currUser={this.props.currUser}
         users={this.props.users}
         poem={this.state.poem}
+        followUser={this.props.followUser}
+        unFollowUser={this.props.unFollowUser}
         relationships={this.props.relationships}
+        favoritePoem={this.props.favoritePoem}
+        unFavoritePoem={this.props.unFavoritePoem}
+        favorites={this.props.favorites}
       />
     );
   }

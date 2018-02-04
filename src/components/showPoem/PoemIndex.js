@@ -1,63 +1,48 @@
 import React from "react";
 import PoemIndexCard from "./PoemIndexCard";
 import Columns from "react-columns";
-// import { GridList, GridTile } from "material-ui/GridList";
-
-// const styles = {
-//   root: {
-//     display: "flex",
-//     flexWrap: "wrap",
-//     justifyContent: "space-around",
-//     col: 3
-//   },
-//   gridList: {
-//     width: 600,
-//     cols: 3,
-//     overflowY: "auto"
-//   }
-// };
-
-// var queries = [
-//   {
-//     columns: 2,
-//     query: "min-width: 500px"
-//   },
-//   {
-//     columns: 3,
-//     query: "min-width: 1000px"
-//   }
-// ];
+import SelectField from "../selectField/SelectField";
 
 class PoemIndex extends React.Component {
-  // constructor() {
-  //   super();
-  //
-  //   this.state = {
-  //     relationships: []
-  //   };
-  // }
-  // componentWillMount() {
-  //   this.setState({
-  //     relationships: this.props.relationships
-  //   });
-  // }
-  //
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props.relationships !== nextProps.relationships) {
-  //     this.setState({
-  //       relationships: nextProps.relationships
-  //     });
-  //   }
-  // }
-  //
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   console.log(nextProps, nextState);
-  //   debugger;
-  //   return this.props.relationships !== nextProps.relationships;
-  // }
+  constructor() {
+    super();
+
+    this.state = {
+      filteredPoems: [],
+      users: []
+    };
+  }
+  componentWillMount() {
+    this.setState({
+      users: this.props.users,
+      filteredPoems: this.props.poems
+    });
+  }
+
+  //sets state of poems based on filtered users set in SelectField component. Defaults to all users' poems.
+  filteredPoems = users => {
+    let userArray = [];
+    this.state.users.forEach(user => {
+      if (users.includes(user.username)) {
+        userArray.push(user.id);
+      }
+    });
+    const filteredPoems = this.props.poems.filter(poem => {
+      return userArray.includes(poem.user_id);
+    });
+    if (users.length === 0) {
+      this.setState({
+        filteredPoems: this.props.poems
+      });
+    } else {
+      this.setState({
+        filteredPoems: filteredPoems
+      });
+    }
+  };
 
   render() {
-    const poems = this.props.poems.map((poem, index) => {
+    const poems = this.state.filteredPoems.map((poem, index) => {
       return (
         <div key={index}>
           <PoemIndexCard
@@ -78,7 +63,15 @@ class PoemIndex extends React.Component {
         </div>
       );
     });
-    return <Columns columns={4}>{poems}</Columns>;
+    return (
+      <div>
+        <SelectField
+          users={this.props.users}
+          filteredPoems={this.filteredPoems}
+        />
+        <Columns columns={4}>{poems}</Columns>
+      </div>
+    );
   }
 }
 

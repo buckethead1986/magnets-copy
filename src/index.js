@@ -6,6 +6,7 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import Reducer from "./components/Custom Drag Layer/Reducer";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
 import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 
@@ -14,9 +15,14 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
+//stretch goal to let users change font color, doesn't change anything currently
+const muiTheme = getMuiTheme({
+  menuItem: { selectedTextColor: "black" }
+});
+
 ReactDOM.render(
   <Router>
-    <MuiThemeProvider>
+    <MuiThemeProvider muiTheme={muiTheme}>
       <Provider store={store}>
         <App store={store} />
       </Provider>

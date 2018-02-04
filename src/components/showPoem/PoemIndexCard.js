@@ -53,6 +53,18 @@ class Poem extends React.Component {
     );
   }
 
+  //updates other poemIndexCards to reflect the new followed/following state when you follow a user
+  componentWillReceiveProps(nextProps) {
+    this.setState(
+      {
+        poem: nextProps.poem,
+        relationships: nextProps.relationships,
+        followed: false
+      },
+      () => this.checkFollowed()
+    );
+  }
+
   //checkFollowed and checkFavorite iterate through favorites and relationships arrays and update state if a match is found
   checkFollowed = () => {
     const relationships = this.state.relationships;
@@ -71,7 +83,6 @@ class Poem extends React.Component {
   checkFavorite = () => {
     const favorites = this.state.favorites;
     favorites.forEach(favorite => {
-      console.log(favorite, this.props.currUser.id, this.state.poem.id);
       if (
         favorite.user_id === this.props.currUser.id &&
         favorite.poem_id === this.state.poem.id
@@ -82,18 +93,6 @@ class Poem extends React.Component {
       }
     });
   };
-
-  //updates other poemIndexCards to reflect the new followed/following state when you follow a user
-  componentWillReceiveProps(nextProps) {
-    this.setState(
-      {
-        poem: nextProps.poem,
-        relationships: nextProps.relationships,
-        followed: false
-      },
-      () => this.checkFollowed()
-    );
-  }
 
   //followedUnfollowed and favoriteUnfavorite modify the rendered components depending on the state of 'followed' and 'favorite'
   followedUnfollowed = poemAuthor => {
@@ -107,7 +106,7 @@ class Poem extends React.Component {
             tooltip={`Unfollow ${poemAuthor[0].username}`}
             tooltipPosition="bottom-center"
           >
-            <AccountBox onClick={this.unFollowUser} color="blue" />
+            <AccountBox onClick={this.unFollowUser} color="#00BCD4" />
           </IconButton>
         );
       } else {
@@ -153,21 +152,15 @@ class Poem extends React.Component {
 
   //changeFavoriteState and //changeFollowState, pretty self-explanatory. They toggle the associated state
   changeFavoriteState = () => {
-    this.setState(
-      prevState => {
-        return { favorite: !prevState.favorite };
-      },
-      () => console.log(this.state.favorite)
-    );
+    this.setState(prevState => {
+      return { favorite: !prevState.favorite };
+    });
   };
 
   changeFollowState = () => {
-    this.setState(
-      prevState => {
-        return { followed: !prevState.followed };
-      },
-      () => console.log(this.state.followed)
-    );
+    this.setState(prevState => {
+      return { followed: !prevState.followed };
+    });
   };
 
   //call passed down function to follow/favorite poems/users, and then update the current state
@@ -244,7 +237,6 @@ class Poem extends React.Component {
               ? `Author: ${poemAuthor[0].username}`
               : "Nobody"
           }
-          subtitle="Subtitle"
           avatar="http://www.divebuddy.com/members/photos/pic_1_69507.jpg"
         />
         <div
