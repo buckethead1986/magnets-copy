@@ -57,27 +57,28 @@ class PoemIndex extends React.Component {
   // }
 
   render() {
-    console.log(this.props, this.state);
     const poems = this.props.poems.map((poem, index) => {
       return (
-        <div>
+        <div key={index}>
           <PoemIndexCard
             columns={4}
             showPoem={this.props.showPoem}
             url={this.props.url}
             currUser={this.props.currUser}
             users={this.props.users}
-            poems={poem}
+            poem={poem}
             followUser={this.props.followUser}
             unFollowUser={this.props.unFollowUser}
             relationships={this.props.relationships}
-            fetchRelationships={this.props.fetchRelationships}
+            favoritePoem={this.props.favoritePoem}
+            unFavoritePoem={this.props.unFavoritePoem}
+            favorites={this.props.favorites}
           />
           <br />
         </div>
       );
     });
-    return <Columns columns="4">{poems}</Columns>;
+    return <Columns columns={4}>{poems}</Columns>;
   }
 }
 

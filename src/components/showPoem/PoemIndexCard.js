@@ -20,12 +20,7 @@ import FlatButton from "material-ui/FlatButton";
 let styles = {
   width: window.innerWidth / 4 - 20,
   height: window.innerWidth / 4 * 0.8 - 16,
-  // width: 500,
-  // height: 398,
   marginLeft: 6,
-  // marginRight: 4,
-  // marginLeft: window.innerWidth / 2 - 250,
-  // marginRight: window.innerWidth / 2 - 250,
   border: "solid",
   position: "relative"
 };
@@ -39,42 +34,26 @@ class Poem extends React.Component {
       // expanded: false,
       followed: false,
       favorite: false,
-      relationships: []
+      relationships: [],
+      favorites: []
     };
   }
-  //
-  // handleExpandChange = expanded => {
-  //   this.setState({ expanded: expanded });
-  // };
-  //
-  // handleToggle = (event, toggle) => {
-  //   this.setState({ expanded: toggle });
-  // };
-
-  // componentDidMount() {
-  //   const id = window.location.href.split("/");
-  //   const thisPoemId = id[id.length - 1];
-  //   fetch(`${this.props.url}/poems/${thisPoemId}`)
-  //     .then(res => res.json())
-  //     .then(json =>
-  //       this.setState({
-  //         poem: json,
-  //         relationships: this.props.relationships
-  //       })
-  //     );
-  // }
 
   componentDidMount() {
     this.setState(
       {
-        poem: this.props.poems,
+        poem: this.props.poem,
         relationships: this.props.relationships,
-        followed: false
+        favorites: this.props.favorites
       },
-      () => this.checkFollowed()
+      () => {
+        this.checkFollowed();
+        this.checkFavorite();
+      }
     );
   }
 
+  //checkFollowed and checkFavorite iterate through favorites and relationships arrays and update state if a match is found
   checkFollowed = () => {
     const relationships = this.state.relationships;
     relationships.forEach(relationship => {
@@ -87,150 +66,93 @@ class Poem extends React.Component {
         });
       }
     });
-    // const relations = relationships.filter(relationship => {
-    //   return (
-    //     relationship.follower_id === this.props.currUser.id &&
-    //     relationship.followed_id === this.props.poems.user_id
-    //   );
-    // });
-    // if (relations.length !== 0) {
-    //   this.setState(
-    //     {
-    //       followed: true
-    //     }
-    //     // () => console.log(this.state)
-    //   );
-    // }
   };
 
+  checkFavorite = () => {
+    const favorites = this.state.favorites;
+    favorites.forEach(favorite => {
+      console.log(favorite, this.props.currUser.id, this.state.poem.id);
+      if (
+        favorite.user_id === this.props.currUser.id &&
+        favorite.poem_id === this.state.poem.id
+      ) {
+        this.setState({
+          favorite: true
+        });
+      }
+    });
+  };
+
+  //updates other poemIndexCards to reflect the new followed/following state when you follow a user
   componentWillReceiveProps(nextProps) {
-    // console.log(this.props, nextProps);
-    // const relationships = nextProps.relationships;
-    // console.log(relationships);
     this.setState(
       {
-        poem: nextProps.poems,
+        poem: nextProps.poem,
         relationships: nextProps.relationships,
         followed: false
       },
       () => this.checkFollowed()
     );
-
-    // this.checkFollowed(relationships);
-    // relationships.filter(relationship => {
-    //   if (
-    //     relationship.follower_id === nextProps.currUser.id &&
-    //     relationship.followed_id === this.state.poem.user_id
-    //   ) {
-    //     this.setState({
-    //       poem: nextProps.poems,
-    //       followed: true,
-    //       relationships: nextProps.relationships
-    //     });
-    //   }
-
-    // });
   }
 
-  // post request to follow a user
-  // followUser = () => {
-  //   const headers = {
-  //     Accept: "application/json",
-  //     "Content-Type": "application/json"
-  //   };
-  //   fetch(`${this.props.url}/relationships`, {
-  //     method: "POST",
-  //     headers: headers,
-  //     body: JSON.stringify({
-  //       follower_id: this.props.currUser.id,
-  //       followed_id: this.state.poem.user_id
-  //     })
-  //   });
-  //   this.changeFollowed();
-  // };
-  //
-  // unFollowUser = relationships => {
-  //   const relationshipId = relationships.filter(relationship => {
-  //     return (
-  //       relationship.follower_id === this.props.currUser.id &&
-  //       relationship.followed_id === this.state.poem.user_id
-  //     );
-  //   })[0].id;
-  //   const headers = {
-  //     Accept: "application/json",
-  //     "Content-Type": "application/json"
-  //   };
-  //   fetch(`${this.props.url}/relationships/${relationshipId}`, {
-  //     method: "DELETE",
-  //     headers: headers
-  //   });
-  //   this.changeFollowed();
-  // };
-
-  fetchRelationships = () => {
-    fetch(`${this.props.url}/relationships`)
-      .then(res => res.json())
-      .then(json => this.unFollowUser(json));
-  };
-
-  changeFollowed = () => {
-    this.setState(prevState => {
-      return {
-        followed: !prevState.followed
-      };
-    });
-  };
-
-  renderBox = (word, index) => {
-    return (
-      <div key={index}>
-        <PoemIndexBox
-          title={word[1]}
-          left={word[2]}
-          top={word[3] - 4}
-          width={styles.width}
-          height={styles.height}
-          // divWidth={window.innerWidth}
-          // divHeight={window.innerHeight}
-        />
-      </div>
-    );
-  };
-
+  //followedUnfollowed and favoriteUnfavorite modify the rendered components depending on the state of 'followed' and 'favorite'
   followedUnfollowed = poemAuthor => {
-    if (this.state.followed === true) {
-      return (
-        <FlatButton
-          onClick={this.fetchRelationships}
-          disabled={
-            this.props.currUser.id === this.state.poem.user_id ? true : false
-          }
-          label={
-            poemAuthor[0] !== undefined
-              ? `Unfollow ${poemAuthor[0].username}`
-              : "Disabled"
-          }
-        />
-      );
+    if (
+      poemAuthor[0] !== undefined &&
+      this.props.currUser.id !== this.state.poem.user_id
+    ) {
+      if (this.state.followed) {
+        return (
+          <IconButton
+            tooltip={`Unfollow ${poemAuthor[0].username}`}
+            tooltipPosition="bottom-center"
+          >
+            <AccountBox onClick={this.unFollowUser} color="blue" />
+          </IconButton>
+        );
+      } else {
+        return (
+          <IconButton
+            tooltip={`Follow ${poemAuthor[0].username}`}
+            tooltipPosition="bottom-center"
+          >
+            <AccountBox onClick={this.followUser} color="black" />
+          </IconButton>
+        );
+      }
     } else {
       return (
-        <FlatButton
-          onClick={this.followUser}
-          disabled={
-            this.props.currUser.id === this.state.poem.user_id ? true : false
-          }
-          label={
-            poemAuthor[0] !== undefined
-              ? `Follow ${poemAuthor[0].username}`
-              : "Disabled"
-          }
-        />
+        <IconButton tooltip={`This is you`} tooltipPosition="bottom-center">
+          <AccountBox color="grey" />
+        </IconButton>
       );
     }
   };
 
-  favoritePoem = () => {
-    console.log("favorite poem");
+  favoriteUnfavorite = () => {
+    if (this.state.favorite) {
+      return (
+        <IconButton
+          tooltip={`Remove poem from favorites`}
+          tooltipPosition="bottom-center"
+        >
+          <Star onClick={this.unFavoritePoem} color="red" />
+        </IconButton>
+      );
+    } else {
+      return (
+        <IconButton
+          tooltip={`Add poem to favorites`}
+          tooltipPosition="bottom-center"
+        >
+          <StarBorder onClick={this.favoritePoem} color="black" />
+        </IconButton>
+      );
+    }
+  };
+
+  //changeFavoriteState and //changeFollowState, pretty self-explanatory. They toggle the associated state
+  changeFavoriteState = () => {
     this.setState(
       prevState => {
         return { favorite: !prevState.favorite };
@@ -248,6 +170,17 @@ class Poem extends React.Component {
     );
   };
 
+  //call passed down function to follow/favorite poems/users, and then update the current state
+  favoritePoem = () => {
+    this.props.favoritePoem(this.props.currUser.id, this.props.poem.id);
+    this.changeFavoriteState();
+  };
+
+  unFavoritePoem = () => {
+    this.props.unFavoritePoem(this.props.currUser.id, this.props.poem.id);
+    this.changeFavoriteState();
+  };
+
   followUser = () => {
     this.props.followUser(this.props.currUser.id, this.state.poem.user_id);
     this.changeFollowState();
@@ -258,19 +191,25 @@ class Poem extends React.Component {
     this.changeFollowState();
   };
 
-  // handleExpand = () => {
-  //   console.log("clicked");
-  //   this.setState(prevState => {
-  //     return { expanded: !prevState.expanded };
-  //   }, () => this.state.expanded);
-  // };
+  renderBox = (word, index) => {
+    return (
+      <div key={index}>
+        <PoemIndexBox
+          title={word[1]}
+          left={word[2]}
+          top={word[3] - 4}
+          width={styles.width}
+          height={styles.height}
+        />
+      </div>
+    );
+  };
 
   //poem splits the content of the poem into useable parts (each word is posted to the api as 'id/word/x-coord/y-coord' in one string with | between words)
   //poemWords returns the undraggable boxes with the correct coordinates
   //poemAuthor returns the Author of the poem
   //humanReadablePoem returns a string of the poem as human readable text.
   render() {
-    // console.log(this.props);
     let poem;
     let poemWords;
     let poemAuthor = [];
@@ -298,15 +237,7 @@ class Poem extends React.Component {
       }
     }
     return (
-      <Card
-        onExpandChange={() =>
-          this.setState(
-            prevState => {
-              return { expanded: !prevState.expanded };
-            },
-            () => console.log("hey")
-          )}
-      >
+      <Card>
         <CardHeader
           title={
             poemAuthor[0] !== undefined
@@ -316,27 +247,15 @@ class Poem extends React.Component {
           subtitle="Subtitle"
           avatar="http://www.divebuddy.com/members/photos/pic_1_69507.jpg"
         />
-        <div style={styles}>{poemWords}</div>
-
+        <div
+          onClick={() => this.props.showPoem(this.props.poem.id)}
+          style={styles}
+        >
+          {poemWords}
+        </div>
         <CardActions>
-          <IconButton>
-            {this.state.favorite ? (
-              <Star onClick={this.favoritePoem} color="red" />
-            ) : (
-              <StarBorder onClick={this.favoritePoem} color="black" />
-            )}
-          </IconButton>
-          <IconButton>
-            {this.state.followed ? (
-              <AccountBox onClick={this.unFollowUser} color="blue" />
-            ) : (
-              <AccountBox onClick={this.followUser} color="black" />
-            )}
-          </IconButton>
-
-          <IconButton disabled={true}>
-            <FavoriteBorder onClick={this.favoriteUser} color="red" />
-          </IconButton>
+          {this.favoriteUnfavorite()}
+          {this.followedUnfollowed(poemAuthor)}
         </CardActions>
       </Card>
     );

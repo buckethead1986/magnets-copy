@@ -15,7 +15,8 @@ class App extends Component {
     users: [],
     currUser: {},
     relationships: [],
-    poems: []
+    poems: [],
+    favorites: []
   };
 
   componentDidMount() {
@@ -76,9 +77,12 @@ class App extends Component {
           users: json
         })
       )
-      .then(() => this.fetchCurrentUser())
-      .then(() => this.fetchRelationships())
-      .then(() => this.fetchPoems());
+      .then(() => {
+        this.fetchCurrentUser();
+        this.fetchRelationships();
+        this.fetchPoems();
+        this.fetchFavorites();
+      });
   };
 
   fetchCurrentUser = () => {
@@ -117,8 +121,18 @@ class App extends Component {
       );
   };
 
+  fetchFavorites = () => {
+    fetch(`${url}/favorited_poems`)
+      .then(res => res.json())
+      .then(json =>
+        this.setState({
+          favorites: json
+        })
+      );
+  };
+
+  //fetch request to post a new user following relationship
   followUser = (follower_id, followed_id) => {
-    console.log("following user", follower_id, followed_id);
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
@@ -131,21 +145,10 @@ class App extends Component {
         followed_id: followed_id
       })
     }).then(() => this.fetchRelationships());
-    // .then(res => res.json())
-    // .then(json =>
-    //   this.setState(
-    //     {
-    //       relationships: json
-    //     },
-    //     () => console.log(json)
-    //   )
-    // );
-    // .then(json => console.log(json));
-    // this.changeFollowed();
   };
 
+  //deletes an active user following relationship
   unFollowUser = (follower_id, followed_id) => {
-    console.log("unfollowing user", this.state.relationships);
     const relationshipId = this.state.relationships.filter(relationship => {
       return (
         relationship.follower_id === follower_id &&
@@ -160,9 +163,39 @@ class App extends Component {
       method: "DELETE",
       headers: headers
     }).then(() => this.fetchRelationships());
-    // .then(res => res.json())
-    // .then(json => console.log(json));
-    // this.changeFollowed();
+  };
+
+  //posts a new favorite poem relationship
+  favoritePoem = (user_id, poem_id) => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    fetch(`${url}/favorited_poems`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        user_id: user_id,
+        poem_id: poem_id
+      })
+    }).then(() => this.fetchFavorites());
+  };
+
+  //deletes a current favorite poem relationship
+  unFavoritePoem = (user_id, poem_id) => {
+    console.log("unFavoritePoem", user_id, poem_id);
+    const favorites = this.state.favorites.filter(favorite => {
+      return favorite.user_id === user_id && favorite.poem_id === poem_id;
+    })[0].id;
+    console.log(favorites);
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    fetch(`${url}/favorited_poems/${favorites}`, {
+      method: "DELETE",
+      headers: headers
+    }).then(() => this.fetchFavorites());
   };
 
   render() {
@@ -237,7 +270,8 @@ class App extends Component {
               this.state.currUser.length !== 0 &&
               this.state.relationships.length !== 0 &&
               this.state.users.length !== 0 &&
-              this.state.poems.length !== 0
+              this.state.poems.length !== 0 &&
+              this.state.favorites.length !== 0
             ) {
               return (
                 <div>
@@ -250,7 +284,9 @@ class App extends Component {
                     followUser={this.followUser}
                     unFollowUser={this.unFollowUser}
                     relationships={this.state.relationships}
-                    fetchRelationships={this.fetchRelationships}
+                    favoritePoem={this.favoritePoem}
+                    unFavoritePoem={this.unFavoritePoem}
+                    favorites={this.state.favorites}
                   />
                 </div>
               );
