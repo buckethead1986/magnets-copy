@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { DragLayer } from "react-dnd";
 import ItemTypes from "./ItemTypes";
 import BoxDragPreview from "./BoxDragPreview";
-import snapToGrid from "./snapToGrid";
 
 const layerStyles = {
   position: "fixed",
@@ -23,14 +22,6 @@ function getItemStyles(props) {
   }
 
   let { x, y } = currentOffset;
-
-  if (props.snapToGrid) {
-    x -= initialOffset.x;
-    y -= initialOffset.y;
-    [x, y] = snapToGrid(x, y);
-    x += initialOffset.x;
-    y += initialOffset.y;
-  }
 
   const transform = `translate(${x}px, ${y}px)`;
   return {
@@ -52,7 +43,6 @@ class CustomDragLayer extends Component {
       y: PropTypes.number.isRequired
     }),
     isDragging: PropTypes.bool.isRequired
-    // snapToGrid: PropTypes.bool.isRequired
   };
 
   renderItem(type, item) {

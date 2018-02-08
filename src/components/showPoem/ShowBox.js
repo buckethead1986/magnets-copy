@@ -9,17 +9,13 @@ const styles = {
 
 export default class Box extends Component {
   render() {
-    // console.log(this.props);
-    // const width = this.props.divWidth / 500;
-    // const height = this.props.divHeight / 398;
-    // console.log(this.props.divWidth, width, height);
     const { title, top, left } = this.props;
     return (
       <div
         style={{
           ...styles,
-          top: parseInt(top),
-          left: parseInt(left)
+          top: parseInt(top, 10),
+          left: parseInt(left, 10)
         }}
       >
         {title}

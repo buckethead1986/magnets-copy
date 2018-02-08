@@ -5,14 +5,10 @@ import { DropTarget } from "react-dnd";
 import shouldPureComponentUpdate from "./shouldPureComponentUpdate";
 import ItemTypes from "./ItemTypes";
 import DraggableBox from "./DraggableBox";
-import snapToGrid from "./snapToGrid";
-let counter = 0;
 
 //stretch goal is for draggable boxes' positions to re-render on window resize.
 //I spent a while working on the problem, but couldn't get a workable solution
-//styles.width would be a part of that
 const styles = {
-  // width: window.innerWidth,
   height: "600px",
   border: "1px solid black",
   borderRightStyle: "",
@@ -40,9 +36,6 @@ const boxTarget = {
     const item = monitor.getItem();
     let left = Math.round(item.left + delta.x);
     let top = Math.round(item.top + delta.y);
-    if (props.snapToGrid) {
-      [left, top] = snapToGrid(left, top);
-    }
     component.moveBox(item.id, left, top);
   }
 };
@@ -56,7 +49,6 @@ const arrayToObject = array =>
 class Container extends Component {
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired
-    // snapToGrid: PropTypes.bool.isRequired
   };
 
   shouldComponentUpdate = shouldPureComponentUpdate;
@@ -83,9 +75,8 @@ class Container extends Component {
     });
   };
 
-  //sets x,y coordinates for equal spacing between draggable boxes
+  //sets x,y coordinates for equal spacing between draggable boxes when rendered
   updateWordsWithWidthAndHeight = element => {
-    counter = counter + 1;
     this.props.store.dispatch({
       type: "ADD_WIDTH_AND_HEIGHT",
       payload: element

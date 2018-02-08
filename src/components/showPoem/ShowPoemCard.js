@@ -46,6 +46,7 @@ class Poem extends React.Component {
 
   //updates other poemIndexCards to reflect the new followed/following state when you follow a user
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
     const favorite = nextProps.favorites.filter(poem => {
       return poem.poem_id === nextProps.poem.id;
     });
@@ -77,7 +78,7 @@ class Poem extends React.Component {
     const relationships = this.state.relationships;
     relationships.forEach(relationship => {
       if (
-        relationship.follower_id === this.props.currUser.id &&
+        relationship.follower_id === this.props.currUser[0].id &&
         relationship.followed_id === this.state.poem.user_id
       ) {
         this.setState({
@@ -90,9 +91,9 @@ class Poem extends React.Component {
   checkFavorite = () => {
     const favorites = this.state.favorites;
     favorites.forEach(favorite => {
-      console.log(favorite, this.props.currUser.id, this.state.poem.id);
+      console.log(favorite, this.props.currUser[0].id, this.state.poem.id);
       if (
-        favorite.user_id === this.props.currUser.id &&
+        favorite.user_id === this.props.currUser[0].id &&
         favorite.poem_id === this.state.poem.id
       ) {
         this.setState({
@@ -112,7 +113,7 @@ class Poem extends React.Component {
       method: "POST",
       headers: headers,
       body: JSON.stringify({
-        follower_id: this.props.currUser.id,
+        follower_id: this.props.currUser[0].id,
         followed_id: this.props.poem.user_id
       })
     });
@@ -122,7 +123,7 @@ class Poem extends React.Component {
   unFollowUser = relationships => {
     const relationshipId = relationships.filter(relationship => {
       return (
-        relationship.follower_id === this.props.currUser.id &&
+        relationship.follower_id === this.props.currUser[0].id &&
         relationship.followed_id === this.props.poem.user_id
       );
     })[0].id;
@@ -141,7 +142,7 @@ class Poem extends React.Component {
   followedUnfollowed = poemAuthor => {
     if (
       poemAuthor[0] !== undefined &&
-      this.props.currUser.id !== this.state.poem.user_id
+      this.props.currUser[0].id !== this.state.poem.user_id
     ) {
       if (this.state.followed) {
         return (
@@ -214,22 +215,22 @@ class Poem extends React.Component {
 
   //call passed down function to follow/favorite poems/users, and then update the current state
   favoritePoem = () => {
-    this.props.favoritePoem(this.props.currUser.id, this.props.poem.id);
+    this.props.favoritePoem(this.props.currUser[0].id, this.props.poem.id);
     this.changeFavoriteState();
   };
 
   unFavoritePoem = () => {
-    this.props.unFavoritePoem(this.props.currUser.id, this.props.poem.id);
+    this.props.unFavoritePoem(this.props.currUser[0].id, this.props.poem.id);
     this.changeFavoriteState();
   };
 
   followUser = () => {
-    this.props.followUser(this.props.currUser.id, this.state.poem.user_id);
+    this.props.followUser(this.props.currUser[0].id, this.state.poem.user_id);
     this.changeFollowState();
   };
 
   unFollowUser = () => {
-    this.props.unFollowUser(this.props.currUser.id, this.state.poem.user_id);
+    this.props.unFollowUser(this.props.currUser[0].id, this.state.poem.user_id);
     this.changeFollowState();
   };
 
@@ -252,6 +253,7 @@ class Poem extends React.Component {
   //poemAuthor returns the Author of the poem
   //humanReadablePoem returns a string of the poem as human readable text.
   render() {
+    console.log(this.props.poem);
     let poem;
     let poemWords;
     let poemAuthor = [];
@@ -282,7 +284,9 @@ class Poem extends React.Component {
           }
           avatar="http://www.divebuddy.com/members/photos/pic_1_69507.jpg"
         />
-        <div style={styles}>{poemWords}</div>
+        <div style={styles} onClick={() => this.props.showPoems()}>
+          {poemWords}
+        </div>
         <CardTitle title="Poem Text" subtitle={humanReadablePoem} />
         <CardActions>
           {this.favoriteUnfavorite()}

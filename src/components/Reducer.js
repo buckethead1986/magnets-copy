@@ -10,8 +10,8 @@ export default function reducer(
       let poem = [];
       for (var word in action.payload) {
         if (
-          action.payload[word].left > window.innerWidth / 2 - 300 &&
-          action.payload[word].left < window.innerWidth / 2 + 300 &&
+          action.payload[word].left > window.innerWidth / 2 - 250 &&
+          action.payload[word].left < window.innerWidth / 2 + 250 &&
           action.payload[word].top > 200
         ) {
           poem.push(action.payload[word]);

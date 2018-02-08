@@ -63,8 +63,13 @@ class PoemIndex extends React.Component {
         </div>
       );
     });
+    const text =
+      "Scroll through all the poems! Filter by the authors of your choice";
+    const text2 = "Add poems to your list of Favorites, or Follow another user";
     return (
       <div>
+        <h4 align="center">{text}</h4>
+        <h4 align="center">{text2}</h4>
         <SelectField
           users={this.props.users}
           filteredPoems={this.filteredPoems}

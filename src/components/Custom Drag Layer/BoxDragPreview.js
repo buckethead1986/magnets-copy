@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import shouldPureComponentUpdate from "./shouldPureComponentUpdate";
 import Box from "./Box";
 
+//comment in all 'tick' lines and render <Box title={title} yellow={tickTock} /> if flashing yellow on drag is wanted
+//switch transform and WebkitTransform in 'styles' to the commented out lines if a tilt on drag is wanted
+
 const styles = {
   display: "inline-block",
   // transform: "rotate(-7deg)",
@@ -41,7 +44,6 @@ export default class BoxDragPreview extends Component {
   //   });
   // }
 
-  //comment in all 'tick' lines and render <Box title={title} yellow={tickTock} /> if flashing yellow on drag is wanted
   render() {
     const { title } = this.props;
     // const { tickTock } = this.state;

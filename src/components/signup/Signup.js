@@ -14,7 +14,8 @@ class Signup extends React.Component {
     });
   };
 
-  handleSubmit = () => {
+  handleSubmit = event => {
+    event.preventDefault();
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
@@ -24,40 +25,35 @@ class Signup extends React.Component {
       method: "POST",
       headers: headers,
       body: JSON.stringify(body)
+    }).then(() => this.login());
+  };
+
+  login = () => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    const body = this.state;
+    fetch(`${this.props.url}/auth`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(body)
     })
       .then(res => res.json())
       .then(json => {
-        if (json.id !== null) {
+        if (!json.error) {
           localStorage.setItem("token", json.jwt);
           this.props.history.push("/poem/new");
         } else {
           this.setState({
-            signupError: true
+            loginError: true
           });
         }
       })
-      .then(this.props.fetchUsers());
-    // console.log(json);
+      .then(() => this.props.fetchUsers());
   };
 
-  // handleSubmitted = () => {
-  //   const body = this.state;
-  //   fetch(`${this.props.url}/auth`, {
-  //     method: "POST",
-  //     headers: this.props.headers,
-  //     body: JSON.stringify(body)
-  //   })
-  //     .then(res => res.json())
-  //     .then(json => {
-  //       if (!json.error) {
-  //         localStorage.setItem("token", json.jwt);
-  //         this.props.history.push("/");
-  //       }
-  //     });
-  // };
-
   render() {
-    console.log(this.state);
     return (
       <div>
         <h2>Signup</h2>

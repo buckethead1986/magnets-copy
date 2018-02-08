@@ -27,6 +27,7 @@ class Poem extends React.Component {
     return (
       <ShowPoemCard
         url={this.props.url}
+        showPoems={this.props.showPoems}
         currUser={this.props.currUser}
         users={this.props.users}
         poem={this.state.poem}

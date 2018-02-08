@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import { withRouter, Route } from "react-router-dom";
 import "./App.css";
-import Main from "./components/Main";
+import CreatePoemContainer from "./components/CreatePoemContainer";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
 import Navbar from "./components/navbar/Navbar";
 import ShowPoem from "./components/showPoem/ShowPoem";
 import PoemIndex from "./components/showPoem/PoemIndex";
+import UsersList from "./components//profile/UsersList";
 
 const url = "http://localhost:3001/api/v1";
 
 class App extends Component {
   state = {
     users: [],
-    currUser: {},
+    currUser: [],
     relationships: [],
     poems: [],
     favorites: []
@@ -32,7 +33,7 @@ class App extends Component {
 
   logout = () => {
     localStorage.removeItem("token");
-    this.setState({ users: [] });
+    this.setState({ users: [], currUser: [], favorites: [] });
     this.props.history.push("/login");
   };
 
@@ -96,7 +97,9 @@ class App extends Component {
       .then(res => res.json())
       .then(json =>
         this.setState({
-          currUser: json
+          currUser: this.state.users.filter(user => {
+            return user.id === json.id;
+          })
         })
       );
   };
@@ -245,7 +248,23 @@ class App extends Component {
           exact
           path="/profile"
           render={() => {
-            return <div>Profile</div>;
+            if (
+              this.state.users.length !== 0 &&
+              this.state.relationships.length !== 0 &&
+              this.state.currUser.length !== 0
+            ) {
+              return (
+                <div>
+                  <UsersList
+                    users={this.state.users}
+                    relationships={this.state.relationships}
+                    currUser={this.state.currUser}
+                  />
+                </div>
+              );
+            } else {
+              return "";
+            }
           }}
         />
         <Route
@@ -270,8 +289,7 @@ class App extends Component {
               this.state.currUser.length !== 0 &&
               this.state.relationships.length !== 0 &&
               this.state.users.length !== 0 &&
-              this.state.poems.length !== 0 &&
-              this.state.favorites.length !== 0
+              this.state.poems.length !== 0
             ) {
               return (
                 <div>
@@ -302,7 +320,7 @@ class App extends Component {
             if (this.state.currUser.length !== 0) {
               return (
                 <div>
-                  <Main
+                  <CreatePoemContainer
                     url={url}
                     users={this.state.users}
                     store={this.props.store}
@@ -319,7 +337,7 @@ class App extends Component {
         <Route
           exact
           path="/poems/:id"
-          render={() => {
+          render={props => {
             if (
               this.state.currUser.length !== {} &&
               this.state.poems.length !== 0
@@ -328,6 +346,7 @@ class App extends Component {
                 <div>
                   <ShowPoem
                     url={url}
+                    showPoems={this.showPoems}
                     currUser={this.state.currUser}
                     users={this.state.users}
                     poems={this.state.poems}
@@ -337,6 +356,7 @@ class App extends Component {
                     favoritePoem={this.favoritePoem}
                     unFavoritePoem={this.unFavoritePoem}
                     favorites={this.state.favorites}
+                    {...props}
                   />
                 </div>
               );

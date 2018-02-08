@@ -5,42 +5,28 @@ import Container from "./Custom Drag Layer/Container";
 import CustomDragLayer from "./Custom Drag Layer/CustomDragLayer";
 import { RaisedButton } from "material-ui";
 import { connect } from "react-redux";
+import Paper from "material-ui/Paper";
 let output = "";
 
-//snapToGrid changes constant draggability to grid draggability, on drop or while dragging.
-class Main extends Component {
-  // constructor(props) {
-  //   super(props);
-
-  // this.handleSnapToGridAfterDropChange = this.handleSnapToGridAfterDropChange.bind(
-  //   this
-  // );
-  // this.handleSnapToGridWhileDraggingChange = this.handleSnapToGridWhileDraggingChange.bind(
-  //   this
-  // );
-  //
-  // this.state = {
-  //   snapToGridAfterDrop: false,
-  //   snapToGridWhileDragging: false
-  // };
-  // }
-
+class CreatePoemContainer extends Component {
   submitPoem = () => {
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
     const body = Object.assign({}, this.props.store.getState().words);
+    console.log(body, this.props);
+    debugger;
     if (Object.keys(body).length !== 0) {
       this.formatPoem(body, Object.keys(body).length - 1, output);
     }
-    console.log(body, output);
+    console.log(this.props.store.getState().words, body, output);
     if (output.length !== 0) {
       fetch(`${this.props.url}/poems`, {
         method: "POST",
         headers: headers,
         body: JSON.stringify({
-          user_id: this.props.currUser.id,
+          user_id: this.props.currUser[0].id,
           content: output
         })
       })
@@ -135,21 +121,18 @@ class Main extends Component {
     console.log(this.props.store.getState().words);
     const intro =
       "Create a new poem! Drag words around and click 'Submit Poem' once you're satisfied";
-    // const { snapToGridAfterDrop, snapToGridWhileDragging } = this.state;
 
     return (
       <div>
         <h4 align="center">{intro}</h4>
         <br />
         <Container
-          // snapToGrid={snapToGridAfterDrop}
           url={this.props.url}
           store={this.props.store}
           changeWindowWidth={this.changeWindowWidth}
           windowWidth={window.innerWidth}
         />
         <CustomDragLayer
-          // snapToGrid={snapToGridWhileDragging}
           store={this.props.store}
           zIndex={this.props.store.getState().zIndex}
         />
@@ -163,39 +146,6 @@ const mapStateToProps = state => {
   return { zIndex: state.zIndex };
 };
 
-export default connect(mapStateToProps)(DragDropContext(HTML5Backend)(Main));
-
-//snap to grid code
-// <p>
-//   <label htmlFor="snapToGridWhileDragging">
-//     <input
-//       id="snapToGridWhileDragging"
-//       type="checkbox"
-//       checked={snapToGridWhileDragging}
-//       onChange={this.handleSnapToGridWhileDraggingChange}
-//     />
-//     <small>Snap to grid while dragging</small>
-//   </label>
-//   <br />
-//   <label htmlFor="snapToGridAfterDrop">
-//     <input
-//       id="snapToGridAfterDrop"
-//       type="checkbox"
-//       checked={snapToGridAfterDrop}
-//       onChange={this.handleSnapToGridAfterDropChange}
-//     />
-//     <small>Snap to grid after drop</small>
-//   </label>
-// </p>
-//
-// handleSnapToGridAfterDropChange() {
-//   this.setState({
-//     snapToGridAfterDrop: !this.state.snapToGridAfterDrop
-//   });
-// }
-//
-// handleSnapToGridWhileDraggingChange() {
-//   this.setState({
-//     snapToGridWhileDragging: !this.state.snapToGridWhileDragging
-//   });
-// }
+export default connect(mapStateToProps)(
+  DragDropContext(HTML5Backend)(CreatePoemContainer)
+);

@@ -17,8 +17,8 @@ export default class Box extends Component {
       <div
         style={{
           ...styles,
-          top: parseInt(top) * height,
-          left: parseInt(left) * width
+          top: parseInt(top, 10) * height,
+          left: parseInt(left, 10) * width
         }}
       >
         {title}
