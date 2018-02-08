@@ -7,7 +7,8 @@ import Login from "./components/login/Login";
 import Navbar from "./components/navbar/Navbar";
 import ShowPoem from "./components/showPoem/ShowPoem";
 import PoemIndex from "./components/showPoem/PoemIndex";
-import UsersList from "./components//profile/UsersList";
+import ProfileContainer from "./components/ProfileContainer";
+import ChangeProfileImage from "./components/profile/ChangeProfileImage";
 
 const url = "http://localhost:3001/api/v1";
 
@@ -70,6 +71,10 @@ class App extends Component {
     this.props.history.push(`/users/${id}`);
   };
 
+  changeProfileImageLink = () => {
+    this.props.history.push("/profile/new");
+  };
+
   fetchUserInformation = () => {
     fetch(`${url}/users`)
       .then(res => res.json())
@@ -96,11 +101,18 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(json =>
-        this.setState({
-          currUser: this.state.users.filter(user => {
-            return user.id === json.id;
-          })
-        })
+        this.setState(
+          {
+            currUser: this.state.users.filter(user => {
+              return user.id === json.id;
+            })
+          },
+          () =>
+            this.props.store.dispatch({
+              type: "CHANGE_IMAGE",
+              payload: this.state.currUser[0].image
+            })
+        )
       );
   };
 
@@ -254,13 +266,34 @@ class App extends Component {
               this.state.currUser.length !== 0
             ) {
               return (
-                <div>
-                  <UsersList
-                    users={this.state.users}
-                    relationships={this.state.relationships}
-                    currUser={this.state.currUser}
-                  />
-                </div>
+                <ProfileContainer
+                  url={url}
+                  store={this.props.store}
+                  users={this.state.users}
+                  relationships={this.state.relationships}
+                  currUser={this.state.currUser}
+                  changeProfileImageLink={this.changeProfileImageLink}
+                  showUsers={this.showUsers}
+                />
+              );
+            } else {
+              return "";
+            }
+          }}
+        />
+        <Route
+          exact
+          path="/profile/new"
+          render={() => {
+            if (this.state.currUser.length !== 0) {
+              return (
+                <ChangeProfileImage
+                  url={url}
+                  store={this.props.store}
+                  currUser={this.state.currUser}
+                  profileLink={this.profileLink}
+                  fetchCurrentUser={this.fetchCurrentUser}
+                />
               );
             } else {
               return "";

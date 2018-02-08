@@ -118,7 +118,6 @@ class CreatePoemContainer extends Component {
   };
 
   render() {
-    console.log(this.props.store.getState().words);
     const intro =
       "Create a new poem! Drag words around and click 'Submit Poem' once you're satisfied";
 

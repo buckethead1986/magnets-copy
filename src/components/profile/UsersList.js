@@ -19,7 +19,6 @@ const styles = {
 
 class UsersList extends React.Component {
   componentDidMount() {
-    console.log("componentDidMount", this.props.relationships);
     this.splitUsers(
       this.filterForCurrentUser(this.props.users),
       this.props.relationships
@@ -38,7 +37,6 @@ class UsersList extends React.Component {
   //from the usersClone array.
   splitUsers = (users, relationships) => {
     let usersClone = users.slice(0);
-    // let filteredUsers = [];
     followed = [];
     unFollowed = [];
 
@@ -50,25 +48,15 @@ class UsersList extends React.Component {
           return user.id === relationships[relationship].followed_id;
         });
         followed.push(user);
-        // debugger;
-        // filteredUsers = usersClone.filter(user => {
-        //   return user.id !== relationships[relationship].followed_id;
-        // });
-        // usersClone = filteredUsers;
+
         this.remove(usersClone, user);
       }
     }
-    //if nothing happened, defaults to the full users list
-    // if (usersClone.length === users.length) {
-    //   filteredUsers = users;
-    // }
-    console.log(usersClone);
-    // debugger;
     unFollowed = usersClone;
-    //I don't like calling forceUpdate, but I needed this component to rerender based on following/unfollowing users in another component.
     this.forceUpdate();
   };
 
+  //removes selected element from an array
   remove = (array, element) => {
     const index = array.indexOf(element);
     if (index !== -1) {

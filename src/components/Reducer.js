@@ -1,5 +1,5 @@
 export default function reducer(
-  state = { zIndex: 0, words: [], allWords: {} },
+  state = { zIndex: 0, words: [], allWords: {}, image: "" },
   action
 ) {
   switch (action.type) {
@@ -38,6 +38,8 @@ export default function reducer(
 
     case "REMOVE_POEM":
       return Object.assign({}, state, { words: [] });
+    case "CHANGE_IMAGE":
+      return Object.assign({}, state, { image: action.payload });
     default:
       return state;
   }
