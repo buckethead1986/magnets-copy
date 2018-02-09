@@ -215,6 +215,7 @@ class Poem extends React.Component {
         return poemAuthor.id === this.state.poem.user_id;
       });
     }
+    console.log(poemAuthor[0]);
     return (
       <Card>
         <CardHeader
@@ -223,7 +224,11 @@ class Poem extends React.Component {
               ? `Author: ${poemAuthor[0].username}`
               : "Nobody"
           }
-          avatar="http://www.divebuddy.com/members/photos/pic_1_69507.jpg"
+          avatar={
+            poemAuthor[0] !== undefined
+              ? poemAuthor[0].image
+              : this.props.defaultImage
+          }
         />
         <div
           onClick={() => this.props.showPoem(this.props.poem.id)}

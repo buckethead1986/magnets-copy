@@ -66,16 +66,18 @@ class ChangeProfileImage extends React.Component {
             onChange={this.handleChange}
           />
           <br />
+          <h5>(A proper url will change the image to the right immediately)</h5>
+          <br />
           <RaisedButton label="Submit Url" onClick={this.handleSubmit} />
         </div>
 
         <div>
           <Avatar
             src={this.state.image}
-            size={200}
+            size={300}
             style={{
               marginTop: 20,
-              marginLeft: (window.innerWidth - 540) / 2
+              marginLeft: 200
             }}
             onClick={() => this.props.profileLink()}
           />

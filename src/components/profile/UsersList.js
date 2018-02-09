@@ -1,12 +1,11 @@
 import React from "react";
-import MobileTearSheet from "./MobileTearSheet";
 import Paper from "material-ui/Paper";
 import Subheader from "material-ui/Subheader";
 import { List, ListItem } from "material-ui/List";
-import ActionGrade from "material-ui/svg-icons/action/grade";
+// import ActionGrade from "material-ui/svg-icons/action/grade";
 import Divider from "material-ui/Divider";
 import Avatar from "material-ui/Avatar";
-import { pinkA200, transparent } from "material-ui/styles/colors";
+// import { pinkA200, transparent } from "material-ui/styles/colors";
 
 let followed = [];
 let unFollowed = [];
@@ -72,6 +71,7 @@ class UsersList extends React.Component {
           primaryText={user.username}
           insetChildren={true}
           leftAvatar={<Avatar src={user.image} />}
+          onClick={() => this.props.changeShownUser(user.id)}
         />
       );
     });
@@ -82,22 +82,54 @@ class UsersList extends React.Component {
           primaryText={user.username}
           insetChildren={true}
           leftAvatar={<Avatar src={user.image} />}
+          onClick={() => this.props.changeShownUser(user.id)}
         />
       );
     });
-    return (
-      <Paper style={styles}>
-        <List>
-          <Subheader inset={true}>Followed</Subheader>
-          {followedUsersList}
-        </List>
-        <Divider inset={true} />
-        <List>
-          <Subheader inset={true}>Unfollowed</Subheader>
-          {unFollowedUsersList}
-        </List>
-      </Paper>
-    );
+    if (followedUsersList.length > 0) {
+      return (
+        <Paper style={styles}>
+          <List>
+            <ListItem
+              key={this.props.currUser[0].id}
+              primaryText={this.props.currUser[0].username}
+              insetChildren={true}
+              leftAvatar={<Avatar src={this.props.currUser[0].image} />}
+              onClick={() =>
+                this.props.changeShownUser(this.props.currUser[0].id)}
+            />
+          </List>
+          <List>
+            <Subheader inset={true}>Followed</Subheader>
+            {followedUsersList}
+          </List>
+          <Divider inset={true} />
+          <List>
+            <Subheader inset={true}>Unfollowed</Subheader>
+            {unFollowedUsersList}
+          </List>
+        </Paper>
+      );
+    } else {
+      return (
+        <Paper style={styles}>
+          <List>
+            <ListItem
+              key={this.props.currUser[0].id}
+              primaryText={this.props.currUser[0].username}
+              insetChildren={true}
+              leftAvatar={<Avatar src={this.props.currUser[0].image} />}
+              onClick={() =>
+                this.props.changeShownUser(this.props.currUser[0].id)}
+            />
+          </List>
+          <List>
+            <Subheader inset={true}>Unfollowed</Subheader>
+            {unFollowedUsersList}
+          </List>
+        </Paper>
+      );
+    }
   }
 }
 

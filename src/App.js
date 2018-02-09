@@ -11,6 +11,8 @@ import ProfileContainer from "./components/ProfileContainer";
 import ChangeProfileImage from "./components/profile/ChangeProfileImage";
 
 const url = "http://localhost:3001/api/v1";
+const defaultImage =
+  "http://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
 
 class App extends Component {
   state = {
@@ -263,17 +265,27 @@ class App extends Component {
             if (
               this.state.users.length !== 0 &&
               this.state.relationships.length !== 0 &&
-              this.state.currUser.length !== 0
+              this.state.currUser.length !== 0 &&
+              this.state.poems.length !== 0
             ) {
               return (
                 <ProfileContainer
                   url={url}
                   store={this.props.store}
-                  users={this.state.users}
-                  relationships={this.state.relationships}
+                  showPoem={this.showPoem}
                   currUser={this.state.currUser}
+                  users={this.state.users}
+                  showUser={this.showUser}
+                  poems={this.state.poems}
+                  followUser={this.followUser}
+                  unFollowUser={this.unFollowUser}
+                  relationships={this.state.relationships}
+                  favoritePoem={this.favoritePoem}
+                  unFavoritePoem={this.unFavoritePoem}
+                  favorites={this.state.favorites}
                   changeProfileImageLink={this.changeProfileImageLink}
                   showUsers={this.showUsers}
+                  profileLink={this.profileLink}
                 />
               );
             } else {
@@ -338,6 +350,7 @@ class App extends Component {
                     favoritePoem={this.favoritePoem}
                     unFavoritePoem={this.unFavoritePoem}
                     favorites={this.state.favorites}
+                    defaultImage={this.defaultImage}
                   />
                 </div>
               );

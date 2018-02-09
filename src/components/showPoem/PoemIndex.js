@@ -58,6 +58,7 @@ class PoemIndex extends React.Component {
             favoritePoem={this.props.favoritePoem}
             unFavoritePoem={this.props.unFavoritePoem}
             favorites={this.props.favorites}
+            defaultImage={this.defaultImage}
           />
           <br />
         </div>

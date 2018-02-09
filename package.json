@@ -8,14 +8,17 @@
   "dependencies": {
     "immutability-helper": "^2.6.4",
     "material-ui-icons": "^1.0.0-beta.17",
+    "muicss": "^0.9.36",
     "react": "^16.2.0",
     "react-columns": "^1.1.0",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
     "react-dom": "^16.2.0",
+    "react-flexbox-grid": "^2.0.0",
     "react-frame": "^2.1.0",
     "react-frame-component": "^2.0.1",
     "react-grid-system": "^3.1.2",
+    "react-pure-grid": "^2.1.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17"

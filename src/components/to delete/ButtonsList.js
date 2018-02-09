@@ -8,7 +8,8 @@ import Avatar from "material-ui/Avatar";
 
 const styles = {
   width: 250,
-  margin: 20,
+  marginTop: 20,
+  marginLeft: 100,
   maxHeight: window.innerHeight - 100,
   overflow: "auto",
   float: "right"

@@ -253,7 +253,7 @@ class Poem extends React.Component {
   //poemAuthor returns the Author of the poem
   //humanReadablePoem returns a string of the poem as human readable text.
   render() {
-    console.log(this.props.poem);
+    console.log(this.props.poem, window.history);
     let poem;
     let poemWords;
     let poemAuthor = [];
@@ -284,7 +284,7 @@ class Poem extends React.Component {
           }
           avatar="http://www.divebuddy.com/members/photos/pic_1_69507.jpg"
         />
-        <div style={styles} onClick={() => this.props.showPoems()}>
+        <div style={styles} onClick={() => window.history.back()}>
           {poemWords}
         </div>
         <CardTitle title="Poem Text" subtitle={humanReadablePoem} />

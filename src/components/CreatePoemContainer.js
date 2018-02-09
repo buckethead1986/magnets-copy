@@ -15,12 +15,9 @@ class CreatePoemContainer extends Component {
       "Content-Type": "application/json"
     };
     const body = Object.assign({}, this.props.store.getState().words);
-    console.log(body, this.props);
-    debugger;
     if (Object.keys(body).length !== 0) {
       this.formatPoem(body, Object.keys(body).length - 1, output);
     }
-    console.log(this.props.store.getState().words, body, output);
     if (output.length !== 0) {
       fetch(`${this.props.url}/poems`, {
         method: "POST",
