@@ -123,32 +123,33 @@ class ProfileContainer extends React.Component {
   };
 
   renderShownUserPoems = () => {
-    const poems = this.state.poems.map((poem, index) => {
-      return (
-        <Col key={index}>
-          <PoemIndexCard
-            columns={4}
-            showPoem={this.props.showPoem}
-            url={this.props.url}
-            currUser={this.props.currUser}
-            users={this.props.users}
-            poem={poem}
-            followUser={this.props.followUser}
-            unFollowUser={this.props.unFollowUser}
-            relationships={this.props.relationships}
-            favoritePoem={this.props.favoritePoem}
-            unFavoritePoem={this.props.unFavoritePoem}
-            favorites={this.props.favorites}
-          />
-          <br />
-        </Col>
-      );
-    });
+    const poems = this.props.store
+      .getState()
+      .shownUser.poems.map((poem, index) => {
+        return (
+          <Col key={index}>
+            <PoemIndexCard
+              columns={4}
+              showPoem={this.props.showPoem}
+              url={this.props.url}
+              currUser={this.props.currUser}
+              users={this.props.users}
+              poem={poem}
+              followUser={this.props.followUser}
+              unFollowUser={this.props.unFollowUser}
+              relationships={this.props.relationships}
+              favoritePoem={this.props.favoritePoem}
+              unFavoritePoem={this.props.unFavoritePoem}
+              favorites={this.props.favorites}
+            />
+            <br />
+          </Col>
+        );
+      });
     return poems;
   };
 
   render() {
-    console.log(this.state.shownUser[0], this.props.store.getState().shownUser);
     return (
       <div>
         <div style={{ float: "left" }}>
