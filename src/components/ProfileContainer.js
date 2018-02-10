@@ -16,18 +16,27 @@ class ProfileContainer extends React.Component {
   }
 
   componentWillMount() {
+    console.log(
+      "componentDidMount",
+      this.props.store.getState().shownUser,
+      this.props.currUser[0]
+    );
+    const user = this.props.store.getState().shownUser;
+    console.log(this.props.store.getState().shownUser);
     this.setState(
       {
         poems: this.props.poems.filter(poem => {
-          return poem.user_id === this.props.currUser[0].id;
+          return poem.user_id === user.id;
         }),
-        shownUser: this.props.currUser
+        shownUser: user
       },
       () => console.log(this.state)
     );
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("componentWillReceiveProps");
+    const user = this.props.store.getState().shownUser;
     if (this.state.shownUser[0] !== this.props.currUser[0]) {
       this.setState({
         poems: this.props.poems.filter(poem => {
@@ -44,6 +53,7 @@ class ProfileContainer extends React.Component {
     const shownUser = this.props.users.filter(user => {
       return user.id === id;
     })[0];
+    console.log(shownUser);
     this.setState({
       poems: this.props.poems.filter(poem => {
         return poem.user_id === id;
@@ -53,12 +63,17 @@ class ProfileContainer extends React.Component {
         return user.id === shownUser.id;
       })
     });
+    this.props.store.dispatch({
+      type: "CHANGE_SHOWN_USER",
+      payload: shownUser
+    });
   };
 
   welcomeMessage = () => {
+    const user = this.props.store.getState().shownUser;
     let text = "";
-    if (this.state.shownUser[0].id === this.props.currUser[0].id) {
-      text = `Welcome back ${this.state.shownUser[0].username}! `;
+    if (user.id === this.props.currUser[0].id) {
+      text = `Welcome back ${user.username}! `;
       if (this.props.currUser[0].followers.length === 1) {
         text += `You have ${this.props.currUser[0].followers
           .length} user following you, `;
@@ -72,13 +87,40 @@ class ProfileContainer extends React.Component {
         text += `and ${this.state.poems.length} poems created`;
       }
     } else {
-      text = `These are the poems created by ${this.state.shownUser[0]
-        .username}`;
+      text = `These are the poems created by ${user.username}`;
     }
     return text;
   };
 
-  renderShownUserAvatar = () => {};
+  renderShownUserAvatar = () => {
+    console.log(this.state.shownUser, this.props.currUser[0].id);
+    if (
+      this.props.store.getState().shownUser.id === this.props.currUser[0].id
+    ) {
+      return (
+        <Avatar
+          src={this.props.store.getState().image}
+          size={200}
+          style={{
+            marginTop: 20,
+            marginLeft: (window.innerWidth - 540) / 2
+          }}
+          onClick={() => this.props.changeProfileImageLink()}
+        />
+      );
+    } else {
+      return (
+        <Avatar
+          src={this.props.store.getState().shownUser.image}
+          size={200}
+          style={{
+            marginTop: 20,
+            marginLeft: (window.innerWidth - 540) / 2
+          }}
+        />
+      );
+    }
+  };
 
   renderShownUserPoems = () => {
     const poems = this.state.poems.map((poem, index) => {
@@ -106,32 +148,27 @@ class ProfileContainer extends React.Component {
   };
 
   render() {
+    console.log(this.state.shownUser[0], this.props.store.getState().shownUser);
     return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <UsersList
-          users={this.props.users}
-          relationships={this.props.relationships}
-          currUser={this.props.currUser}
-          showUser={this.props.showUser}
-          changeShownUser={this.changeShownUser}
-        />
-        <Grid fluid>
-          <Row>
-            <Col>
-              <Avatar
-                src={this.props.store.getState().image}
-                size={200}
-                style={{
-                  marginTop: 20,
-                  marginLeft: (window.innerWidth - 540) / 2
-                }}
-                onClick={() => this.props.changeProfileImageLink()}
-              />
-            </Col>
-          </Row>
-          <h4>{this.welcomeMessage()}</h4>
-          <Row>{this.renderShownUserPoems()}</Row>
-        </Grid>
+      <div>
+        <div style={{ float: "left" }}>
+          <UsersList
+            users={this.props.users}
+            relationships={this.props.relationships}
+            currUser={this.props.currUser}
+            showUser={this.props.showUser}
+            changeShownUser={this.changeShownUser}
+          />
+        </div>
+        <div>
+          <Grid fluid>
+            <Row>
+              <Col>{this.renderShownUserAvatar()}</Col>
+            </Row>
+            <h4>{this.welcomeMessage()}</h4>
+            <Row>{this.renderShownUserPoems()}</Row>
+          </Grid>
+        </div>
       </div>
     );
   }

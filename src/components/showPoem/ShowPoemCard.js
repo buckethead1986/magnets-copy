@@ -282,7 +282,11 @@ class Poem extends React.Component {
               ? `Author: ${poemAuthor[0].username}`
               : "Nobody"
           }
-          avatar="http://www.divebuddy.com/members/photos/pic_1_69507.jpg"
+          avatar={
+            poemAuthor[0] !== undefined
+              ? poemAuthor[0].image
+              : this.props.defaultImage
+          }
         />
         <div style={styles} onClick={() => window.history.back()}>
           {poemWords}

@@ -9,6 +9,7 @@ import ShowPoem from "./components/showPoem/ShowPoem";
 import PoemIndex from "./components/showPoem/PoemIndex";
 import ProfileContainer from "./components/ProfileContainer";
 import ChangeProfileImage from "./components/profile/ChangeProfileImage";
+import { connect } from "react-redux";
 
 const url = "http://localhost:3001/api/v1";
 const defaultImage =
@@ -48,7 +49,11 @@ class App extends Component {
     this.props.history.push("/login");
   };
 
-  profileLink = id => {
+  profileLink = () => {
+    this.props.store.dispatch({
+      type: "CHANGE_SHOWN_USER",
+      payload: this.state.currUser[0]
+    });
     this.props.history.push("/profile");
   };
 
@@ -74,6 +79,7 @@ class App extends Component {
   };
 
   changeProfileImageLink = () => {
+    console.log("things?");
     this.props.history.push("/profile/new");
   };
 
@@ -102,20 +108,27 @@ class App extends Component {
       }
     })
       .then(res => res.json())
-      .then(json =>
+      .then(json => {
         this.setState(
           {
             currUser: this.state.users.filter(user => {
               return user.id === json.id;
             })
           },
-          () =>
+          () => {
             this.props.store.dispatch({
               type: "CHANGE_IMAGE",
               payload: this.state.currUser[0].image
-            })
-        )
-      );
+            });
+            this.props.store.dispatch({
+              type: "CHANGE_SHOWN_USER",
+              payload: this.state.users.filter(user => {
+                return user.id === json.id;
+              })[0]
+            });
+          }
+        );
+      });
   };
 
   fetchRelationships = () => {
@@ -285,7 +298,6 @@ class App extends Component {
                   favorites={this.state.favorites}
                   changeProfileImageLink={this.changeProfileImageLink}
                   showUsers={this.showUsers}
-                  profileLink={this.profileLink}
                 />
               );
             } else {
@@ -415,5 +427,13 @@ class App extends Component {
     );
   }
 }
+
+// function mapStateToProps(state, ownProps) {
+//   return {
+//     shownUser: state.shownUser
+//   };
+// }
+//
+// export default connect(mapStateToProps)(withRouter(App));
 
 export default withRouter(App);

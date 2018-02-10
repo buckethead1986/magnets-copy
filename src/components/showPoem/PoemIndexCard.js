@@ -21,6 +21,7 @@ let styles = {
   width: window.innerWidth / 4 - 20,
   height: window.innerWidth / 4 * 0.8 - 16,
   marginLeft: 6,
+  marginRight: 6,
   border: "solid",
   position: "relative"
 };
@@ -215,7 +216,6 @@ class Poem extends React.Component {
         return poemAuthor.id === this.state.poem.user_id;
       });
     }
-    console.log(poemAuthor[0]);
     return (
       <Card>
         <CardHeader

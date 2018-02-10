@@ -1,5 +1,5 @@
 export default function reducer(
-  state = { zIndex: 0, words: [], allWords: {}, image: "" },
+  state = { zIndex: 0, words: [], allWords: {}, image: "", shownUser: [] },
   action
 ) {
   switch (action.type) {
@@ -40,6 +40,8 @@ export default function reducer(
       return Object.assign({}, state, { words: [] });
     case "CHANGE_IMAGE":
       return Object.assign({}, state, { image: action.payload });
+    case "CHANGE_SHOWN_USER":
+      return Object.assign({}, state, { shownUser: action.payload });
     default:
       return state;
   }
