@@ -57,7 +57,8 @@ class Container extends Component {
     super(props);
     this.state = {
       boxes: {},
-      words: []
+      words: [],
+      tempBoxes: {}
     };
   }
 
@@ -71,9 +72,12 @@ class Container extends Component {
   addBoxesToState = json => {
     json.forEach(box => (box.zIndex = 0));
     const boxObject = arrayToObject(json);
-    this.setState({
-      boxes: boxObject
-    });
+    this.setState(
+      {
+        boxes: boxObject
+      },
+      () => console.log(this.state)
+    );
   };
 
   //sets x,y coordinates for equal spacing between draggable boxes when rendered
@@ -84,7 +88,11 @@ class Container extends Component {
     });
     const dimensions = this.props.store.getState().allWords;
     const boxList = {};
-    console.log(this.props.store.getState().wordsList);
+    console.log(
+      this.props.store.getState().wordsList,
+      Object.keys(this.props.store.getState().allWords).length,
+      Object.keys(this.state.boxes).length
+    );
     for (var box in this.state.boxes) {
       if (
         this.state.boxes[box].group === this.props.store.getState().wordsList
@@ -95,15 +103,16 @@ class Container extends Component {
     console.log(
       this.props.store.getState().allWords,
       this.state.boxes,
-      boxList
+      boxList,
+      Object.keys(boxList).length
     );
     if (
       Object.keys(this.props.store.getState().allWords).length ===
-      Object.keys(this.state.boxes).length
+      Object.keys(boxList).length
     ) {
       let x = 0;
       let y = 5;
-      const tempBoxes = Object.assign({}, this.state.boxes);
+      const tempBoxes = Object.assign({}, boxList);
       for (var box in tempBoxes) {
         tempBoxes[box].width = dimensions[box].width;
         tempBoxes[box].height = dimensions[box].height;
@@ -115,7 +124,7 @@ class Container extends Component {
         tempBoxes[box].top = y;
         x += dimensions[box].width + 10;
       }
-      this.setState({ boxes: tempBoxes });
+      this.setState({ tempBoxes: tempBoxes });
     }
   };
 

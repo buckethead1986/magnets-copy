@@ -36,15 +36,16 @@ export default class SelectWordsListDropdown extends Component {
   };
 
   handleChange = (event, index, values) => {
+    this.props.store.dispatch({ type: "ADD_ALL_WORDS", payload: {} });
     // console.log(this.state.values, values);
     const words = this.state.words.filter(word => {
       return word.group === values;
     });
-    // console.log(words);
+    console.log(words);
     this.setState({ values }, () =>
       this.props.filteredWords(this.state.values)
     );
-    // this.props.store.dispatch({ type: "CHANGE_WORDS_LIST", payload: values });
+    this.props.store.dispatch({ type: "CHANGE_WORDS_LIST", payload: values });
   };
 
   menuItems(values) {

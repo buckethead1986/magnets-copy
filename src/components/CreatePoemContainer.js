@@ -48,7 +48,6 @@ class CreatePoemContainer extends Component {
   }
 
   filteredWords = words => {
-    // console.log(words);
     const wordsGroup = this.props.words.filter(word => {
       return word.group === words;
     });
@@ -57,7 +56,7 @@ class CreatePoemContainer extends Component {
       type: "CHANGE_WORDS_GROUP",
       payload: wordsGroup
     });
-    // console.log(this.props.store.getState());
+    this.forceUpdate();
   };
 
   wordRelationships = (json, thisPoem) => {
