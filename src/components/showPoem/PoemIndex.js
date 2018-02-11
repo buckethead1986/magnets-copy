@@ -1,7 +1,7 @@
 import React from "react";
 import PoemIndexCard from "./PoemIndexCard";
 import Columns from "react-columns";
-import SelectField from "../selectField/SelectField";
+import SelectUsersDropdown from "../selectField/SelectUsersDropdown";
 
 class PoemIndex extends React.Component {
   constructor() {
@@ -19,7 +19,7 @@ class PoemIndex extends React.Component {
     });
   }
 
-  //sets state of poems based on filtered users set in SelectField component. Defaults to all users' poems.
+  //sets state of poems based on filtered users set in SelectUsersDropdown component. Defaults to all users' poems.
   filteredPoems = users => {
     let userArray = [];
     this.state.users.forEach(user => {
@@ -71,7 +71,7 @@ class PoemIndex extends React.Component {
       <div>
         <h4 align="center">{text}</h4>
         <h4 align="center">{text2}</h4>
-        <SelectField
+        <SelectUsersDropdown
           users={this.props.users}
           filteredPoems={this.filteredPoems}
         />

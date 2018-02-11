@@ -62,6 +62,7 @@ class Container extends Component {
   }
 
   componentWillMount() {
+    console.log(this.props.store.getState().wordsList);
     fetch(`${this.props.url}/words`)
       .then(res => res.json())
       .then(json => this.addBoxesToState(json));
@@ -82,6 +83,20 @@ class Container extends Component {
       payload: element
     });
     const dimensions = this.props.store.getState().allWords;
+    const boxList = {};
+    console.log(this.props.store.getState().wordsList);
+    for (var box in this.state.boxes) {
+      if (
+        this.state.boxes[box].group === this.props.store.getState().wordsList
+      ) {
+        boxList[box] = this.state.boxes[box];
+      }
+    }
+    console.log(
+      this.props.store.getState().allWords,
+      this.state.boxes,
+      boxList
+    );
     if (
       Object.keys(this.props.store.getState().allWords).length ===
       Object.keys(this.state.boxes).length
@@ -141,12 +156,25 @@ class Container extends Component {
 
   render() {
     const { connectDropTarget } = this.props;
+    // const { boxes } = this.state.boxes.filter(group => {
+    //   group.group === this.props.store.getState().wordsList;
+    // });
+    const boxList = {};
+    console.log(this.props.store.getState().wordsList);
+    for (var box in this.state.boxes) {
+      if (
+        this.state.boxes[box].group === this.props.store.getState().wordsList
+      ) {
+        boxList[box] = this.state.boxes[box];
+      }
+    }
     const { boxes } = this.state;
-
+    console.log(boxList, boxes, boxList[1] === boxes[1]);
+    // debugger;
     return connectDropTarget(
       <div>
         <div style={styles}>
-          {Object.keys(boxes).map(key => this.renderBox(boxes[key], key))}
+          {Object.keys(boxList).map(key => this.renderBox(boxList[key], key))}
           <div style={poemStyles}>Make Poem Here</div>
         </div>
       </div>

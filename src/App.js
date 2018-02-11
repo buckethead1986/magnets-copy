@@ -21,7 +21,8 @@ class App extends Component {
     currUser: [],
     relationships: [],
     poems: [],
-    favorites: []
+    favorites: [],
+    words: []
   };
 
   componentDidMount() {
@@ -96,6 +97,7 @@ class App extends Component {
         this.fetchRelationships();
         this.fetchPoems();
         this.fetchFavorites();
+        this.fetchWords();
       });
   };
 
@@ -157,6 +159,16 @@ class App extends Component {
       .then(json =>
         this.setState({
           favorites: json
+        })
+      );
+  };
+
+  fetchWords = () => {
+    fetch(`${url}/words`)
+      .then(res => res.json())
+      .then(json =>
+        this.setState({
+          words: json
         })
       );
   };
@@ -375,7 +387,10 @@ class App extends Component {
           exact
           path="/poem/new"
           render={() => {
-            if (this.state.currUser.length !== 0) {
+            if (
+              this.state.currUser.length !== 0 &&
+              this.state.words.length !== 0
+            ) {
               return (
                 <div>
                   <CreatePoemContainer
@@ -384,6 +399,7 @@ class App extends Component {
                     store={this.props.store}
                     currUser={this.state.currUser}
                     showPoem={this.showPoem}
+                    words={this.state.words}
                   />
                 </div>
               );

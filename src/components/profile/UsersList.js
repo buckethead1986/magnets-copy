@@ -2,10 +2,8 @@ import React from "react";
 import Paper from "material-ui/Paper";
 import Subheader from "material-ui/Subheader";
 import { List, ListItem } from "material-ui/List";
-// import ActionGrade from "material-ui/svg-icons/action/grade";
 import Divider from "material-ui/Divider";
 import Avatar from "material-ui/Avatar";
-// import { pinkA200, transparent } from "material-ui/styles/colors";
 
 let followed = [];
 let unFollowed = [];
@@ -22,6 +20,15 @@ class UsersList extends React.Component {
       this.filterForCurrentUser(this.props.users),
       this.props.relationships
     );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.relationships !== nextProps.relationships) {
+      this.splitUsers(
+        this.filterForCurrentUser(nextProps.users),
+        nextProps.relationships
+      );
+    }
   }
 
   //removes the current user from the list of users
@@ -64,6 +71,7 @@ class UsersList extends React.Component {
   };
 
   render() {
+    console.log(this.props.relationships);
     const followedUsersList = followed.map(user => {
       return (
         <ListItem

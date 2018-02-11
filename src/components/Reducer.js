@@ -1,5 +1,13 @@
 export default function reducer(
-  state = { zIndex: 0, words: [], allWords: {}, image: "", shownUser: [] },
+  state = {
+    zIndex: 0,
+    words: [],
+    allWords: {},
+    image: "",
+    shownUser: [],
+    wordsList: 2,
+    wordsGroup: {}
+  },
   action
 ) {
   switch (action.type) {
@@ -42,6 +50,10 @@ export default function reducer(
       return Object.assign({}, state, { image: action.payload });
     case "CHANGE_SHOWN_USER":
       return Object.assign({}, state, { shownUser: action.payload });
+    case "CHANGE_WORDS_GROUP":
+      return Object.assign({}, state, { wordsGroup: action.payload });
+    case "CHANGE_WORDS_LIST":
+      return Object.assign({}, state, { wordsList: action.payload });
     default:
       return state;
   }

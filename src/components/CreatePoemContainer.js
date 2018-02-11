@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import Container from "./Custom Drag Layer/Container";
+import SelectWordsListDropdown from "./Custom Drag Layer/SelectWordsListDropdown";
 import CustomDragLayer from "./Custom Drag Layer/CustomDragLayer";
 import { RaisedButton } from "material-ui";
 import { connect } from "react-redux";
@@ -34,6 +35,29 @@ class CreatePoemContainer extends Component {
           this.props.showPoem(json.id);
         });
     }
+  };
+
+  componentWillMount() {
+    const wordsGroup = this.props.words.filter(word => {
+      return word.group === 1;
+    });
+    this.props.store.dispatch({
+      type: "CHANGE_WORDS_GROUP",
+      payload: wordsGroup
+    });
+  }
+
+  filteredWords = words => {
+    // console.log(words);
+    const wordsGroup = this.props.words.filter(word => {
+      return word.group === words;
+    });
+    this.props.store.dispatch({ type: "CHANGE_WORDS_LIST", payload: words });
+    this.props.store.dispatch({
+      type: "CHANGE_WORDS_GROUP",
+      payload: wordsGroup
+    });
+    // console.log(this.props.store.getState());
   };
 
   wordRelationships = (json, thisPoem) => {
@@ -117,14 +141,22 @@ class CreatePoemContainer extends Component {
   render() {
     const intro =
       "Create a new poem! Drag words around and click 'Submit Poem' once you're satisfied";
+    const words = this.props.store.getState().wordsGroup;
+    console.log(words);
 
     return (
       <div>
         <h4 align="center">{intro}</h4>
-        <br />
+        <SelectWordsListDropdown
+          store={this.props.store}
+          users={this.props.users}
+          words={this.props.words}
+          filteredWords={this.filteredWords}
+        />
         <Container
           url={this.props.url}
           store={this.props.store}
+          words={words}
           changeWindowWidth={this.changeWindowWidth}
           windowWidth={window.innerWidth}
         />
@@ -139,7 +171,7 @@ class CreatePoemContainer extends Component {
 }
 
 const mapStateToProps = state => {
-  return { zIndex: state.zIndex };
+  return { zIndex: state.zIndex, wordsList: state.wordsList };
 };
 
 export default connect(mapStateToProps)(
