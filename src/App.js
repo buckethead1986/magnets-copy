@@ -12,7 +12,7 @@ import ChangeProfileImage from "./components/profile/ChangeProfileImage";
 import { connect } from "react-redux";
 
 // const url = "http://localhost:3001/api/v1";
-const url = "https://fridge-mag-nets.herokuapp.com/api/v1";
+const url = "https://magnet-fridge-api.herokuapp.com/api/v1";
 const defaultImage =
   "http://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
 
