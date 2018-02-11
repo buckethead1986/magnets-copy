@@ -11,7 +11,8 @@ import ProfileContainer from "./components/ProfileContainer";
 import ChangeProfileImage from "./components/profile/ChangeProfileImage";
 import { connect } from "react-redux";
 
-const url = "http://localhost:3001/api/v1";
+// const url = "http://localhost:3001/api/v1";
+const url = "https://fridge-mag-nets.herokuapp.com";
 const defaultImage =
   "http://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
 
