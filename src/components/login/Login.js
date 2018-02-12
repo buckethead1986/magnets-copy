@@ -43,27 +43,29 @@ class Login extends React.Component {
     return (
       <div>
         <h2>Login</h2>
-        {this.state.loginError === true ? (
+        <form>
+          {this.state.loginError === true ? (
+            <TextField
+              onChange={this.handleChange}
+              name="username"
+              hintText="Username"
+              errorText="Username or Password incorrect"
+            />
+          ) : (
+            <TextField
+              onChange={this.handleChange}
+              name="username"
+              hintText="Username"
+            />
+          )}
+          <br />
           <TextField
             onChange={this.handleChange}
-            name="username"
-            hintText="Username"
-            errorText="Username or Password incorrect"
+            type="password"
+            name="password"
+            hintText="Password"
           />
-        ) : (
-          <TextField
-            onChange={this.handleChange}
-            name="username"
-            hintText="Username"
-          />
-        )}
-        <br />
-        <TextField
-          onChange={this.handleChange}
-          type="password"
-          name="password"
-          hintText="Password"
-        />
+        </form>
         <br />
         <RaisedButton
           label="Login"
@@ -82,3 +84,40 @@ class Login extends React.Component {
 }
 
 export default Login;
+
+// <div>
+//   <h2>Login</h2>
+//   {this.state.loginError === true ? (
+//     <TextField
+//       onChange={this.handleChange}
+//       name="username"
+//       hintText="Username"
+//       errorText="Username or Password incorrect"
+//     />
+//   ) : (
+//     <TextField
+//       onChange={this.handleChange}
+//       name="username"
+//       hintText="Username"
+//     />
+//   )}
+//   <br />
+//   <TextField
+//     onChange={this.handleChange}
+//     type="password"
+//     name="password"
+//     hintText="Password"
+//   />
+//   <br />
+//   <RaisedButton
+//     label="Login"
+//     type="submit"
+//     primary={true}
+//     onClick={this.handleLogin}
+//   />
+//   <FlatButton
+//     label="Not a User?"
+//     primary={false}
+//     onClick={this.props.signup}
+//   />
+// </div>

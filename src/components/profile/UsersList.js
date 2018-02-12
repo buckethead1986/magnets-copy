@@ -41,6 +41,8 @@ class UsersList extends React.Component {
   //iterates through all relationships, when one has a follower_id (doing the following) equal to the current users id,
   //the user with the followed_id (being followed) of that relationship is pushed onto the followed array, and is removed
   //from the usersClone array.
+  //I know there is the console warning 'dont make functions within a loop'. I needed to add the user associated with
+  //the 'followed_id' based on the current users id equalling the 'follower_id'. If you know a better/good way to do this, please let me know.
   splitUsers = (users, relationships) => {
     let usersClone = users.slice(0);
     followed = [];

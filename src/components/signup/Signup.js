@@ -59,27 +59,29 @@ class Signup extends React.Component {
     return (
       <div>
         <h2>Signup</h2>
-        {this.state.signupError ? (
+        <form>
+          {this.state.signupError ? (
+            <TextField
+              onChange={this.handleChange}
+              name="username"
+              hintText="Username"
+              errorText="Username already taken!"
+            />
+          ) : (
+            <TextField
+              onChange={this.handleChange}
+              name="username"
+              hintText="Username"
+            />
+          )}
+          <br />
           <TextField
             onChange={this.handleChange}
-            name="username"
-            hintText="Username"
-            errorText="Username already taken!"
+            name="password"
+            hintText="Password"
+            type="password"
           />
-        ) : (
-          <TextField
-            onChange={this.handleChange}
-            name="username"
-            hintText="Username"
-          />
-        )}
-        <br />
-        <TextField
-          onChange={this.handleChange}
-          name="password"
-          hintText="Password"
-          type="password"
-        />
+        </form>
         <br />
         <RaisedButton
           label="Submit"
