@@ -30,8 +30,8 @@ export default function reducer(
     case "ADD_ALL_WORDS":
       return Object.assign({}, state, { allWords: action.payload });
 
+    //adds the div height and width in px to the store for spacing when rendering draggable boxes
     case "ADD_WIDTH_AND_HEIGHT":
-      //adds the div height and width in px to the store for spacing when rendering draggable boxes
       return {
         ...state,
         allWords: {
@@ -43,7 +43,6 @@ export default function reducer(
           }
         }
       };
-
     case "REMOVE_POEM":
       return Object.assign({}, state, { words: [] });
     case "CHANGE_IMAGE":

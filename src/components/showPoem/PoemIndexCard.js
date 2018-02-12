@@ -1,5 +1,4 @@
 import React from "react";
-import "../../App.css";
 import PoemIndexBox from "./PoemIndexBox";
 import IconButton from "material-ui/IconButton";
 import StarBorder from "material-ui/svg-icons/toggle/star-border";

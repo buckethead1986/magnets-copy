@@ -57,11 +57,6 @@ class Login extends React.Component {
               name="username"
               hintText="Username"
             />
-            <TextField
-
-              name="username2"
-              hintText="Username2"
-            />
           )}
           <br />
           <TextField

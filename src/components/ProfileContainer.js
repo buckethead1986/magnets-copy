@@ -145,6 +145,7 @@ class ProfileContainer extends React.Component {
         <div style={{ float: "left" }}>
           <UsersList
             users={this.props.users}
+            store={this.props.store}
             relationships={this.props.relationships}
             currUser={this.props.currUser}
             showUser={this.props.showUser}

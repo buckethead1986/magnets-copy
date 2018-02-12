@@ -1,5 +1,4 @@
 import React from "react";
-import "../../App.css";
 import ShowPoemCard from "./ShowPoemCard";
 
 class Poem extends React.Component {

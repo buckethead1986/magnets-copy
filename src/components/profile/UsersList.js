@@ -128,7 +128,7 @@ class UsersList extends React.Component {
               key={this.props.currUser[0].id}
               primaryText={this.props.currUser[0].username}
               insetChildren={true}
-              leftAvatar={<Avatar src={this.props.currUser[0].image} />}
+              leftAvatar={<Avatar src={this.props.store.getState().image} />}
               onClick={() =>
                 this.props.changeShownUser(this.props.currUser[0].id)}
             />
