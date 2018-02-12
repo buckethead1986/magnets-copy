@@ -14,6 +14,14 @@ export default class SelectFieldDropdown extends Component {
     });
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   if (this.props.favoritedPoems !== nextProps.favoritedPoems) {
+  //     this.setState({
+  //       values: []
+  //     });
+  //   }
+  // }
+
   handleChange = (event, index, values) => {
     this.setState({ values }, () =>
       this.props.filteredPoems(this.state.values)
@@ -41,6 +49,13 @@ export default class SelectFieldDropdown extends Component {
         value={values}
         onChange={this.handleChange}
       >
+        <MenuItem
+          key={0}
+          insetChildren={true}
+          checked={values && values.indexOf("Favorites") > -1}
+          value={"Favorites"}
+          primaryText={"Favorites"}
+        />
         {this.menuItems(values)}
       </SelectField>
     );

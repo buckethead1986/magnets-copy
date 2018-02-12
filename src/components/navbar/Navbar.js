@@ -1,28 +1,14 @@
 import React from "react";
 import IconMenu from "material-ui/IconMenu";
 import IconButton from "material-ui/IconButton";
-import FontIcon from "material-ui/FontIcon";
-import NavigationExpandMoreIcon from "material-ui/svg-icons/navigation/expand-more";
 import ListIcon from "material-ui/svg-icons/action/list";
-import SvgIcon from "material-ui/SvgIcon";
 import MenuItem from "material-ui/MenuItem";
-import DropDownMenu from "material-ui/DropDownMenu";
-import RaisedButton from "material-ui/RaisedButton";
 import FlatButton from "material-ui/FlatButton";
 import { cyan500 } from "material-ui/styles/colors";
 
-import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSeparator,
-  ToolbarTitle
-} from "material-ui/Toolbar";
+import { Toolbar, ToolbarGroup } from "material-ui/Toolbar";
 
 export default class Navbar extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleChange = (event, value) => {
     switch (value) {
       case 1:
@@ -56,7 +42,6 @@ export default class Navbar extends React.Component {
           >
             <MenuItem value={1} primaryText="My Profile" />
             <MenuItem value={2} primaryText="Make Poem" />
-            <MenuItem value={3} primaryText="Users" />
             <MenuItem value={4} primaryText="Poems" />
           </IconMenu>
         </ToolbarGroup>

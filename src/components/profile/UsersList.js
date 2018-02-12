@@ -47,10 +47,11 @@ class UsersList extends React.Component {
     unFollowed = [];
 
     for (var relationship in relationships) {
+      let user;
       if (
         relationships[relationship].follower_id === this.props.currUser[0].id
       ) {
-        const user = users.find(user => {
+        user = users.find(user => {
           return user.id === relationships[relationship].followed_id;
         });
         followed.push(user);
@@ -71,7 +72,6 @@ class UsersList extends React.Component {
   };
 
   render() {
-    console.log(this.props.relationships);
     const followedUsersList = followed.map(user => {
       return (
         <ListItem

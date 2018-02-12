@@ -9,30 +9,81 @@ class PoemIndex extends React.Component {
 
     this.state = {
       filteredPoems: [],
-      users: []
+      users: [],
+      favoritedPoems: [],
+      listOfFilteredUsers: []
     };
   }
   componentWillMount() {
+    const favoritedPoems = this.props.poems.filter(poem => {
+      return poem.favorited_by.some(user => {
+        return user.id === this.props.currUser[0].id;
+      });
+    });
     this.setState({
       users: this.props.users,
-      filteredPoems: this.props.poems
+      filteredPoems: this.props.poems,
+      favoritedPoems: favoritedPoems
     });
   }
 
-  //sets state of poems based on filtered users set in SelectUsersDropdown component. Defaults to all users' poems.
+  //updates list of favorited poems, users and poems for other users concurrent creations
+  componentWillReceiveProps(nextProps) {
+    if (this.props.poems !== nextProps.poems) {
+      const favoritedPoems = nextProps.poems.filter(poem => {
+        return poem.favorited_by.some(user => {
+          return user.id === this.props.currUser[0].id;
+        });
+      });
+      this.setState(
+        {
+          users: nextProps.users,
+          filteredPoems: nextProps.poems,
+          favoritedPoems: favoritedPoems
+        },
+        () => this.filterPoems()
+      );
+    }
+  }
+
+  //sets state based on selection dropdown values in SelectUsersDropdown
   filteredPoems = users => {
+    this.setState(
+      {
+        listOfFilteredUsers: users
+      },
+      () => this.filterPoems()
+    );
+  };
+
+  //sets state of poems based on filtered users set in SelectUsersDropdown component. Defaults to all users' poems.
+  filterPoems = () => {
     let userArray = [];
     this.state.users.forEach(user => {
-      if (users.includes(user.username)) {
+      if (this.state.listOfFilteredUsers.includes(user.username)) {
         userArray.push(user.id);
       }
     });
-    const filteredPoems = this.props.poems.filter(poem => {
-      return userArray.includes(poem.user_id);
-    });
-    if (users.length === 0) {
+    let filteredPoems;
+    if (this.state.listOfFilteredUsers.includes("Favorites")) {
+      filteredPoems = this.state.favoritedPoems.filter(poem => {
+        return userArray.includes(poem.user_id);
+      });
+    } else {
+      filteredPoems = this.props.poems.filter(poem => {
+        return userArray.includes(poem.user_id);
+      });
+    }
+    if (this.state.listOfFilteredUsers.length === 0) {
       this.setState({
         filteredPoems: this.props.poems
+      });
+    } else if (
+      this.state.listOfFilteredUsers.length === 1 &&
+      this.state.listOfFilteredUsers.includes("Favorites")
+    ) {
+      this.setState({
+        filteredPoems: this.state.favoritedPoems
       });
     } else {
       this.setState({
@@ -74,6 +125,7 @@ class PoemIndex extends React.Component {
         <SelectUsersDropdown
           users={this.props.users}
           filteredPoems={this.filteredPoems}
+          favoritedPoems={this.state.favoritedPoems}
         />
         <Columns columns={4}>{poems}</Columns>
       </div>

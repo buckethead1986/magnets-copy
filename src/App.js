@@ -9,7 +9,6 @@ import ShowPoem from "./components/showPoem/ShowPoem";
 import PoemIndex from "./components/showPoem/PoemIndex";
 import ProfileContainer from "./components/ProfileContainer";
 import ChangeProfileImage from "./components/profile/ChangeProfileImage";
-import { connect } from "react-redux";
 
 // const url = "http://localhost:3001/api/v1";
 const url = "https://magnet-fridge-api.herokuapp.com/api/v1";
@@ -81,7 +80,6 @@ class App extends Component {
   };
 
   changeProfileImageLink = () => {
-    console.log("things?");
     this.props.history.push("/profile/new");
   };
 
@@ -221,7 +219,10 @@ class App extends Component {
         user_id: user_id,
         poem_id: poem_id
       })
-    }).then(() => this.fetchFavorites());
+    }).then(() => {
+      this.fetchFavorites();
+      this.fetchPoems();
+    });
   };
 
   //deletes a current favorite poem relationship
@@ -230,7 +231,6 @@ class App extends Component {
     const favorites = this.state.favorites.filter(favorite => {
       return favorite.user_id === user_id && favorite.poem_id === poem_id;
     })[0].id;
-    console.log(favorites);
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
@@ -238,7 +238,10 @@ class App extends Component {
     fetch(`${url}/favorited_poems/${favorites}`, {
       method: "DELETE",
       headers: headers
-    }).then(() => this.fetchFavorites());
+    }).then(() => {
+      this.fetchFavorites();
+      this.fetchPoems();
+    });
   };
 
   render() {
@@ -256,7 +259,7 @@ class App extends Component {
         ) : (
           ""
         )}
-        <div className="App">
+        <div style={{ textAlign: "center" }}>
           <Route
             exact
             path="/signup"
@@ -265,12 +268,13 @@ class App extends Component {
                 url={url}
                 fetchUsers={this.fetchUserInformation}
                 login={this.login}
+                defaultImage={this.defaultImage}
                 {...props}
               />
             )}
           />
         </div>
-        <div className="App">
+        <div style={{ textAlign: "center" }}>
           <Route
             exact
             path="/login"
@@ -339,20 +343,6 @@ class App extends Component {
         />
         <Route
           exact
-          path="/users"
-          render={() => {
-            return <div>Users</div>;
-          }}
-        />
-        <Route
-          exact
-          path="/users/id"
-          render={() => {
-            return <div>Specific User</div>;
-          }}
-        />
-        <Route
-          exact
           path="/poems"
           render={() => {
             if (
@@ -401,6 +391,7 @@ class App extends Component {
                     currUser={this.state.currUser}
                     showPoem={this.showPoem}
                     words={this.state.words}
+                    fetchUsers={this.fetchUserInformation}
                   />
                 </div>
               );

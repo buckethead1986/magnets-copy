@@ -2,11 +2,6 @@ import React, { Component } from "react";
 import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 
-const menuCategories = [
-  { title: "Simple", category: 1 },
-  { title: "Space", category: 2 }
-];
-
 export default class SelectWordsListDropdown extends Component {
   state = {
     values: [],
@@ -37,11 +32,6 @@ export default class SelectWordsListDropdown extends Component {
 
   handleChange = (event, index, values) => {
     this.props.store.dispatch({ type: "ADD_ALL_WORDS", payload: {} });
-    // console.log(this.state.values, values);
-    const words = this.state.words.filter(word => {
-      return word.group === values;
-    });
-    console.log(words);
     this.setState({ values }, () =>
       this.props.filteredWords(this.state.values)
     );
@@ -52,8 +42,6 @@ export default class SelectWordsListDropdown extends Component {
     return this.state.groups.map(group => (
       <MenuItem
         key={group.group}
-        // insetChildren={true}
-        // checked={values && values.indexOf(group.group) > -1}
         value={group.group}
         primaryText={group.category}
       />
@@ -61,7 +49,6 @@ export default class SelectWordsListDropdown extends Component {
   }
 
   render() {
-    console.log(this.state);
     const { values } = this.state;
     return (
       <SelectField

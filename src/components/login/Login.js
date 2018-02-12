@@ -60,11 +60,12 @@ class Login extends React.Component {
         <br />
         <TextField
           onChange={this.handleChange}
+          type="password"
           name="password"
           hintText="Password"
         />
         <br />
-        <FlatButton
+        <RaisedButton
           label="Login"
           type="submit"
           primary={true}

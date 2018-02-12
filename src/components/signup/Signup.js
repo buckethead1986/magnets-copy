@@ -1,5 +1,7 @@
 import React from "react";
 import { RaisedButton, FlatButton, TextField } from "material-ui";
+const defaultImage =
+  "http://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
 
 class Signup extends React.Component {
   state = {
@@ -20,7 +22,7 @@ class Signup extends React.Component {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
-    const body = this.state;
+    const body = { ...this.state, image: defaultImage };
     fetch(`${this.props.url}/users`, {
       method: "POST",
       headers: headers,

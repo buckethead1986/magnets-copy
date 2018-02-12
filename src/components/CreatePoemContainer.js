@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { DragDropContext } from "react-dnd";
+import { RaisedButton } from "material-ui";
+import { connect } from "react-redux";
 import HTML5Backend from "react-dnd-html5-backend";
 import Container from "./Custom Drag Layer/Container";
 import SelectWordsListDropdown from "./Custom Drag Layer/SelectWordsListDropdown";
 import CustomDragLayer from "./Custom Drag Layer/CustomDragLayer";
-import { RaisedButton } from "material-ui";
-import { connect } from "react-redux";
-import Paper from "material-ui/Paper";
+
 let output = "";
 
 class CreatePoemContainer extends Component {
@@ -30,8 +30,9 @@ class CreatePoemContainer extends Component {
       })
         .then(res => res.json())
         .then(json => {
-          this.wordRelationships(json, output);
+          // this.wordRelationships(json, output);
           this.removePoem();
+          this.props.fetchUsers();
           this.props.showPoem(json.id);
         });
     }
@@ -59,30 +60,30 @@ class CreatePoemContainer extends Component {
     this.forceUpdate();
   };
 
-  wordRelationships = (json, thisPoem) => {
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    };
-    const wordIdArray = thisPoem.split("|").map(word => {
-      return word.split("/")[0];
-    });
-    for (var word of wordIdArray) {
-      if (word !== "") {
-        const body = {
-          word_id: word,
-          poem_id: json.id
-        };
-        fetch(`${this.props.url}/poem_words`, {
-          method: "POST",
-          headers: headers,
-          body: JSON.stringify(body)
-        })
-          .then(res => res.json())
-          .then(json => console.log(json));
-      }
-    }
-  };
+  // wordRelationships = (json, thisPoem) => {
+  //   const headers = {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json"
+  //   };
+  //   const wordIdArray = thisPoem.split("|").map(word => {
+  //     return word.split("/")[0];
+  //   });
+  //   for (var word of wordIdArray) {
+  //     if (word !== "") {
+  //       const body = {
+  //         word_id: word,
+  //         poem_id: json.id
+  //       };
+  //       fetch(`${this.props.url}/poem_words`, {
+  //         method: "POST",
+  //         headers: headers,
+  //         body: JSON.stringify(body)
+  //       })
+  //         .then(res => res.json())
+  //         .then(json => console.log(json));
+  //     }
+  //   }
+  // };
 
   removePoem = () => {
     this.props.store.dispatch({ type: "REMOVE_POEM" });
@@ -141,7 +142,6 @@ class CreatePoemContainer extends Component {
     const intro =
       "Create a new poem! Drag words around and click 'Submit Poem' once you're satisfied";
     const words = this.props.store.getState().wordsGroup;
-    console.log(words);
 
     return (
       <div>

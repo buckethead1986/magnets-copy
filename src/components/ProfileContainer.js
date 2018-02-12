@@ -1,6 +1,5 @@
 import React from "react";
 import UsersList from "./profile/UsersList";
-import Paper from "material-ui/Paper";
 import Avatar from "material-ui/Avatar";
 import { Grid, Row, Col } from "react-flexbox-grid";
 import PoemIndexCard from "./showPoem/PoemIndexCard";
@@ -15,28 +14,21 @@ class ProfileContainer extends React.Component {
     };
   }
 
+  //loads your avatar and poems by default
   componentWillMount() {
-    console.log(
-      "componentDidMount",
-      this.props.store.getState().shownUser,
-      this.props.currUser[0]
-    );
     const user = this.props.store.getState().shownUser;
-    console.log(this.props.store.getState().shownUser);
-    this.setState(
-      {
-        poems: this.props.poems.filter(poem => {
-          return poem.user_id === user.id;
-        }),
-        shownUser: user
-      },
-      () => console.log(this.state)
-    );
+    this.setState({
+      poems: this.props.poems.filter(poem => {
+        return poem.user_id === user.id;
+      }),
+      shownUser: user
+    });
   }
 
+  //keeps the user being shown constant, if you navigate to a poem and back
+  //(click on a user, click a poem, click back, stays on that user, doesnt default back to your profile)
   componentWillReceiveProps(nextProps) {
-    console.log("componentWillReceiveProps");
-    const user = this.props.store.getState().shownUser;
+    // console.log(nextProps);
     if (this.state.shownUser[0] !== this.props.currUser[0]) {
       this.setState({
         poems: this.props.poems.filter(poem => {
@@ -49,16 +41,15 @@ class ProfileContainer extends React.Component {
     }
   }
 
+  //updates store and current state to maintain the same user being shown
   changeShownUser = id => {
     const shownUser = this.props.users.filter(user => {
       return user.id === id;
     })[0];
-    console.log(shownUser);
     this.setState({
       poems: this.props.poems.filter(poem => {
         return poem.user_id === id;
       }),
-
       shownUser: this.props.users.filter(user => {
         return user.id === shownUser.id;
       })
@@ -93,7 +84,6 @@ class ProfileContainer extends React.Component {
   };
 
   renderShownUserAvatar = () => {
-    console.log(this.state.shownUser, this.props.currUser[0].id);
     if (
       this.props.store.getState().shownUser.id === this.props.currUser[0].id
     ) {

@@ -88,24 +88,25 @@ class Container extends Component {
     });
     const dimensions = this.props.store.getState().allWords;
     const boxList = {};
-    console.log(
-      this.props.store.getState().wordsList,
-      Object.keys(this.props.store.getState().allWords).length,
-      Object.keys(this.state.boxes).length
-    );
-    for (var box in this.state.boxes) {
+    // console.log(
+    //   this.props.store.getState().wordsList,
+    //   Object.keys(this.props.store.getState().allWords).length,
+    //   Object.keys(this.state.boxes).length
+    // );
+    for (var wordBox in this.state.boxes) {
       if (
-        this.state.boxes[box].group === this.props.store.getState().wordsList
+        this.state.boxes[wordBox].group ===
+        this.props.store.getState().wordsList
       ) {
-        boxList[box] = this.state.boxes[box];
+        boxList[wordBox] = this.state.boxes[wordBox];
       }
     }
-    console.log(
-      this.props.store.getState().allWords,
-      this.state.boxes,
-      boxList,
-      Object.keys(boxList).length
-    );
+    // console.log(
+    //   this.props.store.getState().allWords,
+    //   this.state.boxes,
+    //   boxList,
+    //   Object.keys(boxList).length
+    // );
     if (
       Object.keys(this.props.store.getState().allWords).length ===
       Object.keys(boxList).length
@@ -165,11 +166,7 @@ class Container extends Component {
 
   render() {
     const { connectDropTarget } = this.props;
-    // const { boxes } = this.state.boxes.filter(group => {
-    //   group.group === this.props.store.getState().wordsList;
-    // });
     const boxList = {};
-    console.log(this.props.store.getState().wordsList);
     for (var box in this.state.boxes) {
       if (
         this.state.boxes[box].group === this.props.store.getState().wordsList
@@ -177,9 +174,7 @@ class Container extends Component {
         boxList[box] = this.state.boxes[box];
       }
     }
-    const { boxes } = this.state;
-    console.log(boxList, boxes, boxList[1] === boxes[1]);
-    // debugger;
+    // const { boxes } = this.state;
     return connectDropTarget(
       <div>
         <div style={styles}>

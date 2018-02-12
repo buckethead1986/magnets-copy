@@ -4,18 +4,8 @@ import PoemIndexBox from "./PoemIndexBox";
 import IconButton from "material-ui/IconButton";
 import StarBorder from "material-ui/svg-icons/toggle/star-border";
 import Star from "material-ui/svg-icons/toggle/star";
-import Favorite from "material-ui/svg-icons/action/favorite";
-import FavoriteBorder from "material-ui/svg-icons/action/favorite-border";
 import AccountBox from "material-ui/svg-icons/action/account-box";
-import {
-  Card,
-  CardActions,
-  CardHeader,
-  CardMedia,
-  CardTitle,
-  CardText
-} from "material-ui/Card";
-import FlatButton from "material-ui/FlatButton";
+import { Card, CardActions, CardHeader } from "material-ui/Card";
 
 let styles = {
   width: window.innerWidth / 4 - 20,
@@ -48,7 +38,7 @@ class Poem extends React.Component {
       },
       () => {
         this.checkFollowed();
-        this.checkFavorite();
+        this.checkFavorite(this.props.favorites);
       }
     );
   }
@@ -59,9 +49,13 @@ class Poem extends React.Component {
       {
         poem: nextProps.poem,
         relationships: nextProps.relationships,
-        followed: false
+        followed: false,
+        favorite: false
       },
-      () => this.checkFollowed()
+      () => {
+        this.checkFollowed();
+        this.checkFavorite(nextProps.favorites);
+      }
     );
   }
 
@@ -80,8 +74,9 @@ class Poem extends React.Component {
     });
   };
 
-  checkFavorite = () => {
-    const favorites = this.state.favorites;
+  checkFavorite = favorites => {
+    // console.log(this.state.favorites, this.state.poem);
+
     favorites.forEach(favorite => {
       if (
         favorite.user_id === this.props.currUser[0].id &&
