@@ -5,7 +5,7 @@ const styles = {
   padding: "0.2rem 0.2rem",
   cursor: "move",
   position: "absolute",
-  fontSize: 10
+  fontSize: 11
 };
 
 export default class Box extends Component {
