@@ -1,7 +1,7 @@
 import React from "react";
 import PoemIndexCard from "./PoemIndexCard";
 import Columns from "react-columns";
-import SelectUsersDropdown from "../selectField/SelectUsersDropdown";
+import SelectUsersDropdown from "../selectUserDropdown/SelectUsersDropdown";
 
 class PoemIndex extends React.Component {
   constructor() {

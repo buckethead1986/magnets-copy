@@ -5,7 +5,6 @@ import ListIcon from "material-ui/svg-icons/action/list";
 import MenuItem from "material-ui/MenuItem";
 import FlatButton from "material-ui/FlatButton";
 import { cyan500 } from "material-ui/styles/colors";
-
 import { Toolbar, ToolbarGroup } from "material-ui/Toolbar";
 
 export default class Navbar extends React.Component {
@@ -18,9 +17,6 @@ export default class Navbar extends React.Component {
         this.props.makePoem();
         break;
       case 3:
-        this.props.showUsers();
-        break;
-      case 4:
         this.props.showPoems();
         break;
       default:
@@ -42,7 +38,7 @@ export default class Navbar extends React.Component {
           >
             <MenuItem value={1} primaryText="My Profile" />
             <MenuItem value={2} primaryText="Make Poem" />
-            <MenuItem value={4} primaryText="Poems" />
+            <MenuItem value={3} primaryText="Poems" />
           </IconMenu>
         </ToolbarGroup>
         <ToolbarGroup lastChild={true}>

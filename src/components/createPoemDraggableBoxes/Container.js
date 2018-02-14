@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import update from "immutability-helper";
 import { DropTarget } from "react-dnd";
+import update from "immutability-helper";
 import shouldPureComponentUpdate from "./shouldPureComponentUpdate";
 import ItemTypes from "./ItemTypes";
 import DraggableBox from "./DraggableBox";
@@ -88,11 +88,6 @@ class Container extends Component {
     });
     const dimensions = this.props.store.getState().allWords;
     const boxList = {};
-    // console.log(
-    //   this.props.store.getState().wordsList,
-    //   Object.keys(this.props.store.getState().allWords).length,
-    //   Object.keys(this.state.boxes).length
-    // );
     for (var wordBox in this.state.boxes) {
       if (
         this.state.boxes[wordBox].group ===
@@ -101,12 +96,6 @@ class Container extends Component {
         boxList[wordBox] = this.state.boxes[wordBox];
       }
     }
-    // console.log(
-    //   this.props.store.getState().allWords,
-    //   this.state.boxes,
-    //   boxList,
-    //   Object.keys(boxList).length
-    // );
     if (
       Object.keys(this.props.store.getState().allWords).length ===
       Object.keys(boxList).length

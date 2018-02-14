@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import Reducer from "./components/Reducer";
+import Reducer from "./components/reducer/Reducer";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import App from "./App";

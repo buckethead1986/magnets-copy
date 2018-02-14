@@ -74,8 +74,6 @@ class Poem extends React.Component {
   };
 
   checkFavorite = favorites => {
-    // console.log(this.state.favorites, this.state.poem);
-
     favorites.forEach(favorite => {
       if (
         favorite.user_id === this.props.currUser[0].id &&

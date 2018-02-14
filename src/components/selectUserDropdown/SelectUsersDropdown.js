@@ -14,14 +14,6 @@ export default class SelectFieldDropdown extends Component {
     });
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props.favoritedPoems !== nextProps.favoritedPoems) {
-  //     this.setState({
-  //       values: []
-  //     });
-  //   }
-  // }
-
   handleChange = (event, index, values) => {
     this.setState({ values }, () =>
       this.props.filteredPoems(this.state.values)

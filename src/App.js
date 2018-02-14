@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import { withRouter, Route } from "react-router-dom";
-import CreatePoemContainer from "./components/CreatePoemContainer";
+import CreatePoemContainer from "./components/containers/CreatePoemContainer";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
 import Navbar from "./components/navbar/Navbar";
 import ShowPoem from "./components/showPoem/ShowPoem";
 import PoemIndex from "./components/showPoem/PoemIndex";
-import ProfileContainer from "./components/ProfileContainer";
+import ProfileContainer from "./components/containers/ProfileContainer";
 import ChangeProfileImage from "./components/profile/ChangeProfileImage";
 
-const url = "http://localhost:3001/api/v1";
+// const url = "http://localhost:3001/api/v1";
 
-// const url = "https://magnet-fridge-api.herokuapp.com/api/v1";
+const url = "https://magnets-api.herokuapp.com/api/v1";
 const defaultImage =
   "http://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
 
