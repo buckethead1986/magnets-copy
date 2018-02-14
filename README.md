@@ -38,7 +38,7 @@ unfollowed, which are updated immediately.
 
 ## Layout / Design
 
-I used Googles Material UI for the design (with some select manual CSS). This
+I used Googles Material UI for the design (with some select inline CSS). This
 component-based styling allows for easy integration of components and an overall
 cohesion of style. I divvied up created poem components into Material Cards, and
 users appear in a List on the profile page. On the poems index page, there is a
