@@ -30,7 +30,6 @@ class CreatePoemContainer extends Component {
       })
         .then(res => res.json())
         .then(json => {
-          // this.wordRelationships(json, output);
           this.removePoem();
           this.props.fetchUsers();
           this.props.showPoem(json.id);

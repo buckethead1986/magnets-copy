@@ -28,7 +28,6 @@ class ProfileContainer extends React.Component {
   //keeps the user being shown constant, if you navigate to a poem and back
   //(click on a user, click a poem, click back, stays on that user, doesnt default back to your profile)
   componentWillReceiveProps(nextProps) {
-    // console.log(nextProps);
     if (this.state.shownUser[0] !== this.props.currUser[0]) {
       this.setState({
         poems: this.props.poems.filter(poem => {
