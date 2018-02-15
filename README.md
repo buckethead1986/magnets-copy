@@ -1,4 +1,4 @@
-Check out the app here: https://magnet-fridge.herokuapp.com/
+Check out the app here: https://mag-nets.herokuapp.com/
 
 
 ## Overview
