@@ -12,6 +12,7 @@ import ChangeProfileImage from "./components/profile/ChangeProfileImage";
 // const url = "http://localhost:3001/api/v1";
 
 const url = "https://magnets-api.herokuapp.com/api/v1";
+
 const defaultImage =
   "http://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
 
