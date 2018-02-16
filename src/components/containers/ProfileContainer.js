@@ -17,6 +17,7 @@ class ProfileContainer extends React.Component {
   //loads your avatar and poems by default
   componentWillMount() {
     const user = this.props.store.getState().shownUser;
+    console.log(user);
     this.setState({
       poems: this.props.poems.filter(poem => {
         return poem.user_id === user.id;
@@ -83,6 +84,7 @@ class ProfileContainer extends React.Component {
   };
 
   renderShownUserAvatar = () => {
+    console.log(this.props.store.getState().shownUser);
     if (
       this.props.store.getState().shownUser.id === this.props.currUser[0].id
     ) {
@@ -112,8 +114,10 @@ class ProfileContainer extends React.Component {
   };
 
   renderShownUserPoems = () => {
-    const shownUserPoems = this.props.store.getState().shownUser;
-    const mappedShownUserPoems = shownUserPoems.poems.map((poem, index) => {
+    const shownUser = this.props.store.getState().shownUser;
+    console.log(shownUser);
+    // debugger;
+    const mappedShownUserPoems = shownUser.poems.map((poem, index) => {
       return (
         <Col key={index}>
           <PoemIndexCard

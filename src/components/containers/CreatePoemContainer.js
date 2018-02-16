@@ -56,12 +56,15 @@ class CreatePoemContainer extends Component {
       type: "CHANGE_WORDS_GROUP",
       payload: wordsGroup
     });
+    this.removePoem();
     this.forceUpdate();
   };
 
   removePoem = () => {
+    console.log(this.props.store.getState().words);
     this.props.store.dispatch({ type: "REMOVE_POEM" });
     output = "";
+    console.log(this.props.store.getState().words);
   };
 
   //'content' is the formatted poem for posting to the API, as a human would read it, with word id, title, and x,y coordinates of each word (for later viewing)

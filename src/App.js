@@ -111,21 +111,21 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(json => {
-        this.setState({
-          currUser: this.state.users.filter(user => {
-            return user.id === json.id;
-          })
+        const user = this.state.users.filter(user => {
+          return user.id === json.id;
         });
-      })
-      .then(() => this.updateShownUSer());
+        this.setState({
+          currUser: user
+        });
+        this.updateShownUser(user);
+      });
   };
 
-  updateShownUSer = () => {
-    console.log(this.state.currUser);
+  updateShownUser = user => {
     if (this.state.currUser.length !== 0) {
       this.props.store.dispatch({
         type: "CHANGE_IMAGE",
-        payload: this.state.currUser[0].image
+        payload: user[0].image
       });
     } else {
       this.props.store.dispatch({
@@ -135,7 +135,7 @@ class App extends Component {
     }
     this.props.store.dispatch({
       type: "CHANGE_SHOWN_USER",
-      payload: this.state.currUser[0]
+      payload: user[0]
     });
   };
 
