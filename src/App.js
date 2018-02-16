@@ -111,34 +111,34 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(json => {
-        this.setState(
-          {
-            currUser: this.state.users.filter(user => {
-              return user.id === json.id;
-            })
-          },
-          () => {
-            console.log(this.state.currUser);
-            if (this.state.currUser.length !== 0) {
-              this.props.store.dispatch({
-                type: "CHANGE_IMAGE",
-                payload: this.state.currUser[0].image
-              });
-            } else {
-              this.props.store.dispatch({
-                type: "CHANGE_IMAGE",
-                payload: this.defaultImage
-              });
-            }
-            this.props.store.dispatch({
-              type: "CHANGE_SHOWN_USER",
-              payload: this.state.users.filter(user => {
-                return user.id === json.id;
-              })[0]
-            });
-          }
-        );
+        this.setState({
+          currUser: this.state.users.filter(user => {
+            return user.id === json.id;
+          })
+        });
+      })
+      .then(() => this.updateShownUSer());
+  };
+
+  updateShownUSer = () => {
+    console.log(this.state.currUser);
+    if (this.state.currUser.length !== 0) {
+      this.props.store.dispatch({
+        type: "CHANGE_IMAGE",
+        payload: this.state.currUser[0].image
       });
+    } else {
+      this.props.store.dispatch({
+        type: "CHANGE_IMAGE",
+        payload: this.defaultImage
+      });
+    }
+    this.props.store.dispatch({
+      type: "CHANGE_SHOWN_USER",
+      payload: this.state.users.filter(user => {
+        return user.id === json.id;
+      })[0]
+    });
   };
 
   fetchRelationships = () => {
