@@ -14,7 +14,7 @@ import ChangeProfileImage from "./components/profile/ChangeProfileImage";
 const url = "https://magnets-api.herokuapp.com/api/v1";
 
 const defaultImage =
-  "http://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
+  "https://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
 
 class App extends Component {
   state = {
@@ -229,7 +229,6 @@ class App extends Component {
 
   //deletes a current favorite poem relationship
   unFavoritePoem = (user_id, poem_id) => {
-    console.log("unFavoritePoem", user_id, poem_id);
     const favorites = this.state.favorites.filter(favorite => {
       return favorite.user_id === user_id && favorite.poem_id === poem_id;
     })[0].id;

@@ -63,7 +63,6 @@ class Container extends Component {
   }
 
   componentWillMount() {
-    console.log(this.props.store.getState().wordsList);
     fetch(`${this.props.url}/words`)
       .then(res => res.json())
       .then(json => this.addBoxesToState(json));
@@ -72,12 +71,9 @@ class Container extends Component {
   addBoxesToState = json => {
     json.forEach(box => (box.zIndex = 0));
     const boxObject = arrayToObject(json);
-    this.setState(
-      {
-        boxes: boxObject
-      },
-      () => console.log(this.state)
-    );
+    this.setState({
+      boxes: boxObject
+    });
   };
 
   //sets x,y coordinates for equal spacing between draggable boxes when rendered
