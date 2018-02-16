@@ -135,9 +135,7 @@ class App extends Component {
     }
     this.props.store.dispatch({
       type: "CHANGE_SHOWN_USER",
-      payload: this.state.users.filter(user => {
-        return user.id === json.id;
-      })[0]
+      payload: this.state.currUser[0]
     });
   };
 
