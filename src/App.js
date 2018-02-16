@@ -119,7 +119,7 @@ class App extends Component {
           },
           () => {
             console.log(this.state.currUser);
-            if (this.state.currUser !== []) {
+            if (this.state.currUser.length !== 0) {
               this.props.store.dispatch({
                 type: "CHANGE_IMAGE",
                 payload: this.state.currUser[0].image
