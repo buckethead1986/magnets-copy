@@ -159,7 +159,6 @@ class Container extends Component {
         boxList[box] = this.state.boxes[box];
       }
     }
-    // const { boxes } = this.state;
     return connectDropTarget(
       <div>
         <div style={styles}>

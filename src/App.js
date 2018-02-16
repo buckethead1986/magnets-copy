@@ -118,11 +118,17 @@ class App extends Component {
             })
           },
           () => {
-            console.log(this.state.currUser);
-            this.props.store.dispatch({
-              type: "CHANGE_IMAGE",
-              payload: this.state.currUser[0].image
-            });
+            if (this.state.currUser !== []) {
+              this.props.store.dispatch({
+                type: "CHANGE_IMAGE",
+                payload: this.state.currUser[0].image
+              });
+            } else {
+              this.props.store.dispatch({
+                type: "CHANGE_IMAGE",
+                payload: this.defaultImage
+              });
+            }
             this.props.store.dispatch({
               type: "CHANGE_SHOWN_USER",
               payload: this.state.users.filter(user => {
