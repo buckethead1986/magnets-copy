@@ -118,6 +118,7 @@ class App extends Component {
             })
           },
           () => {
+            console.log(this.state.currUser);
             if (this.state.currUser !== []) {
               this.props.store.dispatch({
                 type: "CHANGE_IMAGE",
