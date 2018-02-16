@@ -9,9 +9,9 @@ import PoemIndex from "./components/showPoem/PoemIndex";
 import ProfileContainer from "./components/containers/ProfileContainer";
 import ChangeProfileImage from "./components/profile/ChangeProfileImage";
 
-// const url = "http://localhost:3001/api/v1";
+const url = "http://localhost:3001/api/v1";
 
-const url = "https://magnets-api.herokuapp.com/api/v1";
+// const url = "https://magnets-api.herokuapp.com/api/v1";
 
 const defaultImage =
   "http://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
@@ -92,8 +92,8 @@ class App extends Component {
           users: json
         })
       )
+      .then(() => this.fetchCurrentUser())
       .then(() => {
-        this.fetchCurrentUser();
         this.fetchRelationships();
         this.fetchPoems();
         this.fetchFavorites();
@@ -118,6 +118,7 @@ class App extends Component {
             })
           },
           () => {
+            console.log(this.state.currUser);
             this.props.store.dispatch({
               type: "CHANGE_IMAGE",
               payload: this.state.currUser[0].image

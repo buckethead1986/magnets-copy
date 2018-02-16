@@ -112,30 +112,29 @@ class ProfileContainer extends React.Component {
   };
 
   renderShownUserPoems = () => {
-    const poems = this.props.store
-      .getState()
-      .shownUser.poems.map((poem, index) => {
-        return (
-          <Col key={index}>
-            <PoemIndexCard
-              columns={4}
-              showPoem={this.props.showPoem}
-              url={this.props.url}
-              currUser={this.props.currUser}
-              users={this.props.users}
-              poem={poem}
-              followUser={this.props.followUser}
-              unFollowUser={this.props.unFollowUser}
-              relationships={this.props.relationships}
-              favoritePoem={this.props.favoritePoem}
-              unFavoritePoem={this.props.unFavoritePoem}
-              favorites={this.props.favorites}
-            />
-            <br />
-          </Col>
-        );
-      });
-    return poems;
+    const shownUserPoems = this.props.store.getState().shownUser;
+    const mappedShownUserPoems = shownUserPoems.poems.map((poem, index) => {
+      return (
+        <Col key={index}>
+          <PoemIndexCard
+            columns={4}
+            showPoem={this.props.showPoem}
+            url={this.props.url}
+            currUser={this.props.currUser}
+            users={this.props.users}
+            poem={poem}
+            followUser={this.props.followUser}
+            unFollowUser={this.props.unFollowUser}
+            relationships={this.props.relationships}
+            favoritePoem={this.props.favoritePoem}
+            unFavoritePoem={this.props.unFavoritePoem}
+            favorites={this.props.favorites}
+          />
+          <br />
+        </Col>
+      );
+    });
+    return mappedShownUserPoems;
   };
 
   render() {
