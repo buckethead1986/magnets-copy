@@ -302,7 +302,8 @@ class App extends Component {
               this.state.users.length !== 0 &&
               this.state.relationships.length !== 0 &&
               this.state.currUser.length !== 0 &&
-              this.state.poems.length !== 0
+              this.state.poems.length !== 0 &&
+              this.props.store.getState().shownUser.length !== 0
             ) {
               return (
                 <ProfileContainer
