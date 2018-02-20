@@ -45,14 +45,14 @@ class Signup extends React.Component {
       .then(json => {
         if (!json.error) {
           localStorage.setItem("token", json.jwt);
-          this.props.history.push("/profile");
         } else {
           this.setState({
             loginError: true
           });
         }
       })
-      .then(() => this.props.fetchUsers());
+      .then(() => this.props.fetchUsers())
+      .then(() => this.props.history.push("/profile"));
   };
 
   render() {

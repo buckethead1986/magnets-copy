@@ -8,7 +8,8 @@ class ChangeProfileImage extends React.Component {
     super();
 
     this.state = {
-      image: ""
+      image: "",
+      url: ""
     };
   }
 
@@ -32,7 +33,8 @@ class ChangeProfileImage extends React.Component {
   handleChange = e => {
     this.setState(
       {
-        image: e.target.value
+        image: e.target.value,
+        url: e.target.value
       },
       () => console.log(this.state.image)
     );
@@ -52,6 +54,11 @@ class ChangeProfileImage extends React.Component {
       .then(res => res.json())
       .then(json =>
         this.props.store.dispatch({ type: "CHANGE_IMAGE", payload: json.image })
+      )
+      .then(() =>
+        this.setState({
+          url: ""
+        })
       );
   };
 
@@ -64,6 +71,7 @@ class ChangeProfileImage extends React.Component {
           <TextField
             hintText="Enter new image url here"
             onChange={this.handleChange}
+            value={this.state.url}
           />
           <br />
           <h5>(A proper url will change the image to the right immediately)</h5>
