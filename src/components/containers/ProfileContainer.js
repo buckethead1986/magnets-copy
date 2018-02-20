@@ -51,7 +51,7 @@ class ProfileContainer extends React.Component {
       }),
       shownUser: this.props.users.filter(user => {
         return user.id === shownUser.id;
-      })
+      })[0]
     });
     this.props.store.dispatch({
       type: "CHANGE_SHOWN_USER",

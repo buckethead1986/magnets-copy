@@ -251,6 +251,11 @@ class App extends Component {
   };
 
   render() {
+    // console.log("users", this.state.users);
+    // console.log("relationships", this.state.relationships);
+    // console.log("currUser", this.state.currUser);
+    // console.log("poems", this.state.poems);
+    // console.log("shownUser", this.props.store.getState().shownUser);
     return (
       <div>
         {this.props.location.pathname !== "/login" &&
@@ -302,8 +307,7 @@ class App extends Component {
               this.state.users.length !== 0 &&
               this.state.relationships.length !== 0 &&
               this.state.currUser.length !== 0 &&
-              this.state.poems.length !== 0 &&
-              this.props.store.getState().shownUser.length !== 0
+              this.state.poems.length !== 0
             ) {
               return (
                 <ProfileContainer

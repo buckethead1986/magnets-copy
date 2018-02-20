@@ -4,7 +4,7 @@ export default function reducer(
     words: [],
     allWords: {},
     image: "",
-    shownUser: [],
+    shownUser: {},
     wordsList: 1,
     wordsGroup: {}
   },

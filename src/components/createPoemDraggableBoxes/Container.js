@@ -10,7 +10,7 @@ import DraggableBox from "./DraggableBox";
 //I spent a while working on the problem, but couldn't get a workable solution
 const styles = {
   height: "600px",
-  border: "1px solid black",
+  border: "solid",
   borderRightStyle: "",
   borderLeftStyle: "",
   position: "relative"
