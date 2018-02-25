@@ -113,7 +113,6 @@ class ProfileContainer extends React.Component {
 
   renderShownUserPoems = () => {
     const shownUser = this.props.store.getState().shownUser;
-    // console.log(shownUser, this.state.shownUser);
     let mappedShownUserPoems;
     if (Object.keys(shownUser).length !== 0) {
       mappedShownUserPoems = shownUser.poems.map((poem, index) => {
@@ -144,8 +143,6 @@ class ProfileContainer extends React.Component {
   };
 
   render() {
-    // console.log(this.props.store.getState(), this.state.showUser);
-
     return (
       <div>
         <div style={{ float: "left" }}>
