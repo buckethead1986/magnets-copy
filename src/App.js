@@ -40,6 +40,10 @@ class App extends Component {
   logout = () => {
     localStorage.removeItem("token");
     this.setState({ users: [], currUser: [], favorites: [] });
+    this.props.store.dispatch({
+      type: "CHANGE_SHOWN_USER",
+      payload: {}
+    });
     this.props.history.push("/login");
   };
 

@@ -30,7 +30,10 @@ class Poem extends React.Component {
   //updates other poemIndexCards to reflect the new followed/following state when you follow a user
   componentWillReceiveProps(nextProps) {
     const favorite = nextProps.favorites.filter(poem => {
-      return poem.poem_id === nextProps.poem.id;
+      return (
+        poem.poem_id === nextProps.poem.id &&
+        poem.user_id === nextProps.currUser[0].id
+      );
     });
     if (favorite.length !== 0) {
       this.setState(
