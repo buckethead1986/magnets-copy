@@ -1,5 +1,5 @@
 import React from "react";
-import { RaisedButton, FlatButton, TextField } from "material-ui";
+import { RaisedButton, TextField } from "material-ui";
 
 const styles = {
   textAlign: "left",
