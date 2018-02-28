@@ -37,7 +37,7 @@ export default class SelectFieldDropdown extends Component {
     return (
       <SelectField
         multiple={true}
-        hintText="Select poems by user"
+        hintText="Select poems by user(s)"
         value={values}
         onChange={this.handleChange}
       >

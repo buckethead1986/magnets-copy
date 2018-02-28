@@ -9,8 +9,6 @@ import PoemIndex from "./components/showPoem/PoemIndex";
 import ProfileContainer from "./components/containers/ProfileContainer";
 import ChangeProfileImage from "./components/profile/ChangeProfileImage";
 
-// const url = "http://localhost:3001/api/v1";
-
 const url = "https://magnets-api.herokuapp.com/api/v1";
 
 const defaultImage =
@@ -105,6 +103,7 @@ class App extends Component {
       });
   };
 
+  //fetch request to API for the current User with authorization token, updates currUser state and calls updateShownUser
   fetchCurrentUser = () => {
     fetch(`${url}/current_user`, {
       headers: {
@@ -125,6 +124,8 @@ class App extends Component {
       });
   };
 
+  //updates redux store with user avatar and shownUser information.
+  //shownUser is the user whos information currently shows on the profile page.
   updateShownUser = user => {
     if (this.state.currUser.length !== 0) {
       this.props.store.dispatch({
@@ -143,6 +144,7 @@ class App extends Component {
     });
   };
 
+  //fetches relationships between users
   fetchRelationships = () => {
     fetch(`${url}/relationships`)
       .then(res => res.json())
@@ -153,6 +155,7 @@ class App extends Component {
       );
   };
 
+  //fetches all poems
   fetchPoems = () => {
     fetch(`${url}/poems`)
       .then(res => res.json())
@@ -163,6 +166,7 @@ class App extends Component {
       );
   };
 
+  //fetches all favorited_poems relationships
   fetchFavorites = () => {
     fetch(`${url}/favorited_poems`)
       .then(res => res.json())
@@ -173,6 +177,7 @@ class App extends Component {
       );
   };
 
+  //fetches all words to be used. Stretch goal is to allow users to add new words. Currently, only possible via back end
   fetchWords = () => {
     fetch(`${url}/words`)
       .then(res => res.json())
@@ -254,12 +259,21 @@ class App extends Component {
     });
   };
 
+  //all the routes for the website, with the corresponding props being passed down.
+  //The navbar only appears on non-login/signup pages
+  //The routes are:
+  //profile (main show page, holds user dropdown, and the poems and avatar of the currently selected user)
+  //profile/new (changes your avatar image),
+  //poems (shows all poems, selectable by favorites and/or by multiple selection of users)
+  //poem/new (creation of new poems)
+  //poems/:id (show page for a single poem)
+
+  //all poems, wherever displayed, are able to be favorited and the author followed (and updates immediately. That was a challenge,
+  //especially when showing just favorited poems on the poems index page).
+
+  //A stretch goal is for de-favoriting to maintain the current scroll location on the page.
+  //Currently, it rerenders back at the top of the page, which bugs me.
   render() {
-    // console.log("users", this.state.users);
-    // console.log("relationships", this.state.relationships);
-    // console.log("currUser", this.state.currUser);
-    // console.log("poems", this.state.poems);
-    // console.log("shownUser", this.props.store.getState().shownUser);
     return (
       <div>
         {this.props.location.pathname !== "/login" &&
@@ -450,13 +464,5 @@ class App extends Component {
     );
   }
 }
-
-// function mapStateToProps(state, ownProps) {
-//   return {
-//     shownUser: state.shownUser
-//   };
-// }
-//
-// export default connect(mapStateToProps)(withRouter(App));
 
 export default withRouter(App);

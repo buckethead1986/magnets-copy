@@ -22,6 +22,7 @@ class Poem extends React.Component {
       );
   }
 
+  //renders specific poem card for the poem show page
   render() {
     return (
       <ShowPoemCard

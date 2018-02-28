@@ -3,13 +3,15 @@ import { DragDropContext } from "react-dnd";
 import { RaisedButton } from "material-ui";
 import { connect } from "react-redux";
 import HTML5Backend from "react-dnd-html5-backend";
-import Container from "../createPoemDraggableBoxes/Container";
-import SelectWordsListDropdown from "../createPoemDraggableBoxes/SelectWordsListDropdown";
-import CustomDragLayer from "../createPoemDraggableBoxes/CustomDragLayer";
+import Container from "../draggableWordBoxes/Container";
+import SelectWordsListDropdown from "../draggableWordBoxes/SelectWordsListDropdown";
+import CustomDragLayer from "../draggableWordBoxes/CustomDragLayer";
 
 let output = "";
 
 class CreatePoemContainer extends Component {
+  //submits a poem. Formats the used words into the correct form for the API, posts it, removes the poem,
+  //updates the users' information for the profile, and redirects to the show page for that poem
   submitPoem = () => {
     const headers = {
       Accept: "application/json",
@@ -47,6 +49,8 @@ class CreatePoemContainer extends Component {
     });
   }
 
+  //modifies the currently shown group of words based on SelectWordsListDropdown choice, removes any currently used words from poem creation area
+  //I don't like using forceUpdate(), but I couldn't get it working otherwise
   filteredWords = words => {
     const wordsGroup = this.props.words.filter(word => {
       return word.group === words;
@@ -60,17 +64,16 @@ class CreatePoemContainer extends Component {
     this.forceUpdate();
   };
 
+  //removes the words in the poem creation box
   removePoem = () => {
-    console.log(this.props.store.getState().words);
     this.props.store.dispatch({ type: "REMOVE_POEM" });
     output = "";
-    console.log(this.props.store.getState().words);
   };
 
   //'content' is the formatted poem for posting to the API, as a human would read it, with word id, title, and x,y coordinates of each word (for later viewing)
   formatPoem = (body, length, content) => {
     let x = window.innerWidth;
-    let y = 600; //Container.js styles.height
+    let y = 600; //draggableWordBoxes/Container constant styles.height. Not worth settng as a prop to pass to both components
     let currentWord = "";
     for (var word in body) {
       if (body[word].top < y - body[word].height / 2) {

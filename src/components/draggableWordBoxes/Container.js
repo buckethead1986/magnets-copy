@@ -77,6 +77,7 @@ class Container extends Component {
   };
 
   //sets x,y coordinates for equal spacing between draggable boxes when rendered
+  //drops down a row if the box would hit the right edge of the screen
   updateWordsWithWidthAndHeight = element => {
     this.props.store.dispatch({
       type: "ADD_WIDTH_AND_HEIGHT",

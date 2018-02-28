@@ -15,6 +15,7 @@ let styles = {
   position: "relative"
 };
 
+//specific poem card, has favorite/unfavorite and follow/unfollow methods, updates state and redux store on change
 class Poem extends React.Component {
   constructor() {
     super();

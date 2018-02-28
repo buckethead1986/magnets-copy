@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+//shown poem word box
 const styles = {
   border: "1px dashed black",
   padding: "0.3rem 0.3rem",

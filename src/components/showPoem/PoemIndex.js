@@ -92,6 +92,7 @@ class PoemIndex extends React.Component {
     }
   };
 
+  //renders all poem cards
   render() {
     const poems = this.state.filteredPoems.map((poem, index) => {
       return (

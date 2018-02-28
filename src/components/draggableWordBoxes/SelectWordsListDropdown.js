@@ -16,6 +16,7 @@ export default class SelectWordsListDropdown extends Component {
     });
   }
 
+  //populates state with group and category of selectable lists of words (e.g. '5, Science')
   getGroupAndCategory = () => {
     const groups = this.props.words.map(word => {
       return { group: word.group, category: word.category };
@@ -30,6 +31,8 @@ export default class SelectWordsListDropdown extends Component {
     return duplicatesRemoved;
   };
 
+  //changes state and store based on currently selected word group
+  //the ADD_ALL_WORDS dispatch maintains proper spacing between draggable word boxes on word group switch
   handleChange = (event, index, values) => {
     this.props.store.dispatch({ type: "ADD_ALL_WORDS", payload: {} });
     this.setState({ values }, () =>
@@ -38,6 +41,7 @@ export default class SelectWordsListDropdown extends Component {
     this.props.store.dispatch({ type: "CHANGE_WORDS_LIST", payload: values });
   };
 
+  //possible dropdown selections
   menuItems(values) {
     return this.state.groups.map(group => (
       <MenuItem
