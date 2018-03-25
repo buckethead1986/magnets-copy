@@ -20,7 +20,6 @@ export default class Navbar extends React.Component {
         this.props.showPoems();
         break;
       default:
-        console.log("nothing selected");
     }
   };
 
