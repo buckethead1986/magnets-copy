@@ -1,5 +1,6 @@
 import React from "react";
 import { RaisedButton, TextField } from "material-ui";
+import { Link } from "react-router-dom";
 
 const styles = {
   textAlign: "left",
@@ -51,6 +52,8 @@ class Login extends React.Component {
 
   //All the red if from the single quote in "you're" (line 63). I spent some time researching this and it appears to be a 'Yeah, but it doesnt break, so theres no pressure to fix it' issue
   render() {
+    // const link = <a href={this.props.history.push("/profile")}>log in</a>;
+
     return (
       <div>
         <p />
@@ -69,6 +72,11 @@ class Login extends React.Component {
             Change the word set for new poems, customize your avatar, browse all
             the poems (or just those of Users of your choice), favorite and
             follow other Users and their creations, and have some fun!
+          </p>
+
+          <p />
+          <p style={styles}>
+            Click <Link to="/tutorial">here</Link> for a tutorial
           </p>
         </div>
         <h2>Login</h2>

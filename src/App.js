@@ -8,6 +8,7 @@ import ShowPoem from "./components/showPoem/ShowPoem";
 import PoemIndex from "./components/showPoem/PoemIndex";
 import ProfileContainer from "./components/containers/ProfileContainer";
 import ChangeProfileImage from "./components/profile/ChangeProfileImage";
+import Tutorial from "./components/tutorial/Tutorial";
 
 const url = "https://magnets-api.herokuapp.com/api/v1";
 
@@ -277,7 +278,8 @@ class App extends Component {
     return (
       <div>
         {this.props.location.pathname !== "/login" &&
-        this.props.location.pathname !== "/signup" ? (
+        this.props.location.pathname !== "/signup" &&
+        this.props.location.pathname !== "/tutorial" ? (
           <Navbar
             logout={this.logout}
             makePoem={this.makePoem}
@@ -317,6 +319,13 @@ class App extends Component {
             )}
           />
         </div>
+        <Route
+          exact
+          path="/tutorial"
+          render={props => {
+            return <Tutorial {...props} />;
+          }}
+        />
         <Route
           exact
           path="/profile"
