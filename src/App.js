@@ -62,6 +62,10 @@ class App extends Component {
     this.props.history.push("/profile");
   };
 
+  showTutorial = () => {
+    this.props.history.push("/tutorial");
+  };
+
   showPoems = () => {
     this.props.history.push("/poems");
   };
@@ -286,6 +290,7 @@ class App extends Component {
             profileLink={this.profileLink}
             showUsers={this.showUsers}
             showPoems={this.showPoems}
+            showTutorial={this.showTutorial}
           />
         ) : (
           ""

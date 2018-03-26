@@ -19,6 +19,9 @@ export default class Navbar extends React.Component {
       case 3:
         this.props.showPoems();
         break;
+      case 4:
+        this.props.showTutorial();
+        break;
       default:
     }
   };
@@ -36,8 +39,9 @@ export default class Navbar extends React.Component {
             }
           >
             <MenuItem value={1} primaryText="My Profile" />
-            <MenuItem value={2} primaryText="Make Poem" />
-            <MenuItem value={3} primaryText="Poems" />
+            <MenuItem value={2} primaryText="Make a New Poem" />
+            <MenuItem value={3} primaryText="All Poems" />
+            <MenuItem value={4} primaryText="Tutorial" />
           </IconMenu>
         </ToolbarGroup>
         <ToolbarGroup lastChild={true}>
