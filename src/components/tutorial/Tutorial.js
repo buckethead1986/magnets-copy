@@ -64,7 +64,7 @@ class Tutorial extends React.Component {
         <br />
         <h4>
           That's it. I hope you have some fun making profound, silly, and
-          profoundly silly poems'!
+          profoundly silly poems!
         </h4>
         {this.returnButton()}
       </div>
