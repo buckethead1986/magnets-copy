@@ -32,7 +32,7 @@ class Tutorial extends React.Component {
           Welcome to the tutorial! Scroll down through some screenshots to learn
           how to navigate Magnets
         </h3>
-        <h4 align="center">
+        <h4>
           Upon logging in, you'll arrive at your profile page. All your poems
           will display, and you can select other users on the left to see their
           poems. All poems can be favorited and the poems author can be followed
