@@ -64,7 +64,7 @@ class Signup extends React.Component {
       .then(() => this.props.history.push("/profile"));
   };
 
-  //All the red if from the single quote in "you're" (line 78). I spent some time researching this and it appears to be a 'Yeah, but it doesnt break, so theres no pressure to fix it' issue
+  //All the red is from the single quote in "you're" (line 78). I spent some time researching this and it appears to be a 'Yeah, but it doesnt break, so theres no pressure to fix it' issue
   render() {
     return (
       <div>

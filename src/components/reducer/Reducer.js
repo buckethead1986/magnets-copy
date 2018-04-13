@@ -31,7 +31,7 @@ export default function reducer(
       }
       return Object.assign({}, state, { words: poem });
 
-    //adds
+    //adds all words to the store
     case "ADD_ALL_WORDS":
       return Object.assign({}, state, { allWords: action.payload });
 
