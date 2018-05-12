@@ -5,6 +5,7 @@ import AccountBox from "material-ui/svg-icons/action/account-box";
 import IconButton from "material-ui/IconButton";
 import StarBorder from "material-ui/svg-icons/toggle/star-border";
 import Star from "material-ui/svg-icons/toggle/star";
+import Clear from "material-ui/svg-icons/content/clear";
 
 const styles = {
   width: 500,
@@ -213,6 +214,30 @@ class Poem extends React.Component {
     this.changeFollowState();
   };
 
+  deleteable = () => {
+    if (this.props.currUser[0].id === this.props.poem.user_id) {
+      return (
+        <IconButton tooltip={`Delete Poem`} tooltipPosition="bottom-center">
+          <Clear onClick={this.deletePoem} />
+        </IconButton>
+      );
+    }
+  };
+
+  deletePoem = () => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    fetch(`${this.props.url}/poems/${this.props.poem.id}`, {
+      method: "DELETE",
+      headers: headers
+    })
+      .then(() => this.props.fetchPoems())
+      .then(() => this.props.updateUsers());
+    // .then(() => this.props.store.dispatch({type: 'CHANGE_SHOWN_USER', payload: this.props.}))
+  };
+
   renderBox = (word, index) => {
     return (
       <div key={index}>
@@ -273,6 +298,7 @@ class Poem extends React.Component {
         <CardActions>
           {this.favoriteUnfavorite()}
           {this.followedUnfollowed(poemAuthor)}
+          {this.deleteable()}
         </CardActions>
       </Card>
     );

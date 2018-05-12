@@ -11,6 +11,7 @@ import ChangeProfileImage from "./components/profile/ChangeProfileImage";
 import Tutorial from "./components/tutorial/Tutorial";
 
 const url = "https://magnets-api.herokuapp.com/api/v1";
+// const url = "http://localhost:3001/api/v1";
 
 const defaultImage =
   "https://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
@@ -89,6 +90,20 @@ class App extends Component {
 
   changeProfileImageLink = () => {
     this.props.history.push("/profile/new");
+  };
+
+  //modifies state when a user deletes a poem, redirects to main profile page
+  updateUsers = () => {
+    const id = this.state.currUser[0].id;
+    fetch(`${url}/users`)
+      .then(res => res.json())
+      .then(json =>
+        this.setState({
+          users: json,
+          currUser: json.filter(user => user.id === id)
+        })
+      )
+      .then(() => this.profileLink());
   };
 
   fetchUserInformation = () => {
@@ -459,12 +474,15 @@ class App extends Component {
                     currUser={this.state.currUser}
                     users={this.state.users}
                     poems={this.state.poems}
+                    fetchPoems={this.fetchPoems}
+                    updateUsers={this.updateUsers}
                     followUser={this.followUser}
                     unFollowUser={this.unFollowUser}
                     relationships={this.state.relationships}
                     favoritePoem={this.favoritePoem}
                     unFavoritePoem={this.unFavoritePoem}
                     favorites={this.state.favorites}
+                    profileLink={this.profileLink}
                     {...props}
                   />
                 </div>

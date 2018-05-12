@@ -20,24 +20,18 @@ class ChangeProfileImage extends React.Component {
   }
 
   handleClick = () => {
-    this.setState(
-      prevState => {
-        return {
-          changingImage: !prevState.changingImage
-        };
-      },
-      () => console.log(this.state.changingImage)
-    );
+    this.setState(prevState => {
+      return {
+        changingImage: !prevState.changingImage
+      };
+    });
   };
 
   handleChange = e => {
-    this.setState(
-      {
-        image: e.target.value,
-        url: e.target.value
-      },
-      () => console.log(this.state.image)
-    );
+    this.setState({
+      image: e.target.value,
+      url: e.target.value
+    });
   };
 
   handleSubmit = () => {

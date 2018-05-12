@@ -28,14 +28,17 @@ class ProfileContainer extends React.Component {
   //keeps the user being shown constant, if you navigate to a poem and back
   //(click on a user, click a poem, click back, stays on that user, doesnt default back to your profile)
   componentWillReceiveProps(nextProps) {
-    if (this.state.shownUser[0] !== this.props.currUser[0]) {
+    if (
+      this.state.shownUser[0] !== this.props.currUser[0] ||
+      this.props.poems !== nextProps.poems
+    ) {
       this.setState({
-        poems: this.props.poems.filter(poem => {
+        poems: nextProps.poems.filter(poem => {
           return poem.user_id === this.props.currUser[0].id;
         }),
-        shownUser: this.props.users.filter(user => {
+        shownUser: nextProps.users.filter(user => {
           return user.id === this.props.currUser[0].id;
-        })
+        })[0]
       });
     }
   }
@@ -112,7 +115,7 @@ class ProfileContainer extends React.Component {
   };
 
   renderShownUserPoems = () => {
-    const shownUser = this.props.store.getState().shownUser;
+    const shownUser = this.state.shownUser;
     let mappedShownUserPoems;
     if (Object.keys(shownUser).length !== 0) {
       mappedShownUserPoems = shownUser.poems.map((poem, index) => {

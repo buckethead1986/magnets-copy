@@ -31,12 +31,16 @@ class Poem extends React.Component {
         currUser={this.props.currUser}
         users={this.props.users}
         poem={this.state.poem}
+        poems={this.props.poems}
+        fetchPoems={this.props.fetchPoems}
+        updateUsers={this.props.updateUsers}
         followUser={this.props.followUser}
         unFollowUser={this.props.unFollowUser}
         relationships={this.props.relationships}
         favoritePoem={this.props.favoritePoem}
         unFavoritePoem={this.props.unFavoritePoem}
         favorites={this.props.favorites}
+        profileLink={this.props.profileLink}
       />
     );
   }
