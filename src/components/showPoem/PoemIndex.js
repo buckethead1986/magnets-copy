@@ -3,6 +3,7 @@ import PoemIndexCard from "./PoemIndexCard";
 import Columns from "react-columns";
 import SelectUsersDropdown from "../selectUserDropdown/SelectUsersDropdown";
 
+//shows all poems as cards, includes favorite and following actions.
 class PoemIndex extends React.Component {
   constructor() {
     super();
@@ -14,6 +15,7 @@ class PoemIndex extends React.Component {
       listOfFilteredUsers: []
     };
   }
+
   componentWillMount() {
     const favoritedPoems = this.props.poems.filter(poem => {
       return poem.favorited_by.some(user => {
