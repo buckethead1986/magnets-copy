@@ -85,6 +85,7 @@ class ProfileContainer extends React.Component {
     return text;
   };
 
+  //does what the function name implies.
   renderShownUserAvatar = () => {
     if (
       this.props.store.getState().shownUser.id === this.props.currUser[0].id
@@ -114,6 +115,7 @@ class ProfileContainer extends React.Component {
     }
   };
 
+  //depending on the shown user, updates rendered poem list
   renderShownUserPoems = () => {
     const shownUser = this.state.shownUser;
     let mappedShownUserPoems;
