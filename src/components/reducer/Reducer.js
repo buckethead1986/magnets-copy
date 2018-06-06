@@ -19,11 +19,12 @@ export default function reducer(
     //vs in the component before calling store.dispatch. If one is 'better' for speed or by convention, please let me know.
     case "ADD_WORD":
       let poem = [];
+      let width = document.getElementById("poemColumn").offsetWidth;
       for (var word in action.payload) {
         if (
           action.payload[word].group === state.wordsList &&
-          action.payload[word].left > window.innerWidth / 2 - 250 &&
-          action.payload[word].left < window.innerWidth / 2 + 250 &&
+          action.payload[word].left > 0 &&
+          action.payload[word].left < width &&
           action.payload[word].top > 200
         ) {
           poem.push(action.payload[word]);

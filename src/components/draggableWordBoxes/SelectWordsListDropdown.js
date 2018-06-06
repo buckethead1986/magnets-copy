@@ -57,7 +57,7 @@ export default class SelectWordsListDropdown extends Component {
     return (
       <SelectField
         multiple={false}
-        hintText="Select word lists"
+        hintText="Select word list"
         value={values}
         onChange={this.handleChange}
       >

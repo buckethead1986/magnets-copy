@@ -1,17 +1,25 @@
 import React, { Component } from "react";
 import { withRouter, Route } from "react-router-dom";
+
+// import { Grid, Row, Col } from "react-flexbox-grid";
+
+// import { RaisedButton } from "material-ui";
 import CreatePoemContainer from "./components/containers/CreatePoemContainer";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
 import Navbar from "./components/navbar/Navbar";
 import ShowPoem from "./components/showPoem/ShowPoem";
+import GuestShowPoem from "./components/showPoem/GuestShowPoem";
 import PoemIndex from "./components/showPoem/PoemIndex";
 import ProfileContainer from "./components/containers/ProfileContainer";
+import GuestProfileContainer from "./components/containers/GuestProfileContainer";
 import ChangeProfileImage from "./components/profile/ChangeProfileImage";
-import Tutorial from "./components/tutorial/Tutorial";
+// import Tutorial from "./components/tutorial/Tutorial";
+import GuestCreatePoemContainer from "./components/containers/GuestCreatePoemContainer";
+import UserDrawer from "./components/profile/UserDrawer";
 
-const url = "https://magnets-api.herokuapp.com/api/v1";
-// const url = "http://localhost:3001/api/v1";
+// const url = "https://magnets-api.herokuapp.com/api/v1";
+const url = "http://localhost:3001/api/v1";
 
 const defaultImage =
   "https://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
@@ -32,10 +40,16 @@ class App extends Component {
       this.fetchUserInformation();
     } else {
       if (!window.location.href.includes("signup")) {
-        this.props.history.push("/login");
+        this.fetchRelationships();
+        this.fetchUsers();
+        this.fetchPoems();
+        this.fetchWords();
+        this.props.history.push("/guest");
       }
     }
   }
+
+  componentWillReceiveProps(nextProps) {}
 
   logout = () => {
     localStorage.removeItem("token");
@@ -55,6 +69,10 @@ class App extends Component {
     this.props.history.push("/login");
   };
 
+  guestPoemCreationLink = () => {
+    this.props.history.push("/guest");
+  };
+
   profileLink = () => {
     this.props.store.dispatch({
       type: "CHANGE_SHOWN_USER",
@@ -63,8 +81,24 @@ class App extends Component {
     this.props.history.push("/profile");
   };
 
-  showTutorial = () => {
-    this.props.history.push("/tutorial");
+  //Gets called when a guest user clicks a user to view their poems.  Calls a fetch to update to latest set of poems.
+  guestUsersLink = id => {
+    fetch(`${url}/users`)
+      .then(res => res.json())
+      .then(json => this.setState({ users: json }))
+      .then(() => {
+        this.props.store.dispatch({
+          type: "CHANGE_SHOWN_USER",
+          payload: this.state.users.filter(user => {
+            return user.id === id;
+          })[0]
+        });
+        this.props.history.push(`/guest/users/${id}`);
+      });
+  };
+
+  helpLink = () => {
+    this.props.history.push("/help");
   };
 
   showPoems = () => {
@@ -76,6 +110,15 @@ class App extends Component {
     this.props.history.push(`/poems/${id}`);
   };
 
+  guestShowPoemLink = id => {
+    this.props.history.push(`/guest/poems/${id}`);
+  };
+
+  guestShowPoemsLink = id => {
+    this.props.history.push(`/guest/poems`);
+  };
+
+  //change all these to '-Link'
   makePoem = () => {
     this.props.history.push("/poem/new");
   };
@@ -121,6 +164,12 @@ class App extends Component {
         this.fetchFavorites();
         this.fetchWords();
       });
+  };
+
+  fetchUsers = () => {
+    fetch(`${url}/users`)
+      .then(res => res.json())
+      .then(json => this.setState({ users: json }));
   };
 
   //fetch request to API for the current User with authorization token, updates currUser state and calls updateShownUser
@@ -279,6 +328,24 @@ class App extends Component {
     });
   };
 
+  changeShownUser = id => {
+    const shownUser = this.state.users.filter(user => {
+      return user.id === id;
+    })[0];
+    this.setState({
+      poems: this.state.poems.filter(poem => {
+        return poem.user_id === id;
+      }),
+      shownUser: this.state.users.filter(user => {
+        return user.id === shownUser.id;
+      })[0]
+    });
+    this.props.store.dispatch({
+      type: "CHANGE_SHOWN_USER",
+      payload: shownUser
+    });
+  };
+
   //all the routes for the website, with the corresponding props being passed down.
   //The navbar only appears on non-login/signup pages
   //The routes are:
@@ -294,206 +361,36 @@ class App extends Component {
   //A stretch goal is for de-favoriting to maintain the current scroll location on the page.
   //Currently, it rerenders back at the top of the page, which bugs me.
   render() {
-    return (
-      <div>
-        {this.props.location.pathname !== "/login" &&
-        this.props.location.pathname !== "/signup" &&
-        this.props.location.pathname !== "/tutorial" ? (
-          <Navbar
-            logout={this.logout}
-            makePoem={this.makePoem}
-            profileLink={this.profileLink}
+    if (this.state.users.length !== 0) {
+      return (
+        <div>
+          <UserDrawer
+            url={url}
+            users={this.state.users}
+            words={this.state.words}
+            poems={this.state.poems}
+            store={this.props.store}
+            showUser={this.showUser}
             showUsers={this.showUsers}
+            showPoem={this.showPoem}
             showPoems={this.showPoems}
-            showTutorial={this.showTutorial}
-          />
-        ) : (
-          ""
-        )}
-        <div style={{ textAlign: "center" }}>
-          <Route
-            exact
-            path="/signup"
-            render={props => (
-              <Signup
-                url={url}
-                fetchUsers={this.fetchUserInformation}
-                login={this.login}
-                defaultImage={this.defaultImage}
-                {...props}
-              />
-            )}
+            profileLink={this.profileLink}
+            login={this.login}
+            fetchPoems={this.fetchPoems}
+            fetchUsers={this.fetchUserInformation}
+            relationships={this.state.relationships}
+            updateUsers={this.updateUsers}
+            guestUsersLink={this.guestUsersLink}
+            guestShowPoemLink={this.guestShowPoemLink}
+            guestPoemCreationLink={this.guestPoemCreationLink}
+            guestShowPoemsLink={this.guestShowPoemsLink}
+            helpLink={this.helpLink}
           />
         </div>
-        <div style={{ textAlign: "center" }}>
-          <Route
-            exact
-            path="/login"
-            render={props => (
-              <Login
-                url={url}
-                fetchUsers={this.fetchUserInformation}
-                signup={this.signup}
-                {...props}
-              />
-            )}
-          />
-        </div>
-        <Route
-          exact
-          path="/tutorial"
-          render={props => {
-            return <Tutorial {...props} />;
-          }}
-        />
-        <Route
-          exact
-          path="/profile"
-          render={() => {
-            if (
-              this.state.users.length !== 0 &&
-              this.state.relationships.length !== 0 &&
-              this.state.currUser.length !== 0 &&
-              this.state.poems.length !== 0
-            ) {
-              return (
-                <ProfileContainer
-                  url={url}
-                  store={this.props.store}
-                  showPoem={this.showPoem}
-                  currUser={this.state.currUser}
-                  users={this.state.users}
-                  showUser={this.showUser}
-                  poems={this.state.poems}
-                  followUser={this.followUser}
-                  unFollowUser={this.unFollowUser}
-                  relationships={this.state.relationships}
-                  favoritePoem={this.favoritePoem}
-                  unFavoritePoem={this.unFavoritePoem}
-                  favorites={this.state.favorites}
-                  changeProfileImageLink={this.changeProfileImageLink}
-                  showUsers={this.showUsers}
-                />
-              );
-            } else {
-              return "";
-            }
-          }}
-        />
-        <Route
-          exact
-          path="/profile/new"
-          render={() => {
-            if (this.state.currUser.length !== 0) {
-              return (
-                <ChangeProfileImage
-                  url={url}
-                  store={this.props.store}
-                  currUser={this.state.currUser}
-                  profileLink={this.profileLink}
-                  fetchCurrentUser={this.fetchCurrentUser}
-                />
-              );
-            } else {
-              return "";
-            }
-          }}
-        />
-        <Route
-          exact
-          path="/poems"
-          render={() => {
-            if (
-              this.state.currUser.length !== 0 &&
-              this.state.relationships.length !== 0 &&
-              this.state.users.length !== 0 &&
-              this.state.poems.length !== 0
-            ) {
-              return (
-                <div>
-                  <PoemIndex
-                    url={url}
-                    showPoem={this.showPoem}
-                    currUser={this.state.currUser}
-                    users={this.state.users}
-                    poems={this.state.poems}
-                    followUser={this.followUser}
-                    unFollowUser={this.unFollowUser}
-                    relationships={this.state.relationships}
-                    favoritePoem={this.favoritePoem}
-                    unFavoritePoem={this.unFavoritePoem}
-                    favorites={this.state.favorites}
-                    defaultImage={this.defaultImage}
-                  />
-                </div>
-              );
-            } else {
-              return "";
-            }
-          }}
-        />
-        <Route
-          exact
-          path="/poem/new"
-          render={() => {
-            if (
-              this.state.currUser.length !== 0 &&
-              this.state.words.length !== 0
-            ) {
-              return (
-                <div>
-                  <CreatePoemContainer
-                    url={url}
-                    users={this.state.users}
-                    store={this.props.store}
-                    currUser={this.state.currUser}
-                    showPoem={this.showPoem}
-                    words={this.state.words}
-                    fetchUsers={this.fetchUserInformation}
-                  />
-                </div>
-              );
-            } else {
-              return "";
-            }
-          }}
-        />
-        <Route
-          exact
-          path="/poems/:id"
-          render={props => {
-            if (
-              this.state.currUser.length !== {} &&
-              this.state.poems.length !== 0
-            ) {
-              return (
-                <div>
-                  <ShowPoem
-                    url={url}
-                    showPoems={this.showPoems}
-                    currUser={this.state.currUser}
-                    users={this.state.users}
-                    poems={this.state.poems}
-                    fetchPoems={this.fetchPoems}
-                    updateUsers={this.updateUsers}
-                    followUser={this.followUser}
-                    unFollowUser={this.unFollowUser}
-                    relationships={this.state.relationships}
-                    favoritePoem={this.favoritePoem}
-                    unFavoritePoem={this.unFavoritePoem}
-                    favorites={this.state.favorites}
-                    profileLink={this.profileLink}
-                    {...props}
-                  />
-                </div>
-              );
-            } else {
-              return "";
-            }
-          }}
-        />
-      </div>
-    );
+      );
+    } else {
+      return "";
+    }
   }
 }
 

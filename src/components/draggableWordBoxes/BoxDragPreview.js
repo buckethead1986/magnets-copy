@@ -4,9 +4,7 @@ import shouldPureComponentUpdate from "./shouldPureComponentUpdate";
 import Box from "./Box";
 
 const styles = {
-  display: "inline-block",
-  transform: "",
-  WebkitTransform: ""
+  display: "inline-block"
 };
 
 export default class BoxDragPreview extends Component {
@@ -15,14 +13,6 @@ export default class BoxDragPreview extends Component {
   };
 
   shouldComponentUpdate = shouldPureComponentUpdate;
-
-  componentDidMount() {
-    this.interval = setInterval(this.tick, 500);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
 
   render() {
     const { title } = this.props;

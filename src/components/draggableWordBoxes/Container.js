@@ -9,25 +9,32 @@ import DraggableBox from "./DraggableBox";
 //stretch goal is for draggable boxes' positions to re-render on window resize.
 //I spent a while working on the problem, but couldn't get a workable solution
 const styles = {
-  height: "600px",
-  border: "solid",
+  height: "900px",
+  width: "100%",
   borderRightStyle: "",
   borderLeftStyle: "",
+  borderTopStyle: "",
   position: "relative"
 };
 
 const poemStyles = {
-  zIndex: -1,
+  // zIndex: -1,
   textAlign: "center",
   marginTop: "200px",
-  marginLeft: window.innerWidth / 2 - 250,
-  marginRight: window.innerWidth / 2 - 250,
+  // backgroundColor: "#9498a1",
+  // borderTopRightRadius: "50px",
+  // borderTopLeftRadius: "50px",
+  // borderBottomLeftRadius: "50px",
+  // borderBottomRightRadius: "50px",
+  borderRadius: "50px 50px 50px 50px",
+  // borderBottomRightRadius: "50px",
+  // borderBottomLeftRadius: "50px",
   position: "absolute",
-  height: "398px",
-  width: "500px",
+  height: "550px",
+  width: "100%",
+  border: "#2196F3",
   borderTopStyle: "solid",
-  borderLeftStyle: "solid",
-  borderRightStyle: "solid"
+  borderBottomStyle: "solid"
 };
 
 const boxTarget = {
@@ -83,6 +90,7 @@ class Container extends Component {
       type: "ADD_WIDTH_AND_HEIGHT",
       payload: element
     });
+    let width = document.getElementById("poemColumn").offsetWidth;
     const dimensions = this.props.store.getState().allWords;
     const boxList = {};
     for (var wordBox in this.state.boxes) {
@@ -97,15 +105,15 @@ class Container extends Component {
       Object.keys(this.props.store.getState().allWords).length ===
       Object.keys(boxList).length
     ) {
-      let x = 0;
+      let x = 2;
       let y = 5;
       const tempBoxes = Object.assign({}, boxList);
       for (var box in tempBoxes) {
         tempBoxes[box].width = dimensions[box].width;
         tempBoxes[box].height = dimensions[box].height;
-        if (x + dimensions[box].width > window.innerWidth) {
+        if (x + dimensions[box].width > width) {
           y += dimensions[box].height + 10;
-          x = 0;
+          x = 2;
         }
         tempBoxes[box].left = x;
         tempBoxes[box].top = y;
@@ -120,6 +128,7 @@ class Container extends Component {
   };
 
   moveBox(id, left, top) {
+    console.log(left, top);
     this.props.store.dispatch({ type: "INCREASE_Z" });
     this.setState(
       update(this.state, {

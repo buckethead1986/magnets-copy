@@ -4,9 +4,11 @@ import PropTypes from "prop-types";
 import shouldPureComponentUpdate from "./shouldPureComponentUpdate";
 
 const styles = {
-  border: "1px dashed black",
+  border: "1px solid black",
+  borderRadius: "4px",
   padding: "0.3rem 0.3rem",
-  cursor: "move"
+  cursor: "move",
+  fontSize: 18
 };
 
 export default class Box extends Component {
@@ -25,14 +27,13 @@ export default class Box extends Component {
   }
 
   render() {
-    const { title, yellow } = this.props;
-    const backgroundColor = yellow ? "yellow" : "white";
+    const { title } = this.props;
 
     return (
       <div
         ref="target"
         id={this.props.id}
-        style={{ ...styles, backgroundColor }}
+        style={{ ...styles, backgroundColor: "white" }}
       >
         {title}
       </div>
