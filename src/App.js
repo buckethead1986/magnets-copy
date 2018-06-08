@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import { withRouter, Route } from "react-router-dom";
-
-// import { Grid, Row, Col } from "react-flexbox-grid";
-
-// import { RaisedButton } from "material-ui";
+import { withRouter } from "react-router-dom";
 import CreatePoemContainer from "./components/containers/CreatePoemContainer";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
@@ -12,9 +8,7 @@ import ShowPoem from "./components/showPoem/ShowPoem";
 import GuestShowPoem from "./components/showPoem/GuestShowPoem";
 import PoemIndex from "./components/showPoem/PoemIndex";
 import ProfileContainer from "./components/containers/ProfileContainer";
-import GuestProfileContainer from "./components/containers/GuestProfileContainer";
 import ChangeProfileImage from "./components/profile/ChangeProfileImage";
-// import Tutorial from "./components/tutorial/Tutorial";
 import GuestCreatePoemContainer from "./components/containers/GuestCreatePoemContainer";
 import UserDrawer from "./components/profile/UserDrawer";
 
@@ -49,7 +43,12 @@ class App extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {}
+  componentWillReceiveProps(nextProps) {
+    const token = localStorage.getItem("token");
+    if (token) {
+      this.fetchUserInformation();
+    }
+  }
 
   logout = () => {
     localStorage.removeItem("token");
@@ -65,7 +64,7 @@ class App extends Component {
     this.props.history.push("/signup");
   };
 
-  login = () => {
+  loginLink = () => {
     this.props.history.push("/login");
   };
 
@@ -157,13 +156,13 @@ class App extends Component {
           users: json
         })
       )
-      .then(() => this.fetchCurrentUser())
-      .then(() => {
-        this.fetchRelationships();
-        this.fetchPoems();
-        this.fetchFavorites();
-        this.fetchWords();
-      });
+      .then(() => this.fetchCurrentUser(), console.log("here"));
+    // .then(() => {
+    //   this.fetchRelationships();
+    //   this.fetchPoems();
+    //   this.fetchFavorites();
+    //   this.fetchWords();
+    // });
   };
 
   fetchUsers = () => {
@@ -375,7 +374,7 @@ class App extends Component {
             showPoem={this.showPoem}
             showPoems={this.showPoems}
             profileLink={this.profileLink}
-            login={this.login}
+            loginLink={this.loginLink}
             fetchPoems={this.fetchPoems}
             fetchUsers={this.fetchUserInformation}
             relationships={this.state.relationships}

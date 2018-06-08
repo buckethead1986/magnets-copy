@@ -92,6 +92,7 @@ class ClippedDrawer extends React.Component {
             src="https://cdn2.iconfinder.com/data/icons/lightly-icons/30/grid-480.png"
             height="30"
             width="30"
+            alt="All Poems link"
           />
 
           <ListItemText primary="All Poems" />
@@ -105,6 +106,7 @@ class ClippedDrawer extends React.Component {
             src="http://www.al-ayyam.ps/files/image/thumb/20150812085920.gif"
             height="30"
             width="30"
+            alt="Poem Creation link"
           />
           <ListItemText primary="Poem Creation" />
         </ListItem>
@@ -132,7 +134,11 @@ class ClippedDrawer extends React.Component {
             >
               help
             </Button>
-            <Button variant="outlined" style={{ flex: 0 }}>
+            <Button
+              variant="outlined"
+              onClick={() => this.props.loginLink()}
+              style={{ flex: 0 }}
+            >
               login
             </Button>
           </Toolbar>
@@ -147,8 +153,6 @@ class ClippedDrawer extends React.Component {
           <List>{this.renderNavigationItems()}</List>
           <Divider />
           <List>{this.state.users}</List>
-          <Divider />
-          <List />
         </Drawer>
       </div>
     );
@@ -157,6 +161,17 @@ class ClippedDrawer extends React.Component {
   renderDivView = () => {
     return (
       <div>
+        <Route
+          exact
+          path="/login"
+          render={() => {
+            return (
+              <div>
+                <div>Hey</div>
+              </div>
+            );
+          }}
+        />
         <Route
           exact
           path="/guest"
@@ -251,7 +266,7 @@ class ClippedDrawer extends React.Component {
                     users={this.props.users}
                     poems={this.props.poems}
                     fetchPoems={this.props.fetchPoems}
-                    updateUsers={this.props.updateUsers}
+                    // updateUsers={this.props.updateUsers}
                     profileLink={this.props.profileLink}
                     {...props}
                   />
@@ -265,8 +280,8 @@ class ClippedDrawer extends React.Component {
         <Route
           exact
           path="/help"
-          render={() => {
-            return <Help />;
+          render={props => {
+            return <Help {...props} />;
           }}
         />
       </div>

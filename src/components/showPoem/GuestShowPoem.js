@@ -31,7 +31,7 @@ class Poem extends React.Component {
         poem={this.state.poem}
         poems={this.props.poems}
         fetchPoems={this.props.fetchPoems}
-        updateUsers={this.props.updateUsers}
+        // updateUsers={this.props.updateUsers}
         profileLink={this.props.profileLink}
       />
     );

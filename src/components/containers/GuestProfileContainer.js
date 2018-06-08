@@ -1,8 +1,6 @@
 import React from "react";
 import Avatar from "material-ui/Avatar";
 import { Grid, Row, Col } from "react-flexbox-grid";
-// import UsersList from "../profile/UsersList";
-// import PoemIndexCard from "../showPoem/PoemIndexCard";
 import GuestPoemIndexCard from "../showPoem/GuestPoemIndexCard";
 
 class ProfileContainer extends React.Component {

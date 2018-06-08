@@ -63,7 +63,7 @@ class Login extends React.Component {
           </p>
           <p />
           <p style={styles}>
-            Magnets is a fridge magnet poetry game. Login (or Sign up if you're
+            Magnets is a fridge magnet poetry game. Login (or Sign up if youre
             not a user yet) and create fun little poems and sayings with
             draggable 'magnetic' words.{" "}
           </p>

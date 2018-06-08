@@ -114,7 +114,7 @@ class PoemIndex extends React.Component {
       "Scroll through all the poems! Filter by the users (you can select multiple users) of your choice";
     return (
       <div>
-        <h4 align="center">{text}</h4>
+        <h3 align="center">{text}</h3>
         <GuestSelectUsersDropdown
           users={this.props.users}
           filteredPoems={this.filteredPoems}
