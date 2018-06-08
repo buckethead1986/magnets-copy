@@ -16,6 +16,7 @@ import GuestCreatePoemContainer from "../../components/containers/GuestCreatePoe
 import GuestProfileContainer from "../../components/containers/GuestProfileContainer";
 import GuestShowPoem from "../../components/showPoem/GuestShowPoem";
 import GuestPoemIndex from "../../components/showPoem/GuestPoemIndex";
+import Login from "../login/Login";
 import Help from "../../components/help/Help";
 
 const drawerWidth = 240;
@@ -44,7 +45,7 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
+    // backgroundColor: theme.palette.background.default, //background color for inset div
     padding: theme.spacing.unit * 3,
     minWidth: 0, // So the Typography noWrap works
     height: "100%"
@@ -121,7 +122,6 @@ class ClippedDrawer extends React.Component {
           <Toolbar>
             <Typography
               variant="title"
-              color="inherit"
               className={classes.flex}
               onClick={() => this.props.guestPoemCreationLink()}
             >
@@ -165,11 +165,7 @@ class ClippedDrawer extends React.Component {
           exact
           path="/login"
           render={() => {
-            return (
-              <div>
-                <div>Hey</div>
-              </div>
-            );
+            return <Login url={this.props.url} />;
           }}
         />
         <Route

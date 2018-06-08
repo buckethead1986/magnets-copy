@@ -1,27 +1,61 @@
-import React from "react";
-import { RaisedButton, TextField } from "material-ui";
-import { Link } from "react-router-dom";
+// import React from "react";
+// import { RaisedButton, TextField } from "material-ui";
+// import { withStyles } from '@material-ui/core/styles';
+// import { Link } from "react-router-dom";
 
-const styles = {
-  textAlign: "left",
-  align: "left",
-  maxWidth: "600px",
-  margin: "0 auto",
-  fontSize: "20px"
-};
+import React from "react";
+// import { Grid, Row, Col } from "react-flexbox-grid";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+// import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    textAlign: "center",
+    color: theme.palette.text.secondary
+  },
+  button: {
+    margin: theme.spacing.unit,
+    backgroundColor: "#2196F3",
+    textColor: "white"
+  },
+  container: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200
+  },
+  menu: {
+    width: 200
+  }
+});
 
 //Login and Signup buttons don't automatically submit on 'enter', and I spent a long time trying to fix that issue.
 //If you know a workaround, please let me know!
 class Login extends React.Component {
   state = {
-    username: "",
-    password: "",
+    existingUsername: "",
+    existingPassword: "",
+    newUsername: "",
+    newPassword: "",
     loginError: false
   };
 
-  handleChange = e => {
+  handleChange = name => event => {
     this.setState({
-      [e.target.name]: e.target.value
+      [name]: event.target.value
     });
   };
 
@@ -47,79 +81,141 @@ class Login extends React.Component {
         }
       })
       .then(() => this.props.fetchUsers())
-      .then(() => this.props.history.push("/profile"));
+      .then(() => console.log("logged in", localStorage.getItem("token")));
+    // .then(() => this.props.history.push("/profile"));
+  };
+
+  //renders login form on 'true' second argument, signup form on 'false'. Almost identical components.
+  renderLoginForm = (classes, login) => {
+    return login ? (
+      <Grid item xs={8} sm={4}>
+        <Paper className={classes.paper}>
+          <Typography variant="headline" component="h3">
+            Existing User Login
+          </Typography>
+
+          <form
+            align="left"
+            className={classes.container}
+            noValidate
+            autoComplete="off"
+            onSubmit={e => this.handleSubmit(e)}
+          >
+            <Grid container spacing={24}>
+              <Grid item xs={12}>
+                <TextField
+                  id="existingUsername"
+                  label="Username"
+                  className={classes.textField}
+                  value={this.state.existingUsername}
+                  onChange={this.handleChange("existingUsername")}
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="existingPassword"
+                  label="Password"
+                  className={classes.textField}
+                  value={this.state.existingPassword}
+                  type="password"
+                  onChange={this.handleChange("existingPassword")}
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={12} />
+            </Grid>
+            <Button
+              variant="raised"
+              color="primary"
+              type="submit"
+              className={classes.button}
+            >
+              Login
+            </Button>
+          </form>
+        </Paper>
+      </Grid>
+    ) : (
+      <Grid item xs={8} sm={4}>
+        <Paper className={classes.paper}>
+          <Typography variant="headline" component="h3">
+            New User Signup
+          </Typography>
+          <form
+            align="left"
+            className={classes.container}
+            noValidate
+            autoComplete="off"
+            onSubmit={e => this.handleSubmited(e)}
+          >
+            <Grid container spacing={24}>
+              <Grid item xs={12}>
+                <TextField
+                  id="newUsername"
+                  label="Username"
+                  className={classes.textField}
+                  value={this.state.newUsername}
+                  onChange={this.handleChange("newUsername")}
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="newPassword"
+                  label="Password"
+                  className={classes.textField}
+                  value={this.state.newPassword}
+                  type="password"
+                  onChange={this.handleChange("newPassword")}
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={12} />
+            </Grid>
+            <Button
+              variant="raised"
+              color="primary"
+              type="submit"
+              className={classes.button}
+            >
+              Signup
+            </Button>
+          </form>
+        </Paper>
+      </Grid>
+    );
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    console.log("clicked", e);
+  };
+
+  handleSubmited = e => {
+    e.preventDefault();
+    console.log("clicking", e);
   };
 
   //All the red is from the single quote in "you're" (line 63). I spent some time researching this and it appears to be a 'Yeah, but it doesnt break, so theres no pressure to fix it' issue
   render() {
     // const link = <a href={this.props.history.push("/profile")}>log in</a>;
-
+    const { classes } = this.props;
     return (
-      <div>
-        <p />
-        <div style={{ align: "center" }}>
-          <p style={{ ...styles, fontSize: 24, textAlign: "center" }}>
-            Welcome to Magnets!
-          </p>
-          <p />
-          <p style={styles}>
-            Magnets is a fridge magnet poetry game. Login (or Sign up if youre
-            not a user yet) and create fun little poems and sayings with
-            draggable 'magnetic' words.{" "}
-          </p>
-          <p />
-          <p style={styles}>
-            Change the word set for new poems, customize your avatar, browse all
-            the poems (or just those of Users of your choice), favorite and
-            follow other Users and their creations, and have some fun!
-          </p>
-
-          <p />
-          <p style={styles}>
-            Click <Link to="/tutorial">here</Link> for a tutorial
-          </p>
-        </div>
-        <h2>Login</h2>
-        <form>
-          {this.state.loginError === true ? (
-            <TextField
-              onChange={this.handleChange}
-              name="username"
-              hintText="Username"
-              errorText="Username or Password incorrect"
-            />
-          ) : (
-            <TextField
-              onChange={this.handleChange}
-              name="username"
-              hintText="Username"
-            />
-          )}
-          <br />
-          <TextField
-            onChange={this.handleChange}
-            type="password"
-            name="password"
-            hintText="Password"
-          />
-        </form>
-        <br />
-        <RaisedButton
-          label="Login"
-          type="submit"
-          primary={true}
-          onClick={this.handleLogin}
-        />
-        <br />
-        <RaisedButton
-          label="Click here to sign up"
-          labelStyle={{ fontSize: "12px" }}
-          primary={false}
-          onClick={this.props.signup}
-        />
+      <div className={classes.root}>
+        <Grid container spacing={24}>
+          <Grid item xs={2} sm={1} />
+          {this.renderLoginForm(classes, true)}
+          <Grid item xs={4} sm={2} />
+          {this.renderLoginForm(classes, false)}
+        </Grid>
       </div>
     );
   }
 }
 
-export default Login;
+Login.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Login);
