@@ -224,7 +224,7 @@ class Poem extends React.Component {
           }
         />
         <div
-          onClick={() => this.props.showPoem(this.props.poem.id)}
+          onClick={() => this.props.showPoemLink(this.props.poem.id)}
           style={styles}
         >
           {poemWords}

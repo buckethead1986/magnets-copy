@@ -44,23 +44,23 @@ class ProfileContainer extends React.Component {
   }
 
   //updates store and current state to maintain the same user being shown
-  changeShownUser = id => {
-    const shownUser = this.props.users.filter(user => {
-      return user.id === id;
-    })[0];
-    this.setState({
-      poems: this.props.poems.filter(poem => {
-        return poem.user_id === id;
-      }),
-      shownUser: this.props.users.filter(user => {
-        return user.id === shownUser.id;
-      })[0]
-    });
-    this.props.store.dispatch({
-      type: "CHANGE_SHOWN_USER",
-      payload: shownUser
-    });
-  };
+  // changeShownUser = id => {
+  //   const shownUser = this.props.users.filter(user => {
+  //     return user.id === id;
+  //   })[0];
+  //   this.setState({
+  //     poems: this.props.poems.filter(poem => {
+  //       return poem.user_id === id;
+  //     }),
+  //     shownUser: this.props.users.filter(user => {
+  //       return user.id === shownUser.id;
+  //     })[0]
+  //   });
+  //   this.props.store.dispatch({
+  //     type: "CHANGE_SHOWN_USER",
+  //     payload: shownUser
+  //   });
+  // };
 
   welcomeMessage = () => {
     const user = this.props.store.getState().shownUser;
@@ -117,7 +117,7 @@ class ProfileContainer extends React.Component {
 
   //depending on the shown user, updates rendered poem list
   renderShownUserPoems = () => {
-    const shownUser = this.state.shownUser;
+    const shownUser = this.props.store.getState().shownUser;
     let mappedShownUserPoems;
     if (Object.keys(shownUser).length !== 0) {
       mappedShownUserPoems = shownUser.poems.map((poem, index) => {
@@ -150,25 +150,13 @@ class ProfileContainer extends React.Component {
   render() {
     return (
       <div>
-        <div style={{ float: "left" }}>
-          <UsersList
-            users={this.props.users}
-            store={this.props.store}
-            relationships={this.props.relationships}
-            currUser={this.props.currUser}
-            showUser={this.props.showUser}
-            changeShownUser={this.changeShownUser}
-          />
-        </div>
-        <div>
-          <Grid fluid>
-            <Row>
-              <Col>{this.renderShownUserAvatar()}</Col>
-            </Row>
-            <h4>{this.welcomeMessage()}</h4>
-            <Row>{this.renderShownUserPoems()}</Row>
-          </Grid>
-        </div>
+        <Grid fluid>
+          <Row>
+            <Col>{this.renderShownUserAvatar()}</Col>
+          </Row>
+          <h4>{this.welcomeMessage()}</h4>
+          <Row>{this.renderShownUserPoems()}</Row>
+        </Grid>
       </div>
     );
   }

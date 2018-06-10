@@ -1,5 +1,6 @@
 import React from "react";
 import GuestPoemIndexCard from "./GuestPoemIndexCard";
+import PoemIndexCard from "./PoemIndexCard";
 import Columns from "react-columns";
 import GuestSelectUsersDropdown from "../selectUserDropdown/GuestSelectUsersDropdown";
 
@@ -97,18 +98,41 @@ class PoemIndex extends React.Component {
   //renders all poem cards
   render() {
     const poems = this.state.filteredPoems.map((poem, index) => {
-      return (
-        <div key={index}>
-          <GuestPoemIndexCard
-            columns={3}
-            guestShowPoemLink={this.props.guestShowPoemLink}
-            url={this.props.url}
-            users={this.props.users}
-            poem={poem}
-          />
-          <br />
-        </div>
-      );
+      if (this.props.currUser.length !== 0) {
+        return (
+          <div key={index}>
+            <PoemIndexCard
+              columns={4}
+              showPoemLink={this.props.showPoemLink}
+              url={this.props.url}
+              currUser={this.props.currUser}
+              users={this.props.users}
+              poem={poem}
+              followUser={this.props.followUser}
+              unFollowUser={this.props.unFollowUser}
+              relationships={this.props.relationships}
+              favoritePoem={this.props.favoritePoem}
+              unFavoritePoem={this.props.unFavoritePoem}
+              favorites={this.props.favorites}
+              defaultImage={this.defaultImage}
+            />
+            <br />
+          </div>
+        );
+      } else {
+        return (
+          <div key={index}>
+            <GuestPoemIndexCard
+              columns={3}
+              guestShowPoemLink={this.props.guestShowPoemLink}
+              url={this.props.url}
+              users={this.props.users}
+              poem={poem}
+            />
+            <br />
+          </div>
+        );
+      }
     });
     const text =
       "Scroll through all the poems! Filter by the users (you can select multiple users) of your choice";

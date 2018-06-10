@@ -67,12 +67,27 @@ class App extends Component {
     this.props.history.push("/guest");
   };
 
-  profileLink = () => {
-    this.props.store.dispatch({
-      type: "CHANGE_SHOWN_USER",
-      payload: this.state.currUser[0]
-    });
-    this.props.history.push("/profile");
+  // profileLink = () => {
+  //   this.props.store.dispatch({
+  //     type: "CHANGE_SHOWN_USER",
+  //     payload: this.state.currUser[0]
+  //   });
+  //   this.props.history.push("/profile");
+  // };
+
+  usersLink = id => {
+    fetch(`${url}/users`)
+      .then(res => res.json())
+      .then(json => this.setState({ users: json }))
+      .then(() => {
+        this.props.store.dispatch({
+          type: "CHANGE_SHOWN_USER",
+          payload: this.state.users.filter(user => {
+            return user.id === id;
+          })[0]
+        });
+        this.props.history.push(`/users/${id}`);
+      });
   };
 
   //Gets called when a guest user clicks a user to view their poems.  Calls a fetch to update to latest set of poems.
@@ -95,11 +110,11 @@ class App extends Component {
     this.props.history.push("/help");
   };
 
-  showPoems = () => {
+  showPoemsLink = () => {
     this.props.history.push("/poems");
   };
 
-  showPoem = id => {
+  showPoemLink = id => {
     this.fetchPoems();
     this.props.history.push(`/poems/${id}`);
   };
@@ -144,7 +159,6 @@ class App extends Component {
   };
 
   fetchUserInformation = () => {
-    console.log("fetching user information");
     fetch(`${url}/users`)
       .then(res => res.json())
       .then(json =>
@@ -350,7 +364,7 @@ class App extends Component {
     });
   };
 
-  //The UserDrawer prop list is enormous, I know. All child components stem off it, for guest user and logged in user components.
+  //The UserDrawer prop list is enormous, I know. All child components stem off it, for 'guest' user and logged in user components.
   render() {
     if (this.state.users.length !== 0) {
       return (
@@ -364,14 +378,20 @@ class App extends Component {
             currUser={this.state.currUser}
             showUser={this.showUser}
             showUsers={this.showUsers}
-            showPoem={this.showPoem}
-            showPoems={this.showPoems}
+            showPoemLink={this.showPoemLink}
+            showPoemsLink={this.showPoemsLink}
             profileLink={this.profileLink}
             loginLink={this.loginLink}
             fetchPoems={this.fetchPoems}
             fetchUserInformation={this.fetchUserInformation}
             relationships={this.state.relationships}
+            favorites={this.state.favorites}
+            favoritePoem={this.favoritePoem}
+            followUser={this.followUser}
+            unFollowUser={this.unFollowUser}
+            unFavoritePoem={this.unFavoritePoem}
             updateUsers={this.updateUsers}
+            usersLink={this.usersLink}
             guestUsersLink={this.guestUsersLink}
             guestShowPoemLink={this.guestShowPoemLink}
             poemCreationLink={this.poemCreationLink}

@@ -305,7 +305,6 @@ class Login extends React.Component {
                   margin="normal"
                 />
               </Grid>
-              <Grid item xs={12} />
             </Grid>
             <Button
               variant="raised"

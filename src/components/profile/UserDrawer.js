@@ -18,6 +18,10 @@ import GuestCreatePoemContainer from "../../components/containers/GuestCreatePoe
 import GuestProfileContainer from "../../components/containers/GuestProfileContainer";
 import GuestShowPoem from "../../components/showPoem/GuestShowPoem";
 import GuestPoemIndex from "../../components/showPoem/GuestPoemIndex";
+import ProfileContainer from "../../components/containers/ProfileContainer";
+import ShowPoem from "../../components/showPoem/ShowPoem";
+import PoemIndex from "../../components/showPoem/PoemIndex";
+// import ShowPoem from '../../components/showPoem/ShowPoem'
 import Login from "../login/Login";
 import Help from "../../components/help/Help";
 
@@ -44,25 +48,24 @@ const styles = theme => ({
     flex: 1
   },
   drawerPaper: {
-    position: "relative",
+    position: "fixed",
     width: drawerWidth,
-    height: "100vh"
+    height: "100%"
   },
   content: {
     flexGrow: 1,
     // backgroundColor: theme.palette.background.default, //background color for inset div
     padding: theme.spacing.unit * 3,
     minWidth: 0, // So the Typography noWrap works
-    height: "100%"
+    height: "100%",
+    marginLeft: drawerWidth
   },
   toolbar: theme.mixins.toolbar
 });
 
 class UserDrawer extends React.Component {
   componentDidMount() {
-    console.log("componentDidMount", this.props.users, this.props.currUser);
     if (this.props.currUser.length !== 0 && this.props.users.length !== 0) {
-      console.log(this.props.users, this.props.relationships);
       this.splitUsers(
         this.filterForCurrentUser(this.props.users),
         this.props.relationships
@@ -75,12 +78,6 @@ class UserDrawer extends React.Component {
       nextProps.currUser.length !== 0 &&
       this.props.relationships !== nextProps.relationships
     ) {
-      console.log(
-        this.props.users,
-        this.props.relationships,
-        nextProps.users,
-        nextProps.relationships
-      );
       this.splitUsers(
         this.filterForCurrentUser(nextProps.users),
         nextProps.relationships
@@ -118,7 +115,7 @@ class UserDrawer extends React.Component {
       }
     }
     unFollowed = usersClone;
-    console.log(followed, unFollowed);
+    // console.log(followed, unFollowed);
     // this.forceUpdate();
   };
 
@@ -145,7 +142,7 @@ class UserDrawer extends React.Component {
           <ListItem
             button
             key={this.props.currUser[0].id}
-            onClick={() => this.props.guestUsersLink(this.props.currUser[0].id)}
+            onClick={() => this.props.usersLink(this.props.currUser[0].id)}
           >
             <img
               src={this.props.currUser[0].image}
@@ -198,7 +195,11 @@ class UserDrawer extends React.Component {
       <ListItem
         button
         key={user.id}
-        onClick={() => this.props.guestUsersLink(user.id)}
+        onClick={() => {
+          this.props.currUser.length !== 0
+            ? this.props.usersLink(user.id)
+            : this.props.guestUsersLink(user.id);
+        }}
       >
         <img
           src={user.image}
@@ -212,38 +213,72 @@ class UserDrawer extends React.Component {
   };
 
   //renders common ListItems for seeing all poems and creating a new poem. Independant of whether a user is logged in
-  renderNavigationItems = () => {
-    return (
-      <div>
-        <ListItem
-          button
-          key={"guestPoems"}
-          onClick={() => this.props.guestShowPoemsLink()}
-        >
-          <img
-            src="https://cdn2.iconfinder.com/data/icons/lightly-icons/30/grid-480.png"
-            height="30"
-            width="30"
-            alt="All Poems link"
-          />
+  renderNavigationItems = token => {
+    if (token) {
+      return (
+        <div>
+          <ListItem
+            button
+            key={"guestPoems"}
+            onClick={() => this.props.showPoemsLink()}
+          >
+            <img
+              src="https://cdn2.iconfinder.com/data/icons/lightly-icons/30/grid-480.png"
+              height="30"
+              width="30"
+              alt="All Poems link"
+            />
 
-          <ListItemText primary="All Poems" />
-        </ListItem>
-        <ListItem
-          button
-          key={"poemCreation"}
-          onClick={() => this.props.guestPoemCreationLink()}
-        >
-          <img
-            src="http://www.al-ayyam.ps/files/image/thumb/20150812085920.gif"
-            height="30"
-            width="30"
-            alt="Poem Creation link"
-          />
-          <ListItemText primary="Poem Creation" />
-        </ListItem>
-      </div>
-    );
+            <ListItemText primary="All Poems" />
+          </ListItem>
+          <ListItem
+            button
+            key={"poemCreation"}
+            onClick={() => this.props.poemCreationLink()}
+          >
+            <img
+              src="http://www.al-ayyam.ps/files/image/thumb/20150812085920.gif"
+              height="30"
+              width="30"
+              alt="Poem Creation link"
+            />
+            <ListItemText primary="Poem Creation" />
+          </ListItem>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <ListItem
+            button
+            key={"guestPoems"}
+            onClick={() => this.props.guestShowPoemsLink()}
+          >
+            <img
+              src="https://cdn2.iconfinder.com/data/icons/lightly-icons/30/grid-480.png"
+              height="30"
+              width="30"
+              alt="All Poems link"
+            />
+
+            <ListItemText primary="All Poems" />
+          </ListItem>
+          <ListItem
+            button
+            key={"poemCreation"}
+            onClick={() => this.props.guestPoemCreationLink()}
+          >
+            <img
+              src="http://www.al-ayyam.ps/files/image/thumb/20150812085920.gif"
+              height="30"
+              width="30"
+              alt="Poem Creation link"
+            />
+            <ListItemText primary="Poem Creation" />
+          </ListItem>
+        </div>
+      );
+    }
   };
 
   // renders appbar buttons. Slight difference of pathways and text for logged in vs guest user.
@@ -251,7 +286,7 @@ class UserDrawer extends React.Component {
     let token = localStorage.getItem("token");
     return (
       <div>
-        <AppBar position="absolute" className={classes.appBar}>
+        <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             {token ? (
               <Typography
@@ -305,7 +340,7 @@ class UserDrawer extends React.Component {
           }}
         >
           <div className={classes.toolbar} />
-          <List>{this.renderNavigationItems()}</List>
+          <List>{this.renderNavigationItems(token)}</List>
           <Divider />
           <List>{this.renderUsersList()}</List>
         </Drawer>
@@ -313,7 +348,7 @@ class UserDrawer extends React.Component {
     );
   };
 
-  //renders different components depending on the routes
+  //this renders the different routes based on the url path
   renderDivView = () => {
     return (
       <div>
@@ -357,9 +392,8 @@ class UserDrawer extends React.Component {
                       url={this.props.url}
                       users={this.props.users}
                       store={this.props.store}
-                      showPoem={this.props.showPoem}
+                      showPoemLink={this.props.showPoemLink}
                       words={this.props.words}
-                      login={this.props.login}
                     />
                   </Col>
                 </Row>
@@ -381,6 +415,7 @@ class UserDrawer extends React.Component {
                     url={this.props.url}
                     guestShowPoemLink={this.props.guestShowPoemLink}
                     users={this.props.users}
+                    currUser={this.props.currUser}
                     poems={this.props.poems}
                     defaultImage={this.defaultImage}
                   />
@@ -429,6 +464,7 @@ class UserDrawer extends React.Component {
                     url={this.props.url}
                     showPoemsLink={this.props.showPoemsLink}
                     users={this.props.users}
+                    currUser={this.props.currUser}
                     poems={this.props.poems}
                     fetchPoems={this.props.fetchPoems}
                     // updateUsers={this.props.updateUsers}
@@ -468,12 +504,109 @@ class UserDrawer extends React.Component {
                         words={this.props.words}
                         store={this.props.store}
                         currUser={this.props.currUser}
-                        showPoem={this.props.showPoem}
+                        showPoemLink={this.props.showPoemLink}
                         fetchUserInformation={this.props.fetchUserInformation}
                       />
                     </Col>
                   </Row>
                 </Grid>
+              );
+            } else {
+              return "";
+            }
+          }}
+        />
+        <Route
+          exact
+          path="/poems"
+          render={() => {
+            if (
+              this.props.users.length !== 0 &&
+              this.props.poems.length !== 0
+            ) {
+              return (
+                <div>
+                  <GuestPoemIndex
+                    url={this.props.url}
+                    currUser={this.props.currUser}
+                    guestShowPoemLink={this.props.guestShowPoemLink}
+                    showPoemLink={this.props.showPoemLink}
+                    users={this.props.users}
+                    poems={this.props.poems}
+                    relationships={this.props.relationships}
+                    favorites={this.props.favorites}
+                    favoritePoem={this.props.favoritePoem}
+                    followUser={this.props.followUser}
+                    unFollowUser={this.props.unFollowUser}
+                    unFavoritePoem={this.props.unFavoritePoem}
+                    defaultImage={this.defaultImage}
+                  />
+                </div>
+              );
+            } else {
+              return "";
+            }
+          }}
+        />
+        <Route
+          exact
+          path="/poems/:id"
+          render={props => {
+            if (this.props.poems.length !== 0) {
+              return (
+                <div>
+                  <GuestShowPoem
+                    url={this.props.url}
+                    showPoemsLink={this.props.showPoemsLink}
+                    currUser={this.props.currUser}
+                    users={this.props.users}
+                    poems={this.props.poems}
+                    fetchPoems={this.props.fetchPoems}
+                    // updateUsers={this.props.updateUsers}
+                    relationships={this.props.relationships}
+                    favorites={this.props.favorites}
+                    favoritePoem={this.props.favoritePoem}
+                    followUser={this.props.followUser}
+                    unFollowUser={this.props.unFollowUser}
+                    unFavoritePoem={this.props.unFavoritePoem}
+                    profileLink={this.props.profileLink}
+                    {...props}
+                  />
+                </div>
+              );
+            } else {
+              return "";
+            }
+          }}
+        />
+        <Route
+          exact
+          path="/users/:id"
+          render={() => {
+            if (
+              this.props.users.length !== 0 &&
+              this.props.relationships.length !== 0 &&
+              this.props.poems.length !== 0
+            ) {
+              return (
+                <ProfileContainer
+                  url={this.props.url}
+                  currUser={this.props.currUser}
+                  store={this.props.store}
+                  ShowPoemLink={this.props.ShowPoemLink}
+                  profileLink={this.props.profileLink}
+                  users={this.props.users}
+                  showUserLink={this.props.showUserLink}
+                  poems={this.props.poems}
+                  showUsersLink={this.props.showUsersLink}
+                  relationships={this.props.relationships}
+                  favorites={this.props.favorites}
+                  favoritePoem={this.props.favoritePoem}
+                  followUser={this.props.followUser}
+                  unFollowUser={this.props.unFollowUser}
+                  unFavoritePoem={this.props.unFavoritePoem}
+                  guestPoemCreationLink={this.props.guestPoemCreationLink}
+                />
               );
             } else {
               return "";
