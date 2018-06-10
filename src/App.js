@@ -16,7 +16,7 @@ import UserDrawer from "./components/profile/UserDrawer";
 const url = "http://localhost:3001/api/v1";
 
 const defaultImage =
-  "https://www.dltk-kids.com/puzzles/jigsaw/2013/puzzle-images/1222.jpg";
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNps8d9m-xAllIL4UPQZ76BtwbSYNs4UmkLqi6e2s4UnpGoW";
 
 class App extends Component {
   state = {
@@ -43,26 +43,21 @@ class App extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const token = localStorage.getItem("token");
-    if (token) {
-      this.fetchUserInformation();
-    }
-  }
-
-  logout = () => {
+  //all the links for the site. Passed down as props where required. links with the same name except 'guest' link to the same place, depending on if
+  //a user if logged in or not
+  logoutLink = () => {
     localStorage.removeItem("token");
-    this.setState({ users: [], currUser: [], favorites: [] });
+    this.setState({ currUser: [], favorites: [] });
     this.props.store.dispatch({
       type: "CHANGE_SHOWN_USER",
       payload: {}
     });
-    this.props.history.push("/login");
+    this.props.history.push("/guest");
   };
 
-  signup = () => {
-    this.props.history.push("/signup");
-  };
+  // signup = () => {
+  //   this.props.history.push("/signup");
+  // };
 
   loginLink = () => {
     this.props.history.push("/login");
@@ -118,7 +113,7 @@ class App extends Component {
   };
 
   //change all these to '-Link'
-  makePoem = () => {
+  poemCreationLink = () => {
     this.props.history.push("/poem/new");
   };
 
@@ -149,6 +144,7 @@ class App extends Component {
   };
 
   fetchUserInformation = () => {
+    console.log("fetching user information");
     fetch(`${url}/users`)
       .then(res => res.json())
       .then(json =>
@@ -156,13 +152,14 @@ class App extends Component {
           users: json
         })
       )
-      .then(() => this.fetchCurrentUser(), console.log("here"));
-    // .then(() => {
-    //   this.fetchRelationships();
-    //   this.fetchPoems();
-    //   this.fetchFavorites();
-    //   this.fetchWords();
-    // });
+      .then(() => this.fetchCurrentUser())
+      // .then(() => {
+      //   this.fetchRelationships();
+      //   this.fetchPoems();
+      //   this.fetchFavorites();
+      //   this.fetchWords();
+      // })
+      .then(() => this.props.history.push("/poem/new"));
   };
 
   fetchUsers = () => {
@@ -185,9 +182,17 @@ class App extends Component {
         const user = this.state.users.filter(user => {
           return user.id === json.id;
         });
-        this.setState({
-          currUser: user
-        });
+        this.setState(
+          {
+            currUser: user
+          },
+          () => {
+            this.fetchRelationships();
+            this.fetchPoems();
+            this.fetchFavorites();
+            this.fetchWords();
+          }
+        );
         this.updateShownUser(user);
       });
   };
@@ -345,20 +350,7 @@ class App extends Component {
     });
   };
 
-  //all the routes for the website, with the corresponding props being passed down.
-  //The navbar only appears on non-login/signup pages
-  //The routes are:
-  //profile (main show page, holds user dropdown, and the poems and avatar of the currently selected user)
-  //profile/new (changes your avatar image),
-  //poems (shows all poems, selectable by favorites and/or by multiple selection of users)
-  //poem/new (creation of new poems)
-  //poems/:id (show page for a single poem)
-
-  //all poems, wherever displayed, are able to be favorited and the author followed (and updates immediately. That was a challenge,
-  //especially when showing just favorited poems on the poems index page).
-
-  //A stretch goal is for de-favoriting to maintain the current scroll location on the page.
-  //Currently, it rerenders back at the top of the page, which bugs me.
+  //The UserDrawer prop list is enormous, I know. All child components stem off it, for guest user and logged in user components.
   render() {
     if (this.state.users.length !== 0) {
       return (
@@ -369,6 +361,7 @@ class App extends Component {
             words={this.state.words}
             poems={this.state.poems}
             store={this.props.store}
+            currUser={this.state.currUser}
             showUser={this.showUser}
             showUsers={this.showUsers}
             showPoem={this.showPoem}
@@ -376,14 +369,17 @@ class App extends Component {
             profileLink={this.profileLink}
             loginLink={this.loginLink}
             fetchPoems={this.fetchPoems}
-            fetchUsers={this.fetchUserInformation}
+            fetchUserInformation={this.fetchUserInformation}
             relationships={this.state.relationships}
             updateUsers={this.updateUsers}
             guestUsersLink={this.guestUsersLink}
             guestShowPoemLink={this.guestShowPoemLink}
+            poemCreationLink={this.poemCreationLink}
             guestPoemCreationLink={this.guestPoemCreationLink}
             guestShowPoemsLink={this.guestShowPoemsLink}
             helpLink={this.helpLink}
+            logoutLink={this.logoutLink}
+            defaultImage={defaultImage}
           />
         </div>
       );

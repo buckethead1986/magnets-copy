@@ -33,7 +33,7 @@ class CreatePoemContainer extends Component {
         .then(res => res.json())
         .then(json => {
           this.removePoem();
-          this.props.fetchUsers();
+          this.props.fetchUserInformation();
           this.props.showPoem(json.id);
         });
     }

@@ -16,7 +16,8 @@ import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    marginTop: theme.spacing.unit * 8
   },
   paper: {
     padding: theme.spacing.unit * 2,
@@ -42,8 +43,6 @@ const styles = theme => ({
   }
 });
 
-//Login and Signup buttons don't automatically submit on 'enter', and I spent a long time trying to fix that issue.
-//If you know a workaround, please let me know!
 class Login extends React.Component {
   state = {
     existingUsername: "",
@@ -59,12 +58,18 @@ class Login extends React.Component {
     });
   };
 
-  handleLogin = () => {
+  //fetch request to API checking if user credentials match a record. If not, loginError is false, and rendered field labels turn red to indicate an error
+  //If theres a match, fetches user information, and redirects to logged in poem creation page.
+  handleLogin = e => {
+    e.preventDefault();
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
-    const body = this.state;
+    const body = {
+      username: this.state.existingUsername,
+      password: this.state.existingPassword
+    };
     fetch(`${this.props.url}/auth`, {
       method: "POST",
       headers: headers,
@@ -74,16 +79,117 @@ class Login extends React.Component {
       .then(json => {
         if (!json.error) {
           localStorage.setItem("token", json.jwt);
+          this.setState({ loginError: false });
         } else {
           this.setState({
             loginError: true
           });
         }
       })
-      .then(() => this.props.fetchUsers())
-      .then(() => console.log("logged in", localStorage.getItem("token")));
-    // .then(() => this.props.history.push("/profile"));
+      .then(() => this.isAuthenticUser());
+    // .then(() => this.linkToPoemCreation());
+    // .then(() => this.props.fetchUserInformation())
   };
+  // .then(() => this.props.poemCreationLink());
+
+  //I couldnt figure out a way to incorporate if/then statements in the .then promise thread, so this was a workaround.
+  isAuthenticUser = () => {
+    if (!this.state.loginError) {
+      this.props.fetchUserInformation();
+    }
+  };
+
+  // linkToPoemCreation = () => {
+  //   if (!this.state.loginError) {
+  //     this.props.poemCreationLink();
+  //   }
+  // };
+
+  //This preventDefault() is causing a console warning of 'This synthetic event is reused for performance reasons', and wants me to change it to persist()
+  //but that is causing an unwanted page refresh
+  handleSignup = e => {
+    e.preventDefault();
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    const body = {
+      username: this.state.newUsername,
+      password: this.state.newPassword,
+      image: this.props.defaultImage
+    };
+    fetch(`${this.props.url}/users`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(body)
+    }).then(() => this.handleSignupLogin(e));
+    // });
+  };
+
+  handleSignupLogin = e => {
+    e.preventDefault();
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+
+    const body = {
+      username: this.state.newUsername,
+      password: this.state.newPassword
+    };
+
+    fetch(`${this.props.url}/auth`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(body)
+    })
+      .then(res => res.json())
+      .then(json => {
+        if (!json.error) {
+          localStorage.setItem("token", json.jwt);
+          this.setState({ loginError: false });
+        } else {
+          this.setState({
+            loginError: true
+          });
+        }
+      })
+      // .then(() =>
+      //   console.log(
+      //     "auth?",
+      //     this.state.loginError,
+      //     localStorage.getItem("token")
+      //   )
+      // )
+      .then(() => this.isAuthenticUser());
+    // .then(() => this.linkToPoemCreation());
+    // .then(() => this.props.fetchUserInformation())
+  };
+
+  // login = () => {
+  //   const headers = {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json"
+  //   };
+  //   const body = this.state;
+  //   fetch(`${this.props.url}/auth`, {
+  //     method: "POST",
+  //     headers: headers,
+  //     body: JSON.stringify(body)
+  //   })
+  //     .then(res => res.json())
+  //     .then(json => {
+  //       if (!json.error) {
+  //         localStorage.setItem("token", json.jwt);
+  //       } else {
+  //         this.setState({
+  //           loginError: true
+  //         });
+  //       }
+  //     })
+  //     .then(() => this.props.fetchUsers())
+  //     .then(() => this.props.history.push("/profile"));
+  // };
 
   //renders login form on 'true' second argument, signup form on 'false'. Almost identical components.
   renderLoginForm = (classes, login) => {
@@ -99,32 +205,60 @@ class Login extends React.Component {
             className={classes.container}
             noValidate
             autoComplete="off"
-            onSubmit={e => this.handleSubmit(e)}
+            onSubmit={e => this.handleLogin(e)}
           >
-            <Grid container spacing={24}>
-              <Grid item xs={12}>
-                <TextField
-                  id="existingUsername"
-                  label="Username"
-                  className={classes.textField}
-                  value={this.state.existingUsername}
-                  onChange={this.handleChange("existingUsername")}
-                  margin="normal"
-                />
+            {this.state.loginError ? (
+              <Grid container spacing={24}>
+                <Grid item xs={12}>
+                  <TextField
+                    error
+                    id="existingUsername"
+                    label="Username"
+                    className={classes.textField}
+                    value={this.state.existingUsername}
+                    onChange={this.handleChange("existingUsername")}
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    error
+                    id="existingPassword"
+                    label="Password"
+                    className={classes.textField}
+                    value={this.state.existingPassword}
+                    type="password"
+                    onChange={this.handleChange("existingPassword")}
+                    margin="normal"
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="existingPassword"
-                  label="Password"
-                  className={classes.textField}
-                  value={this.state.existingPassword}
-                  type="password"
-                  onChange={this.handleChange("existingPassword")}
-                  margin="normal"
-                />
+            ) : (
+              <Grid container spacing={24}>
+                <Grid item xs={12}>
+                  <TextField
+                    id="existingUsername"
+                    label="Username"
+                    className={classes.textField}
+                    value={this.state.existingUsername}
+                    onChange={this.handleChange("existingUsername")}
+                    margin="normal"
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    id="existingPassword"
+                    label="Password"
+                    className={classes.textField}
+                    value={this.state.existingPassword}
+                    type="password"
+                    onChange={this.handleChange("existingPassword")}
+                    margin="normal"
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12} />
-            </Grid>
+            )}
             <Button
               variant="raised"
               color="primary"
@@ -147,7 +281,7 @@ class Login extends React.Component {
             className={classes.container}
             noValidate
             autoComplete="off"
-            onSubmit={e => this.handleSubmited(e)}
+            onSubmit={e => this.handleSignup(e)}
           >
             <Grid container spacing={24}>
               <Grid item xs={12}>
@@ -187,15 +321,15 @@ class Login extends React.Component {
     );
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    console.log("clicked", e);
-  };
+  // handleLogin = e => {
+  //   e.preventDefault();
+  //   console.log("clicked", e);
+  // };
 
-  handleSubmited = e => {
-    e.preventDefault();
-    console.log("clicking", e);
-  };
+  // handleSignup = e => {
+  //   e.preventDefault();
+  //   console.log("clicking", e);
+  // };
 
   //All the red is from the single quote in "you're" (line 63). I spent some time researching this and it appears to be a 'Yeah, but it doesnt break, so theres no pressure to fix it' issue
   render() {
