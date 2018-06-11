@@ -58,7 +58,7 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3,
     minWidth: 0, // So the Typography noWrap works
     height: "100%",
-    marginLeft: drawerWidth
+    paddingLeft: drawerWidth
   },
   toolbar: theme.mixins.toolbar
 });
@@ -438,6 +438,7 @@ class UserDrawer extends React.Component {
               return (
                 <GuestProfileContainer
                   url={this.props.url}
+                  currUser={this.props.currUser}
                   store={this.props.store}
                   guestShowPoemLink={this.props.guestShowPoemLink}
                   profileLink={this.props.profileLink}
@@ -562,7 +563,7 @@ class UserDrawer extends React.Component {
                     users={this.props.users}
                     poems={this.props.poems}
                     fetchPoems={this.props.fetchPoems}
-                    // updateUsers={this.props.updateUsers}
+                    updateUsers={this.props.updateUsers}
                     relationships={this.props.relationships}
                     favorites={this.props.favorites}
                     favoritePoem={this.props.favoritePoem}
@@ -594,11 +595,11 @@ class UserDrawer extends React.Component {
                   currUser={this.props.currUser}
                   store={this.props.store}
                   showPoemLink={this.props.showPoemLink}
-                  profileLink={this.props.profileLink}
+                  // profileLink={this.props.profileLink}
                   users={this.props.users}
-                  showUserLink={this.props.showUserLink}
+                  // showUserLink={this.props.showUserLink}
                   poems={this.props.poems}
-                  showUsersLink={this.props.showUsersLink}
+                  // showUsersLink={this.props.showUsersLink}
                   relationships={this.props.relationships}
                   favorites={this.props.favorites}
                   favoritePoem={this.props.favoritePoem}

@@ -4,6 +4,7 @@ import { Grid, Row, Col } from "react-flexbox-grid";
 import UsersList from "../profile/UsersList";
 import PoemIndexCard from "../showPoem/PoemIndexCard";
 import GuestPoemIndexCard from "../showPoem/GuestPoemIndexCard";
+import Columns from "react-columns";
 
 class ProfileContainer extends React.Component {
   constructor() {
@@ -17,13 +18,13 @@ class ProfileContainer extends React.Component {
 
   //loads your avatar and poems by default
   componentWillMount() {
-    const user = this.props.store.getState().shownUser;
-    this.setState({
-      poems: this.props.poems.filter(poem => {
-        return poem.user_id === user.id;
-      }),
-      shownUser: user
-    });
+    // const user = this.props.store.getState().shownUser;
+    // this.setState({
+    //   poems: this.props.poems.filter(poem => {
+    //     return poem.user_id === user.id;
+    //   }),
+    //   shownUser: user
+    // });
   }
 
   //keeps the user being shown constant, if you navigate to a poem and back
@@ -65,6 +66,7 @@ class ProfileContainer extends React.Component {
 
   welcomeMessage = () => {
     const user = this.props.store.getState().shownUser;
+    console.log(user);
     let text = "";
     if (user.id === this.props.currUser[0].id) {
       text = `Welcome back ${user.username}! `;
@@ -75,10 +77,10 @@ class ProfileContainer extends React.Component {
         text += `You have ${this.props.currUser[0].followers
           .length} users following you, `;
       }
-      if (this.state.poems.length === 1) {
-        text += `and ${this.state.poems.length} poem created`;
+      if (user.poems.length === 1) {
+        text += `and ${user.poems.length} poem created`;
       } else {
-        text += `and ${this.state.poems.length} poems created`;
+        text += `and ${user.poems.length} poems created`;
       }
     } else {
       text = `These are the poems created by ${user.username}`;
@@ -123,9 +125,8 @@ class ProfileContainer extends React.Component {
     if (Object.keys(shownUser).length !== 0) {
       mappedShownUserPoems = shownUser.poems.map((poem, index) => {
         return (
-          <Col key={index}>
+          <div key={index}>
             <GuestPoemIndexCard
-              columns={4}
               showPoemLink={this.props.showPoemLink}
               url={this.props.url}
               currUser={this.props.currUser}
@@ -139,13 +140,13 @@ class ProfileContainer extends React.Component {
               favorites={this.props.favorites}
             />
             <br />
-          </Col>
+          </div>
         );
       });
     } else {
       mappedShownUserPoems = "";
     }
-    return mappedShownUserPoems;
+    return <Columns columns={3}>{mappedShownUserPoems}</Columns>;
   };
 
   render() {
@@ -156,8 +157,8 @@ class ProfileContainer extends React.Component {
             <Col>{this.renderShownUserAvatar()}</Col>
           </Row>
           <h4>{this.welcomeMessage()}</h4>
-          <Row>{this.renderShownUserPoems()}</Row>
         </Grid>
+        {this.renderShownUserPoems()}
       </div>
     );
   }

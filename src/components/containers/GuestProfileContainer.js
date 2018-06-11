@@ -2,6 +2,7 @@ import React from "react";
 import Avatar from "material-ui/Avatar";
 import { Grid, Row, Col } from "react-flexbox-grid";
 import GuestPoemIndexCard from "../showPoem/GuestPoemIndexCard";
+import Columns from "react-columns";
 
 class ProfileContainer extends React.Component {
   welcomeMessage = () => {
@@ -38,8 +39,8 @@ class ProfileContainer extends React.Component {
         return (
           <Col key={index}>
             <GuestPoemIndexCard
-              columns={3}
               url={this.props.url}
+              currUser={this.props.currUser}
               poem={poem}
               users={this.props.users}
               guestShowPoemLink={this.props.guestShowPoemLink}
@@ -51,7 +52,7 @@ class ProfileContainer extends React.Component {
     } else {
       mappedShownUserPoems = "";
     }
-    return mappedShownUserPoems;
+    return <Columns columns={3}>{mappedShownUserPoems}</Columns>;
   };
 
   render() {
@@ -62,8 +63,8 @@ class ProfileContainer extends React.Component {
             <Col>{this.renderShownUserAvatar()}</Col>
           </Row>
           <h4>{this.welcomeMessage()}</h4>
-          <Row>{this.renderShownUserPoems()}</Row>
         </Grid>
+        {this.renderShownUserPoems()}
       </div>
     );
   }

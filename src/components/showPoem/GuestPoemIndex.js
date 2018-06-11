@@ -120,7 +120,6 @@ class PoemIndex extends React.Component {
         return (
           <div key={index}>
             <GuestPoemIndexCard
-              columns={4}
               showPoemLink={this.props.showPoemLink}
               url={this.props.url}
               currUser={this.props.currUser}
@@ -141,9 +140,9 @@ class PoemIndex extends React.Component {
         return (
           <div key={index}>
             <GuestPoemIndexCard
-              columns={3}
               guestShowPoemLink={this.props.guestShowPoemLink}
               url={this.props.url}
+              currUser={this.props.currUser}
               users={this.props.users}
               poem={poem}
             />
@@ -153,7 +152,7 @@ class PoemIndex extends React.Component {
       }
     });
     const text =
-      "Scroll through all the poems! Filter by the users (you can select multiple users) of your choice";
+      "Scroll through all the poems! Filter by the users and/or favorites (you can select multiple) of your choice";
     return (
       <div>
         <h3 align="center">{text}</h3>

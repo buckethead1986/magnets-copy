@@ -135,7 +135,7 @@ class Poem extends React.Component {
         return (
           <IconButton
             tooltip={`Unfollow ${poemAuthor[0].username}`}
-            tooltipPosition="bottom-center"
+            tooltipPosition="bottom-right"
           >
             <AccountBox onClick={this.unFollowUser} color="#00BCD4" />
           </IconButton>
@@ -144,7 +144,7 @@ class Poem extends React.Component {
         return (
           <IconButton
             tooltip={`Follow ${poemAuthor[0].username}`}
-            tooltipPosition="bottom-center"
+            tooltipPosition="bottom-right"
           >
             <AccountBox onClick={this.followUser} color="black" />
           </IconButton>
@@ -152,7 +152,7 @@ class Poem extends React.Component {
       }
     } else {
       return (
-        <IconButton tooltip={`This is you`} tooltipPosition="bottom-center">
+        <IconButton tooltip={`This is you`} tooltipPosition="bottom-right">
           <AccountBox color="grey" />
         </IconButton>
       );
@@ -165,7 +165,7 @@ class Poem extends React.Component {
       return (
         <IconButton
           tooltip={`Remove poem from favorites`}
-          tooltipPosition="bottom-center"
+          tooltipPosition="bottom-right"
         >
           <Star onClick={this.unFavoritePoem} color="red" />
         </IconButton>
@@ -174,7 +174,7 @@ class Poem extends React.Component {
       return (
         <IconButton
           tooltip={`Add poem to favorites`}
-          tooltipPosition="bottom-center"
+          tooltipPosition="bottom-right"
         >
           <StarBorder onClick={this.favoritePoem} color="black" />
         </IconButton>
@@ -219,7 +219,7 @@ class Poem extends React.Component {
   deleteable = () => {
     if (this.props.currUser[0].id === this.props.poem.user_id) {
       return (
-        <IconButton tooltip={`Delete Poem`} tooltipPosition="bottom-center">
+        <IconButton tooltip={`Delete Poem`} tooltipPosition="bottom-right">
           <Clear onClick={this.deletePoem} />
         </IconButton>
       );

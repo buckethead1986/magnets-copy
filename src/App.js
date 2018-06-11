@@ -33,13 +33,13 @@ class App extends Component {
     if (token) {
       this.fetchUserInformation();
     } else {
-      if (!window.location.href.includes("signup")) {
-        this.fetchRelationships();
-        this.fetchUsers();
-        this.fetchPoems();
-        this.fetchWords();
-        this.props.history.push("/guest");
-      }
+      // if (!window.location.href.includes("signup")) {
+      this.fetchRelationships();
+      this.fetchUsers();
+      this.fetchPoems();
+      this.fetchWords();
+      this.props.history.push("/guest");
+      // }
     }
   }
 
@@ -67,7 +67,7 @@ class App extends Component {
     this.props.history.push("/guest");
   };
 
-  // profileLink = () => {
+  // showUserLink = () => {
   //   this.props.store.dispatch({
   //     type: "CHANGE_SHOWN_USER",
   //     payload: this.state.currUser[0]
@@ -132,11 +132,11 @@ class App extends Component {
     this.props.history.push("/poem/new");
   };
 
-  showUsers = () => {
-    this.props.history.push("/users");
-  };
+  // showUsers = () => {
+  //   this.props.history.push("/users");
+  // };
 
-  showUser = id => {
+  showUserLink = id => {
     this.props.history.push(`/users/${id}`);
   };
 
@@ -150,12 +150,29 @@ class App extends Component {
     fetch(`${url}/users`)
       .then(res => res.json())
       .then(json =>
-        this.setState({
-          users: json,
-          currUser: json.filter(user => user.id === id)
-        })
+        this.setState(
+          {
+            users: json
+            // currUser: json.filter(user => user.id === id)
+          },
+          () =>
+            this.props.store.dispatch({
+              type: "CHANGE_SHOWN_USER",
+              payload: this.state.users.filter(user => {
+                return user.id === this.state.currUser[0].id;
+              })[0]
+            })
+        )
       )
-      .then(() => this.profileLink());
+      // .then(() =>
+      //   this.props.store.dispatch({
+      //     type: "CHANGE_SHOWN_USER",
+      //     payload: this.state.users.filter(user => {
+      //       return user.id === this.state.currUser[0].id;
+      //     })
+      //   })
+      // )
+      .then(() => this.showUserLink(id));
   };
 
   fetchUserInformation = () => {
@@ -376,11 +393,11 @@ class App extends Component {
             poems={this.state.poems}
             store={this.props.store}
             currUser={this.state.currUser}
-            showUser={this.showUser}
-            showUsers={this.showUsers}
+            // showUser={this.showUser}
+            // showUsers={this.showUsers}
             showPoemLink={this.showPoemLink}
             showPoemsLink={this.showPoemsLink}
-            profileLink={this.profileLink}
+            // profileLink={this.profileLink}
             loginLink={this.loginLink}
             fetchPoems={this.fetchPoems}
             fetchUserInformation={this.fetchUserInformation}
