@@ -593,7 +593,7 @@ class UserDrawer extends React.Component {
                   url={this.props.url}
                   currUser={this.props.currUser}
                   store={this.props.store}
-                  ShowPoemLink={this.props.ShowPoemLink}
+                  showPoemLink={this.props.showPoemLink}
                   profileLink={this.props.profileLink}
                   users={this.props.users}
                   showUserLink={this.props.showUserLink}

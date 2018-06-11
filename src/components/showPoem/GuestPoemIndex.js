@@ -12,37 +12,55 @@ class PoemIndex extends React.Component {
     this.state = {
       filteredPoems: [],
       users: [],
-      // favoritedPoems: [],
+      favoritedPoems: [],
       listOfFilteredUsers: []
     };
   }
 
   componentWillMount() {
-    // const favoritedPoems = this.props.poems.filter(poem => {
-    //   return poem.favorited_by.some(user => {
-    //     return user.id === this.props.currUser[0].id;
-    //   });
-    // });
-    this.setState({
-      users: this.props.users,
-      filteredPoems: this.props.poems
-      // favoritedPoems: favoritedPoems
-    });
+    if (this.props.currUser.length !== 0) {
+      const favoritedPoems = this.props.poems.filter(poem => {
+        return poem.favorited_by.some(user => {
+          return user.id === this.props.currUser[0].id;
+        });
+      });
+      this.setState({
+        users: this.props.users,
+        filteredPoems: this.props.poems,
+        favoritedPoems: favoritedPoems
+      });
+    } else {
+      this.setState({
+        users: this.props.users,
+        filteredPoems: this.props.poems
+      });
+    }
   }
 
   //updates list of favorited poems, users and poems for other users concurrent creations
   componentWillReceiveProps(nextProps) {
-    if (this.props.poems !== nextProps.poems) {
-      // const favoritedPoems = nextProps.poems.filter(poem => {
-      //   return poem.favorited_by.some(user => {
-      //     return user.id === this.props.currUser[0].id;
-      //   });
-      // });
+    if (
+      this.props.currUser.length !== 0 &&
+      this.props.poems !== nextProps.poems
+    ) {
+      const favoritedPoems = nextProps.poems.filter(poem => {
+        return poem.favorited_by.some(user => {
+          return user.id === this.props.currUser[0].id;
+        });
+      });
+      this.setState(
+        {
+          users: nextProps.users,
+          filteredPoems: nextProps.poems,
+          favoritedPoems: favoritedPoems
+        },
+        () => this.filterPoems()
+      );
+    } else if (this.props.poems !== nextProps.poems) {
       this.setState(
         {
           users: nextProps.users,
           filteredPoems: nextProps.poems
-          // favoritedPoems: favoritedPoems
         },
         () => this.filterPoems()
       );
@@ -101,7 +119,7 @@ class PoemIndex extends React.Component {
       if (this.props.currUser.length !== 0) {
         return (
           <div key={index}>
-            <PoemIndexCard
+            <GuestPoemIndexCard
               columns={4}
               showPoemLink={this.props.showPoemLink}
               url={this.props.url}
@@ -143,6 +161,7 @@ class PoemIndex extends React.Component {
           users={this.props.users}
           filteredPoems={this.filteredPoems}
           favoritedPoems={this.state.favoritedPoems}
+          currUser={this.props.currUser}
         />
         <Columns columns={3}>{poems}</Columns>
       </div>

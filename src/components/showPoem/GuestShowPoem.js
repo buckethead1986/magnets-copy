@@ -27,7 +27,7 @@ class Poem extends React.Component {
   render() {
     if (this.props.currUser.length !== 0) {
       return (
-        <ShowPoemCard
+        <GuestShowPoemCard
           url={this.props.url}
           showPoemsLink={this.props.showPoemsLink}
           currUser={this.props.currUser}
@@ -50,6 +50,7 @@ class Poem extends React.Component {
         <GuestShowPoemCard
           url={this.props.url}
           users={this.props.users}
+          currUser={this.props.currUser}
           poem={this.state.poem}
           poems={this.props.poems}
           fetchPoems={this.props.fetchPoems}

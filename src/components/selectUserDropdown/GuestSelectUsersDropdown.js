@@ -34,15 +34,35 @@ export default class SelectFieldDropdown extends Component {
 
   render() {
     const { values } = this.state;
-    return (
-      <SelectField
-        multiple={true}
-        hintText="Select poems by user(s)"
-        value={values}
-        onChange={this.handleChange}
-      >
-        {this.menuItems(values)}
-      </SelectField>
-    );
+    if (this.props.currUser.lenngth !== 0) {
+      return (
+        <SelectField
+          multiple={true}
+          hintText="Select poems by user(s)"
+          value={values}
+          onChange={this.handleChange}
+        >
+          <MenuItem
+            key={0}
+            insetChildren={true}
+            checked={values && values.indexOf("Favorites") > -1}
+            value={"Favorites"}
+            primaryText={"Favorites"}
+          />
+          {this.menuItems(values)}
+        </SelectField>
+      );
+    } else {
+      return (
+        <SelectField
+          multiple={true}
+          hintText="Select poems by user(s)"
+          value={values}
+          onChange={this.handleChange}
+        >
+          {this.menuItems(values)}
+        </SelectField>
+      );
+    }
   }
 }
