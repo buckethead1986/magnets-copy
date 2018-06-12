@@ -382,6 +382,7 @@ class App extends Component {
   };
 
   //The UserDrawer prop list is enormous, I know. All child components stem off it, for 'guest' user and logged in user components.
+  //Once I get the app working, I'm going to refactor lots of this into the redux store
   render() {
     if (this.state.users.length !== 0) {
       return (
@@ -400,6 +401,7 @@ class App extends Component {
             // profileLink={this.profileLink}
             loginLink={this.loginLink}
             fetchPoems={this.fetchPoems}
+            fetchUsers={this.fetchUsers}
             fetchUserInformation={this.fetchUserInformation}
             relationships={this.state.relationships}
             favorites={this.state.favorites}

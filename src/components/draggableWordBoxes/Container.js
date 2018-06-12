@@ -5,17 +5,36 @@ import update from "immutability-helper";
 import shouldPureComponentUpdate from "./shouldPureComponentUpdate";
 import ItemTypes from "./ItemTypes";
 import DraggableBox from "./DraggableBox";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 
 //stretch goal is for draggable boxes' positions to re-render on window resize.
 //I spent a while working on the problem, but couldn't get a workable solution
 const styles = {
-  height: "900px",
+  height: "calc(100vh - 200px)",
   width: "100%",
   borderRightStyle: "",
   borderLeftStyle: "",
   borderTopStyle: "",
   position: "relative"
 };
+
+// const styles = theme => ({
+//   button: {
+//     margin: theme.spacing.unit,
+//     backgroundColor: "#2196F3",
+//     textColor: "white"
+//   },
+//   styles: {
+//     height: "calc(100vh - 200px)",
+//     width: "100%",
+//
+//     borderRightStyle: "",
+//     borderLeftStyle: "",
+//     borderTopStyle: "",
+//     position: "relative"
+//   }
+// });
 
 const poemStyles = {
   // zIndex: -1,

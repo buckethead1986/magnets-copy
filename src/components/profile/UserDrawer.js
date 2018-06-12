@@ -391,6 +391,7 @@ class UserDrawer extends React.Component {
                     <GuestCreatePoemContainer
                       url={this.props.url}
                       users={this.props.users}
+                      currUser={this.props.currUser}
                       store={this.props.store}
                       showPoemLink={this.props.showPoemLink}
                       words={this.props.words}
@@ -506,6 +507,7 @@ class UserDrawer extends React.Component {
                         store={this.props.store}
                         currUser={this.props.currUser}
                         showPoemLink={this.props.showPoemLink}
+                        fetchUsers={this.props.fetchUsers}
                         fetchUserInformation={this.props.fetchUserInformation}
                       />
                     </Col>
