@@ -7,6 +7,7 @@ export default function reducer(
     shownUser: {},
     wordsList: 1,
     wordsGroup: {}
+    // wordSubmitDimensions: [800, 550]
   },
   action
 ) {
@@ -23,9 +24,10 @@ export default function reducer(
       for (var word in action.payload) {
         if (
           action.payload[word].group === state.wordsList &&
-          action.payload[word].left > 0 &&
-          action.payload[word].left < width &&
-          action.payload[word].top > 200
+          action.payload[word].left > (width - 1000) / 2 && //unplaceable area left of poem creation box
+          action.payload[word].left < width - (width - 1000) / 2 && //unplaceable area right of poem creation box
+          action.payload[word].top > 200 && //unplaceable area above poem creation box
+          action.payload[word].top < 750 //unplaceable area below poem creation box. height of creation box is 550, draggableWordBoxes/container.js poemstyles.height, marginTop is 200
         ) {
           poem.push(action.payload[word]);
         }

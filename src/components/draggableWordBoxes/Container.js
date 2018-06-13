@@ -13,9 +13,9 @@ import Button from "@material-ui/core/Button";
 const styles = {
   height: "calc(100vh - 200px)",
   width: "100%",
-  borderRightStyle: "",
-  borderLeftStyle: "",
-  borderTopStyle: "",
+  // borderRightStyle: "",
+  // borderLeftStyle: "",
+  // borderTopStyle: "",
   position: "relative"
 };
 
@@ -50,7 +50,7 @@ const poemStyles = {
   // borderBottomLeftRadius: "50px",
   position: "absolute",
   height: "550px",
-  width: "100%",
+  width: "1000px",
   border: "#2196F3",
   borderTopStyle: "solid",
   borderBottomStyle: "solid"
@@ -143,7 +143,9 @@ class Container extends Component {
   };
 
   addWordsToStore = () => {
+    console.log("adding words");
     this.props.store.dispatch({ type: "ADD_WORD", payload: this.state.boxes });
+    console.log(this.props.store.getState().words);
   };
 
   moveBox(id, left, top) {
@@ -192,7 +194,9 @@ class Container extends Component {
       <div>
         <div style={styles}>
           {Object.keys(boxList).map(key => this.renderBox(boxList[key], key))}
-          <div style={poemStyles}>Make Poem Here</div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={poemStyles}>Make Poem Here</div>
+          </div>
         </div>
       </div>
     );

@@ -6,18 +6,20 @@ const styles = {
   borderRadius: "4px",
   padding: "0.3rem 0.3rem",
   cursor: "move",
-  position: "absolute"
+  position: "absolute",
+  backgroundColor: "white"
 };
 
 export default class Box extends Component {
   render() {
-    const { title, top, left } = this.props;
+    const { title, top, left, zIndex } = this.props;
     return (
       <div
         style={{
           ...styles,
           top: parseInt(top, 10),
-          left: parseInt(left, 10)
+          left: parseInt(left, 10),
+          zIndex: zIndex
         }}
       >
         {title}

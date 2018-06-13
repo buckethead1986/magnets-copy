@@ -39,7 +39,8 @@ class CreatePoemContainer extends Component {
     if (Object.keys(body).length !== 0) {
       this.formatPoem(body, Object.keys(body).length - 1, output);
     }
-    console.log(headers, body, output);
+    // console.log(headers, body, output);
+    console.log(output);
     if (output.length !== 0) {
       fetch(`${this.props.url}/poems`, {
         method: "POST",
@@ -79,12 +80,16 @@ class CreatePoemContainer extends Component {
     output = "";
   };
 
-  //'content' is the formatted poem for posting to the API, as a human would read it, with word id, title, and x,y coordinates of each word (for later viewing)
+  //'content' is the formatted poem for posting to the API, as a human would read it, with word id, title, (x,y) coordinates, and zIndex of each word (for later viewing)
   formatPoem = (body, length, content) => {
-    let x = window.innerWidth;
-    let y = 600; //draggableWordBoxes/Container constant styles.height. Not worth settng as a prop to pass to both components
+    let x = document.getElementById("poemColumn").offsetWidth;
+    let y = 750; //draggableWordBoxes/Container constant poemstyles.height. Not worth settng as a prop to pass to both components
     let currentWord = "";
+    //sorts the list of words based on (x,y) positioning.  Top left to bottom right. Two words, on the same 'line', will be read left to right, any word more
+    //than half the height of a word box below another word will cede it's place to words on the same 'line'. It just formats the words into text as you'd expect
+    //from reading the poem as a human.
     for (var word in body) {
+      console.log(body[word].top, y, "|", body[word].left, x);
       if (body[word].top < y - body[word].height / 2) {
         y = body[word].top;
         x = body[word].left;
@@ -96,7 +101,12 @@ class CreatePoemContainer extends Component {
         currentWord = word;
       }
     }
-    const newLeft = body[currentWord].left - (window.innerWidth / 2 - 248);
+    console.log(word, currentWord);
+    console.log(body[word], body[currentWord]);
+    console.log(body[word].left, body[currentWord].left);
+    const newLeft =
+      body[currentWord].left -
+      (document.getElementById("poemColumn").offsetWidth / 2 - 500);
 
     if (content.length === 0) {
       content =
@@ -107,7 +117,9 @@ class CreatePoemContainer extends Component {
         "/" +
         newLeft +
         "/" +
-        (body[currentWord].top - 200);
+        (body[currentWord].top - 200) +
+        "/" +
+        body[currentWord].zIndex;
     } else {
       content =
         content +
@@ -118,10 +130,14 @@ class CreatePoemContainer extends Component {
         "/" +
         newLeft +
         "/" +
-        (body[currentWord].top - 200);
+        (body[currentWord].top - 200) +
+        "/" +
+        body[currentWord].zIndex;
     }
     delete body[currentWord];
+    console.log(content);
     output = content;
+    console.log(output);
     if (length > 0) {
       this.formatPoem(body, length - 1, content);
     }
@@ -147,7 +163,6 @@ class CreatePoemContainer extends Component {
           </Row>
         </Grid>
         <Container
-          style={{ clear: "both" }}
           url={this.props.url}
           currUser={this.props.currUser}
           store={this.props.store}

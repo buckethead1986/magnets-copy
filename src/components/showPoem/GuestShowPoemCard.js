@@ -241,6 +241,7 @@ class Poem extends React.Component {
   };
 
   renderBox = (word, index) => {
+    console.log(word);
     return (
       <div key={index}>
         <GuestShowBox
@@ -249,6 +250,7 @@ class Poem extends React.Component {
           top={word[3] - 4}
           width={styles.width}
           height={styles.height}
+          zIndex={word[4]}
         />
       </div>
     );
@@ -267,6 +269,7 @@ class Poem extends React.Component {
       poem = this.props.poem.content.split("|").map(word => {
         return word.split("/");
       });
+      console.log(poem);
       poemWords = poem.map((word, index) => {
         return this.renderBox(word, index);
       });

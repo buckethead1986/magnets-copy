@@ -8,7 +8,8 @@ const styles = {
   borderRadius: "4px",
   padding: "0.3rem 0.3rem",
   cursor: "move",
-  fontSize: 18
+  fontSize: 18,
+  backgroundColor: "white"
 };
 
 export default class Box extends Component {
@@ -30,11 +31,7 @@ export default class Box extends Component {
     const { title } = this.props;
 
     return (
-      <div
-        ref="target"
-        id={this.props.id}
-        style={{ ...styles, backgroundColor: "white" }}
-      >
+      <div ref="target" id={this.props.id} style={styles}>
         {title}
       </div>
     );
