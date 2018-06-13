@@ -20,21 +20,19 @@ user via the Rails backend and in the user's local browser storage.
 
 ## Functionality
 
-A user logs in and can create a new poem or peruse other users and their poems.
+Any non-logged in navigation redirects you to the freeplay poem creation page.
+Guests can drag and drop words and view other users poems by clicking their name
+in the drawer to the left.
 
-When a user creates a poem, they're brought to a page with multiple selectable
-word banks that modify the state of allowable words, made up of drag and drop
-React components. Once their creation is to their liking, they can submit it and
-are brought to a show page for that particular poem.
-
-The profile page (accessed via a dropdown in the NavBar, along with making new
-poems and seeing all poems) allows users to see all other users in a list,
-organized by followed and unfollowed. Clicking on a user in that list brings up
-that users avatar and poems. Clicking on only your avatar will let you change
-the image.
+Once a user logs in, more functionality in the website opens up.  Poems can be
+saved, added to a favorites list, and other users can be followed. Followed
+users are automatically updated and subdivided in the left drawer, and favorited
+poems can be seen by clicking 'All Poems' in the left drawer.  Selecting any or
+all users or 'Favorites' filters all the poems accordingly.
 
 Every poem, wherever displayed, can be favorited and its' user followed or
-unfollowed, which are updated immediately.
+unfollowed, which are updated immediately. If the poem is yours, a third option
+to delete becomes available.
 
 ## Layout / Design
 
