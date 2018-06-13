@@ -8,12 +8,13 @@ import Star from "material-ui/svg-icons/toggle/star";
 import Clear from "material-ui/svg-icons/content/clear";
 
 const styles = {
-  width: 500,
-  height: 398,
-  marginLeft: window.innerWidth / 2 - 250,
-  marginRight: window.innerWidth / 2 - 250,
-  border: "solid",
-  position: "relative"
+  width: 1000,
+  height: 550,
+  position: "relative",
+  borderRadius: "50px 50px 50px 50px",
+  border: "#2196F3",
+  borderTopStyle: "solid",
+  borderBottomStyle: "solid"
 };
 
 class Poem extends React.Component {
@@ -241,7 +242,6 @@ class Poem extends React.Component {
   };
 
   renderBox = (word, index) => {
-    console.log(word);
     return (
       <div key={index}>
         <GuestShowBox
@@ -269,7 +269,6 @@ class Poem extends React.Component {
       poem = this.props.poem.content.split("|").map(word => {
         return word.split("/");
       });
-      console.log(poem);
       poemWords = poem.map((word, index) => {
         return this.renderBox(word, index);
       });
@@ -297,8 +296,10 @@ class Poem extends React.Component {
                 : this.props.defaultImage
             }
           />
-          <div style={styles} onClick={() => window.history.back()}>
-            {poemWords}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={styles} onClick={() => window.history.back()}>
+              {poemWords}
+            </div>
           </div>
           <CardTitle title="Poem Text" subtitle={humanReadablePoem} />
           <CardActions>
@@ -323,8 +324,10 @@ class Poem extends React.Component {
                 : this.props.defaultImage
             }
           />
-          <div style={styles} onClick={() => window.history.back()}>
-            {poemWords}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={styles} onClick={() => window.history.back()}>
+              {poemWords}
+            </div>
           </div>
           <CardTitle title="Poem Text" subtitle={humanReadablePoem} />
           <CardActions />

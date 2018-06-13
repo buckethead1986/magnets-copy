@@ -12,8 +12,8 @@ import ChangeProfileImage from "./components/profile/ChangeProfileImage";
 import GuestCreatePoemContainer from "./components/containers/GuestCreatePoemContainer";
 import UserDrawer from "./components/profile/UserDrawer";
 
-// const url = "https://magnets-api.herokuapp.com/api/v1";
-const url = "http://localhost:3001/api/v1";
+const url = "https://magnets-api.herokuapp.com/api/v1";
+// const url = "http://localhost:3001/api/v1";
 
 const defaultImage =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNps8d9m-xAllIL4UPQZ76BtwbSYNs4UmkLqi6e2s4UnpGoW";
@@ -382,7 +382,7 @@ class App extends Component {
   };
 
   //The UserDrawer prop list is enormous, I know. All child components stem off it, for 'guest' user and logged in user components.
-  //Once I get the app working, I'm going to refactor lots of this into the redux store
+  //Once I get the app working, I'm going to refactor most of this into the redux store
   render() {
     if (this.state.users.length !== 0) {
       return (
@@ -398,6 +398,7 @@ class App extends Component {
             // showUsers={this.showUsers}
             showPoemLink={this.showPoemLink}
             showPoemsLink={this.showPoemsLink}
+            showUserLink={this.showUserLink}
             // profileLink={this.profileLink}
             loginLink={this.loginLink}
             fetchPoems={this.fetchPoems}
@@ -409,6 +410,7 @@ class App extends Component {
             followUser={this.followUser}
             unFollowUser={this.unFollowUser}
             unFavoritePoem={this.unFavoritePoem}
+            changeProfileImageLink={this.changeProfileImageLink}
             updateUsers={this.updateUsers}
             usersLink={this.usersLink}
             guestUsersLink={this.guestUsersLink}

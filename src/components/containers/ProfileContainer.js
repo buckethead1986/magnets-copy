@@ -66,7 +66,6 @@ class ProfileContainer extends React.Component {
 
   welcomeMessage = () => {
     const user = this.props.store.getState().shownUser;
-    console.log(user);
     let text = "";
     if (user.id === this.props.currUser[0].id) {
       text = `Welcome back ${user.username}! `;
@@ -82,6 +81,8 @@ class ProfileContainer extends React.Component {
       } else {
         text += `and ${user.poems.length} poems created`;
       }
+    } else if (user.poems.length === 0) {
+      text = `${user.username} has not created anything yet`;
     } else {
       text = `These are the poems created by ${user.username}`;
     }
@@ -150,6 +151,7 @@ class ProfileContainer extends React.Component {
   };
 
   render() {
+    console.log(this.state.shownUser);
     return (
       <div>
         <Grid fluid>

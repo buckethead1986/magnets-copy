@@ -7,20 +7,22 @@ const styles = {
   padding: "0.2rem 0.2rem",
   cursor: "move",
   position: "absolute",
-  fontSize: 11
+  backgroundColor: "white",
+  fontSize: 10
 };
 
 export default class Box extends Component {
   render() {
-    const width = this.props.width / 500;
-    const height = this.props.height / 398;
-    const { title, top, left } = this.props;
+    const width = this.props.width;
+    const height = this.props.height;
+    const { title, top, left, zIndex } = this.props;
     return (
       <div
         style={{
           ...styles,
-          top: parseInt(top, 10) * height,
-          left: parseInt(left, 10) * width
+          top: parseInt(top, 10) * height / 550,
+          left: parseInt(left, 10) * width / 1250,
+          zIndex: zIndex
         }}
       >
         {title}

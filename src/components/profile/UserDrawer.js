@@ -19,6 +19,7 @@ import GuestProfileContainer from "../../components/containers/GuestProfileConta
 import GuestShowPoem from "../../components/showPoem/GuestShowPoem";
 import GuestPoemIndex from "../../components/showPoem/GuestPoemIndex";
 import ProfileContainer from "../../components/containers/ProfileContainer";
+import ChangeProfileImage from "./ChangeProfileImage";
 import ShowPoem from "../../components/showPoem/ShowPoem";
 import PoemIndex from "../../components/showPoem/PoemIndex";
 // import ShowPoem from '../../components/showPoem/ShowPoem'
@@ -375,6 +376,20 @@ class UserDrawer extends React.Component {
         />
         <Route
           exact
+          path="/profile/new"
+          render={() => {
+            return (
+              <ChangeProfileImage
+                url={this.props.url}
+                currUser={this.props.currUser}
+                store={this.props.store}
+                showUserLink={this.props.showUserLink}
+              />
+            );
+          }}
+        />
+        <Route
+          exact
           path="/guest"
           render={() => {
             return (
@@ -597,6 +612,7 @@ class UserDrawer extends React.Component {
                   currUser={this.props.currUser}
                   store={this.props.store}
                   showPoemLink={this.props.showPoemLink}
+                  changeProfileImageLink={this.props.changeProfileImageLink}
                   // profileLink={this.props.profileLink}
                   users={this.props.users}
                   // showUserLink={this.props.showUserLink}

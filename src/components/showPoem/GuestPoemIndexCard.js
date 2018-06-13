@@ -8,12 +8,15 @@ import AccountBox from "material-ui/svg-icons/action/account-box";
 import { Card, CardActions, CardHeader } from "material-ui/Card";
 
 let styles = {
-  width: window.innerWidth / 4 - 20,
-  height: window.innerWidth / 4 * 0.8 - 16,
+  height: 550 * (window.innerWidth / 1000) * (1 / 3), //maintains relative size of poem box. relative proportions of 550 based on new window width to the original width of 1000, scaled 1/3 because of the 3 column layout
+  width: window.innerWidth * (1 / 3), //really its 1000 * window.innerWidth/1000 * (1/3), but it cancels
   marginLeft: 6,
   marginRight: 6,
-  border: "solid",
-  position: "relative"
+  position: "relative",
+  borderRadius: "50px 50px 50px 50px",
+  border: "#2196F3",
+  borderTopStyle: "solid",
+  borderBottomStyle: "solid"
 };
 
 //specific poem card, has favorite/unfavorite and follow/unfollow methods, updates state and redux store on change
@@ -188,19 +191,20 @@ class Poem extends React.Component {
 
   renderBox = (word, index) => {
     return (
-      <div key={index}>
+      <div key={index} style={{ overflow: "hidden" }}>
         <GuestPoemIndexBox
           title={word[1]}
           left={word[2]}
           top={word[3] - 4}
           width={styles.width}
           height={styles.height}
+          zIndex={word[4]}
         />
       </div>
     );
   };
 
-  //poem splits the content of the poem into useable parts (each word is posted to the api as 'id/word/x-coord/y-coord' in one string with | between words)
+  //poem splits the content of the poem into useable parts (each word is posted to the api as 'id/word/x-coord/y-coord/zIndex' in one string with | between words)
   //poemWords returns the undraggable boxes with the correct coordinates
   //poemAuthor returns the Author of the poem
   render() {
@@ -233,15 +237,15 @@ class Poem extends React.Component {
                 : this.props.defaultImage
             }
           />
-          <div
-            onClick={() => {
-              this.props.currUser.length !== 0
-                ? this.props.showPoemLink(this.props.poem.id)
-                : this.props.guestShowPoemLink(this.props.poem.id);
-            }}
-            style={styles}
-          >
-            {poemWords}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              onClick={() => {
+                this.props.showPoemLink(this.props.poem.id);
+              }}
+              style={styles}
+            >
+              {poemWords}
+            </div>
           </div>
           <CardActions>
             {this.favoriteUnfavorite()}
@@ -264,15 +268,15 @@ class Poem extends React.Component {
                 : this.props.defaultImage
             }
           />
-          <div
-            onClick={() => {
-              this.props.currUser.length !== 0
-                ? this.props.showPoemLink(this.props.poem.id)
-                : this.props.guestShowPoemLink(this.props.poem.id);
-            }}
-            style={styles}
-          >
-            {poemWords}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              onClick={() => {
+                this.props.guestShowPoemLink(this.props.poem.id);
+              }}
+              style={styles}
+            >
+              {poemWords}
+            </div>
           </div>
           <CardActions />
         </Card>

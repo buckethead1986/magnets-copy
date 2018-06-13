@@ -81,7 +81,7 @@ class ChangeProfileImage extends React.Component {
               marginTop: 20,
               marginLeft: 200
             }}
-            onClick={() => this.props.profileLink()}
+            onClick={() => this.props.showUserLink(this.props.currUser[0].id)}
           />
         </div>
       </div>
