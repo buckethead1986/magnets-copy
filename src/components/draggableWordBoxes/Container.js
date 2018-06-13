@@ -5,49 +5,19 @@ import update from "immutability-helper";
 import shouldPureComponentUpdate from "./shouldPureComponentUpdate";
 import ItemTypes from "./ItemTypes";
 import DraggableBox from "./DraggableBox";
-import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 
 //stretch goal is for draggable boxes' positions to re-render on window resize.
 //I spent a while working on the problem, but couldn't get a workable solution
 const styles = {
   height: "calc(100vh - 200px)",
   width: "100%",
-  // borderRightStyle: "",
-  // borderLeftStyle: "",
-  // borderTopStyle: "",
   position: "relative"
 };
 
-// const styles = theme => ({
-//   button: {
-//     margin: theme.spacing.unit,
-//     backgroundColor: "#2196F3",
-//     textColor: "white"
-//   },
-//   styles: {
-//     height: "calc(100vh - 200px)",
-//     width: "100%",
-//
-//     borderRightStyle: "",
-//     borderLeftStyle: "",
-//     borderTopStyle: "",
-//     position: "relative"
-//   }
-// });
-
 const poemStyles = {
-  // zIndex: -1,
   textAlign: "center",
   marginTop: "200px",
-  // backgroundColor: "#9498a1",
-  // borderTopRightRadius: "50px",
-  // borderTopLeftRadius: "50px",
-  // borderBottomLeftRadius: "50px",
-  // borderBottomRightRadius: "50px",
   borderRadius: "50px 50px 50px 50px",
-  // borderBottomRightRadius: "50px",
-  // borderBottomLeftRadius: "50px",
   position: "absolute",
   height: "550px",
   width: "1000px",
@@ -143,13 +113,10 @@ class Container extends Component {
   };
 
   addWordsToStore = () => {
-    console.log("adding words");
     this.props.store.dispatch({ type: "ADD_WORD", payload: this.state.boxes });
-    console.log(this.props.store.getState().words);
   };
 
   moveBox(id, left, top) {
-    console.log(left, top);
     this.props.store.dispatch({ type: "INCREASE_Z" });
     this.setState(
       update(this.state, {

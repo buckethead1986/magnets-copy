@@ -238,7 +238,6 @@ class Poem extends React.Component {
     })
       .then(() => this.props.fetchPoems())
       .then(() => this.props.updateUsers());
-    // .then(() => this.props.store.dispatch({type: 'CHANGE_SHOWN_USER', payload: this.props.}))
   };
 
   renderBox = (word, index) => {

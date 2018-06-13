@@ -1,73 +1,17 @@
 import React from "react";
 import Avatar from "material-ui/Avatar";
 import { Grid, Row, Col } from "react-flexbox-grid";
-import UsersList from "../profile/UsersList";
-import PoemIndexCard from "../showPoem/PoemIndexCard";
 import GuestPoemIndexCard from "../showPoem/GuestPoemIndexCard";
 import Columns from "react-columns";
 
 class ProfileContainer extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      poems: [],
-      shownUser: ""
-    };
-  }
-
-  //loads your avatar and poems by default
-  componentWillMount() {
-    // const user = this.props.store.getState().shownUser;
-    // this.setState({
-    //   poems: this.props.poems.filter(poem => {
-    //     return poem.user_id === user.id;
-    //   }),
-    //   shownUser: user
-    // });
-  }
-
-  //keeps the user being shown constant, if you navigate to a poem and back
-  //(click on a user, click a poem, click back, stays on that user, doesnt default back to your profile)
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.state.shownUser[0] !== this.props.currUser[0] ||
-      this.props.poems !== nextProps.poems
-    ) {
-      this.setState({
-        poems: nextProps.poems.filter(poem => {
-          return poem.user_id === this.props.currUser[0].id;
-        }),
-        shownUser: nextProps.users.filter(user => {
-          return user.id === this.props.currUser[0].id;
-        })[0]
-      });
-    }
-  }
-
-  //updates store and current state to maintain the same user being shown
-  // changeShownUser = id => {
-  //   const shownUser = this.props.users.filter(user => {
-  //     return user.id === id;
-  //   })[0];
-  //   this.setState({
-  //     poems: this.props.poems.filter(poem => {
-  //       return poem.user_id === id;
-  //     }),
-  //     shownUser: this.props.users.filter(user => {
-  //       return user.id === shownUser.id;
-  //     })[0]
-  //   });
-  //   this.props.store.dispatch({
-  //     type: "CHANGE_SHOWN_USER",
-  //     payload: shownUser
-  //   });
-  // };
-
   welcomeMessage = () => {
     const user = this.props.store.getState().shownUser;
     let text = "";
-    if (user.id === this.props.currUser[0].id) {
+    if (
+      this.props.currUser.length !== 0 &&
+      user.id === this.props.currUser[0].id
+    ) {
       text = `Welcome back ${user.username}! `;
       if (this.props.currUser[0].followers.length === 1) {
         text += `You have ${this.props.currUser[0].followers
@@ -92,6 +36,7 @@ class ProfileContainer extends React.Component {
   //does what the function name implies.
   renderShownUserAvatar = () => {
     if (
+      this.props.currUser.length !== 0 &&
       this.props.store.getState().shownUser.id === this.props.currUser[0].id
     ) {
       return (
@@ -132,6 +77,8 @@ class ProfileContainer extends React.Component {
               url={this.props.url}
               currUser={this.props.currUser}
               users={this.props.users}
+              fetchPoems={this.props.fetchPoems}
+              updateUsers={this.props.updateUsers}
               poem={poem}
               followUser={this.props.followUser}
               unFollowUser={this.props.unFollowUser}
@@ -139,6 +86,7 @@ class ProfileContainer extends React.Component {
               favoritePoem={this.props.favoritePoem}
               unFavoritePoem={this.props.unFavoritePoem}
               favorites={this.props.favorites}
+              guestShowPoemLink={this.props.guestShowPoemLink}
             />
             <br />
           </div>
@@ -151,7 +99,6 @@ class ProfileContainer extends React.Component {
   };
 
   render() {
-    console.log(this.state.shownUser);
     return (
       <div>
         <Grid fluid>

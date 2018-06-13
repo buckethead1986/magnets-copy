@@ -1,7 +1,6 @@
 import React from "react";
-import GuestPoemIndexCard from "./GuestPoemIndexCard";
-import PoemIndexCard from "./PoemIndexCard";
 import Columns from "react-columns";
+import GuestPoemIndexCard from "./GuestPoemIndexCard";
 import GuestSelectUsersDropdown from "../selectUserDropdown/GuestSelectUsersDropdown";
 
 //shows all poems as cards, includes favorite and following actions.
@@ -151,8 +150,14 @@ class PoemIndex extends React.Component {
         );
       }
     });
-    const text =
-      "Scroll through all the poems! Filter by the users and/or favorites (you can select multiple) of your choice";
+    let text;
+    if (this.props.currUser.length !== 0) {
+      text =
+        "Scroll through all the poems! Filter by the users and/or favorites (you can select multiple) of your choice";
+    } else {
+      text =
+        "Scroll through all the poems! Filter by the users (you can select multiple) of your choice";
+    }
     return (
       <div>
         <h3 align="center">{text}</h3>

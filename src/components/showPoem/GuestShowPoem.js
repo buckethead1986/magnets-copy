@@ -1,6 +1,5 @@
 import React from "react";
 import GuestShowPoemCard from "./GuestShowPoemCard";
-import ShowPoemCard from "./ShowPoemCard";
 
 class Poem extends React.Component {
   constructor() {
@@ -29,20 +28,19 @@ class Poem extends React.Component {
       return (
         <GuestShowPoemCard
           url={this.props.url}
-          showPoemsLink={this.props.showPoemsLink}
-          currUser={this.props.currUser}
           users={this.props.users}
           poem={this.state.poem}
           poems={this.props.poems}
+          currUser={this.props.currUser}
+          showPoemsLink={this.props.showPoemsLink}
           fetchPoems={this.props.fetchPoems}
-          updateUsers={this.props.updateUsers}
+          relationships={this.props.relationships}
+          favorites={this.props.favorites}
+          favoritePoem={this.props.favoritePoem}
           followUser={this.props.followUser}
           unFollowUser={this.props.unFollowUser}
-          relationships={this.props.relationships}
-          favoritePoem={this.props.favoritePoem}
           unFavoritePoem={this.props.unFavoritePoem}
-          favorites={this.props.favorites}
-          profileLink={this.props.profileLink}
+          updateUsers={this.props.updateUsers}
         />
       );
     } else {
@@ -50,12 +48,10 @@ class Poem extends React.Component {
         <GuestShowPoemCard
           url={this.props.url}
           users={this.props.users}
-          currUser={this.props.currUser}
           poem={this.state.poem}
           poems={this.props.poems}
+          currUser={this.props.currUser}
           fetchPoems={this.props.fetchPoems}
-          // updateUsers={this.props.updateUsers}
-          profileLink={this.props.profileLink}
         />
       );
     }

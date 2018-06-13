@@ -3,28 +3,25 @@ import { Route } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Row, Col } from "react-flexbox-grid";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-// import CreatePoemContainer from "../../components/containers/CreatePoemContainer";
-import GuestCreatePoemContainer from "../../components/containers/GuestCreatePoemContainer";
-import GuestProfileContainer from "../../components/containers/GuestProfileContainer";
+import {
+  Drawer,
+  AppBar,
+  Toolbar,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListSubheader,
+  Typography,
+  Divider
+} from "@material-ui/core";
+import Help from "../../components/help/Help";
+import Login from "../login/Login";
 import GuestShowPoem from "../../components/showPoem/GuestShowPoem";
 import GuestPoemIndex from "../../components/showPoem/GuestPoemIndex";
+import GuestCreatePoemContainer from "../../components/containers/GuestCreatePoemContainer";
 import ProfileContainer from "../../components/containers/ProfileContainer";
 import ChangeProfileImage from "./ChangeProfileImage";
-import ShowPoem from "../../components/showPoem/ShowPoem";
-import PoemIndex from "../../components/showPoem/PoemIndex";
-// import ShowPoem from '../../components/showPoem/ShowPoem'
-import Login from "../login/Login";
-import Help from "../../components/help/Help";
 
 const drawerWidth = 240;
 
@@ -34,12 +31,10 @@ let unFollowed = [];
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    // height: 430,
     zIndex: 1,
     overflow: "hidden",
     position: "relative",
     display: "flex"
-    // height: "100%"
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -55,15 +50,16 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    // backgroundColor: theme.palette.background.default, //background color for inset div
     padding: theme.spacing.unit * 3,
-    minWidth: 0, // So the Typography noWrap works
+    minWidth: 0,
     height: "100%",
     paddingLeft: drawerWidth
   },
   toolbar: theme.mixins.toolbar
 });
 
+//userDrawer is the component handling the left side users list, and the top appbar. Depending on if there is a logged in user, the left side drawer subdivides
+//into followed and unfollowed lists, as well as showing the logged in user
 class UserDrawer extends React.Component {
   componentDidMount() {
     if (this.props.currUser.length !== 0 && this.props.users.length !== 0) {
@@ -96,8 +92,11 @@ class UserDrawer extends React.Component {
   //iterates through all relationships, when one has a follower_id (doing the following) equal to the current users id,
   //the user with the followed_id (being followed) of that relationship is pushed onto the followed array, and is removed
   //from the usersClone array.
-  //I know there is the console warning 'dont make functions within a loop'. I needed to add the user associated with
-  //the 'followed_id' based on the current users id equalling the 'follower_id'. If you know a better/good way to do this, please let me know.
+  //in plain english, this goes through the relationships join table, and if the logged in user is following someone,
+  //that user is removed from the 'unfollowed' list and pushed onto the 'followed' list
+
+  //I know there is the console warning 'dont make functions within a loop'. It's objecting to the .find within the outer for...in loop.
+  //If you know a better/good way to do this, please let me know.
   splitUsers = (users, relationships) => {
     let usersClone = users.slice(0);
     followed = [];
@@ -116,8 +115,6 @@ class UserDrawer extends React.Component {
       }
     }
     unFollowed = usersClone;
-    // console.log(followed, unFollowed);
-    // this.forceUpdate();
   };
 
   //removes selected element from the array
@@ -133,10 +130,6 @@ class UserDrawer extends React.Component {
   renderUsersList = () => {
     let users;
     if (this.props.currUser.length !== 0) {
-      let filterUsersForCurrentUser = this.props.users.filter(user => {
-        return user.id !== this.props.currUser[0].id;
-      });
-
       users = (
         <div>
           <ListSubheader component="div">You</ListSubheader>
@@ -146,7 +139,7 @@ class UserDrawer extends React.Component {
             onClick={() => this.props.usersLink(this.props.currUser[0].id)}
           >
             <img
-              src={this.props.currUser[0].image}
+              src={this.props.store.getState().image}
               height="30"
               width="30"
               alt={`avatar for ${this.props.currUser[0].username}`}
@@ -165,7 +158,7 @@ class UserDrawer extends React.Component {
     return users;
   };
 
-  //renders all other users in the userdrawer into subheaded lists of followed or unfollowed.
+  //renders all other (minus the logged in user) users in the userdrawer into subheaded lists of followed or unfollowed.
   renderFollowedAndUnfollowedUsers = () => {
     let followedUsers = followed.map(user => {
       return this.mapUsersToListItem(user);
@@ -213,7 +206,8 @@ class UserDrawer extends React.Component {
     );
   };
 
-  //renders common ListItems for seeing all poems and creating a new poem. Independant of whether a user is logged in
+  //renders common ListItems for seeing all poems and creating a new poem. Independant of whether a user is logged in. Slight difference in paths and rendered
+  //components depending on if there is a logged in user or not (presence or absence of localstorage 'token')
   renderNavigationItems = token => {
     if (token) {
       return (
@@ -381,8 +375,8 @@ class UserDrawer extends React.Component {
             return (
               <ChangeProfileImage
                 url={this.props.url}
-                currUser={this.props.currUser}
                 store={this.props.store}
+                currUser={this.props.currUser}
                 showUserLink={this.props.showUserLink}
               />
             );
@@ -406,10 +400,10 @@ class UserDrawer extends React.Component {
                     <GuestCreatePoemContainer
                       url={this.props.url}
                       users={this.props.users}
-                      currUser={this.props.currUser}
                       store={this.props.store}
-                      showPoemLink={this.props.showPoemLink}
                       words={this.props.words}
+                      currUser={this.props.currUser}
+                      showPoemLink={this.props.showPoemLink}
                     />
                   </Col>
                 </Row>
@@ -429,10 +423,10 @@ class UserDrawer extends React.Component {
                 <div>
                   <GuestPoemIndex
                     url={this.props.url}
-                    guestShowPoemLink={this.props.guestShowPoemLink}
                     users={this.props.users}
-                    currUser={this.props.currUser}
                     poems={this.props.poems}
+                    currUser={this.props.currUser}
+                    guestShowPoemLink={this.props.guestShowPoemLink}
                     defaultImage={this.defaultImage}
                   />
                 </div>
@@ -452,16 +446,15 @@ class UserDrawer extends React.Component {
               this.props.poems.length !== 0
             ) {
               return (
-                <GuestProfileContainer
+                <ProfileContainer
                   url={this.props.url}
-                  currUser={this.props.currUser}
-                  store={this.props.store}
-                  guestShowPoemLink={this.props.guestShowPoemLink}
-                  profileLink={this.props.profileLink}
-                  users={this.props.users}
-                  showUser={this.props.showUser}
                   poems={this.props.poems}
+                  users={this.props.users}
+                  store={this.props.store}
+                  currUser={this.props.currUser}
+                  showUser={this.props.showUser}
                   showUsers={this.props.showUsers}
+                  guestShowPoemLink={this.props.guestShowPoemLink}
                   guestPoemCreationLink={this.props.guestPoemCreationLink}
                 />
               );
@@ -479,13 +472,11 @@ class UserDrawer extends React.Component {
                 <div>
                   <GuestShowPoem
                     url={this.props.url}
-                    showPoemsLink={this.props.showPoemsLink}
                     users={this.props.users}
-                    currUser={this.props.currUser}
                     poems={this.props.poems}
+                    currUser={this.props.currUser}
+                    showPoemsLink={this.props.showPoemsLink}
                     fetchPoems={this.props.fetchPoems}
-                    // updateUsers={this.props.updateUsers}
-                    profileLink={this.props.profileLink}
                     {...props}
                   />
                 </div>
@@ -546,11 +537,11 @@ class UserDrawer extends React.Component {
                 <div>
                   <GuestPoemIndex
                     url={this.props.url}
-                    currUser={this.props.currUser}
-                    guestShowPoemLink={this.props.guestShowPoemLink}
-                    showPoemLink={this.props.showPoemLink}
                     users={this.props.users}
                     poems={this.props.poems}
+                    currUser={this.props.currUser}
+                    showPoemLink={this.props.showPoemLink}
+                    guestShowPoemLink={this.props.guestShowPoemLink}
                     relationships={this.props.relationships}
                     favorites={this.props.favorites}
                     favoritePoem={this.props.favoritePoem}
@@ -575,19 +566,18 @@ class UserDrawer extends React.Component {
                 <div>
                   <GuestShowPoem
                     url={this.props.url}
-                    showPoemsLink={this.props.showPoemsLink}
-                    currUser={this.props.currUser}
                     users={this.props.users}
                     poems={this.props.poems}
+                    currUser={this.props.currUser}
+                    showPoemsLink={this.props.showPoemsLink}
                     fetchPoems={this.props.fetchPoems}
-                    updateUsers={this.props.updateUsers}
                     relationships={this.props.relationships}
                     favorites={this.props.favorites}
                     favoritePoem={this.props.favoritePoem}
                     followUser={this.props.followUser}
                     unFollowUser={this.props.unFollowUser}
                     unFavoritePoem={this.props.unFavoritePoem}
-                    profileLink={this.props.profileLink}
+                    updateUsers={this.props.updateUsers}
                     {...props}
                   />
                 </div>
@@ -609,22 +599,22 @@ class UserDrawer extends React.Component {
               return (
                 <ProfileContainer
                   url={this.props.url}
-                  currUser={this.props.currUser}
-                  store={this.props.store}
-                  showPoemLink={this.props.showPoemLink}
-                  changeProfileImageLink={this.props.changeProfileImageLink}
-                  // profileLink={this.props.profileLink}
                   users={this.props.users}
-                  // showUserLink={this.props.showUserLink}
                   poems={this.props.poems}
-                  // showUsersLink={this.props.showUsersLink}
+                  store={this.props.store}
+                  currUser={this.props.currUser}
+                  showPoemLink={this.props.showPoemLink}
+                  showUserLink={this.showUserLink}
+                  guestPoemCreationLink={this.props.guestPoemCreationLink}
+                  changeProfileImageLink={this.props.changeProfileImageLink}
+                  fetchPoems={this.props.fetchPoems}
+                  updateUsers={this.props.updateUsers}
                   relationships={this.props.relationships}
                   favorites={this.props.favorites}
                   favoritePoem={this.props.favoritePoem}
                   followUser={this.props.followUser}
                   unFollowUser={this.props.unFollowUser}
                   unFavoritePoem={this.props.unFavoritePoem}
-                  guestPoemCreationLink={this.props.guestPoemCreationLink}
                 />
               );
             } else {

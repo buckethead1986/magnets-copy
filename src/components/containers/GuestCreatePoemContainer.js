@@ -39,8 +39,6 @@ class CreatePoemContainer extends Component {
     if (Object.keys(body).length !== 0) {
       this.formatPoem(body, Object.keys(body).length - 1, output);
     }
-    // console.log(headers, body, output);
-    console.log(output);
     if (output.length !== 0) {
       fetch(`${this.props.url}/poems`, {
         method: "POST",

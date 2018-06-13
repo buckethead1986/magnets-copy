@@ -1,9 +1,9 @@
 import React from "react";
-// import PoemIndexBox from "./PoemIndexBox";
 import GuestPoemIndexBox from "./GuestPoemIndexBox";
 import IconButton from "material-ui/IconButton";
 import StarBorder from "material-ui/svg-icons/toggle/star-border";
 import Star from "material-ui/svg-icons/toggle/star";
+import Clear from "material-ui/svg-icons/content/clear";
 import AccountBox from "material-ui/svg-icons/action/account-box";
 import { Card, CardActions, CardHeader } from "material-ui/Card";
 
@@ -204,6 +204,29 @@ class Poem extends React.Component {
     );
   };
 
+  deleteable = () => {
+    if (this.props.currUser[0].id === this.props.poem.user_id) {
+      return (
+        <IconButton tooltip={`Delete Poem`} tooltipPosition="bottom-right">
+          <Clear onClick={this.deletePoem} />
+        </IconButton>
+      );
+    }
+  };
+
+  deletePoem = () => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    fetch(`${this.props.url}/poems/${this.props.poem.id}`, {
+      method: "DELETE",
+      headers: headers
+    })
+      .then(() => this.props.fetchPoems())
+      .then(() => this.props.updateUsers());
+  };
+
   //poem splits the content of the poem into useable parts (each word is posted to the api as 'id/word/x-coord/y-coord/zIndex' in one string with | between words)
   //poemWords returns the undraggable boxes with the correct coordinates
   //poemAuthor returns the Author of the poem
@@ -250,6 +273,7 @@ class Poem extends React.Component {
           <CardActions>
             {this.favoriteUnfavorite()}
             {this.followedUnfollowed(poemAuthor)}
+            {this.deleteable()}
           </CardActions>
         </Card>
       );
@@ -278,7 +302,6 @@ class Poem extends React.Component {
               {poemWords}
             </div>
           </div>
-          <CardActions />
         </Card>
       );
     }

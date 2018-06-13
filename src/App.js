@@ -1,15 +1,5 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import CreatePoemContainer from "./components/containers/CreatePoemContainer";
-import Signup from "./components/signup/Signup";
-import Login from "./components/login/Login";
-import Navbar from "./components/navbar/Navbar";
-import ShowPoem from "./components/showPoem/ShowPoem";
-import GuestShowPoem from "./components/showPoem/GuestShowPoem";
-import PoemIndex from "./components/showPoem/PoemIndex";
-import ProfileContainer from "./components/containers/ProfileContainer";
-import ChangeProfileImage from "./components/profile/ChangeProfileImage";
-import GuestCreatePoemContainer from "./components/containers/GuestCreatePoemContainer";
 import UserDrawer from "./components/profile/UserDrawer";
 
 const url = "https://magnets-api.herokuapp.com/api/v1";
@@ -33,13 +23,11 @@ class App extends Component {
     if (token) {
       this.fetchUserInformation();
     } else {
-      // if (!window.location.href.includes("signup")) {
       this.fetchRelationships();
       this.fetchUsers();
       this.fetchPoems();
       this.fetchWords();
       this.props.history.push("/guest");
-      // }
     }
   }
 
@@ -55,10 +43,6 @@ class App extends Component {
     this.props.history.push("/guest");
   };
 
-  // signup = () => {
-  //   this.props.history.push("/signup");
-  // };
-
   loginLink = () => {
     this.props.history.push("/login");
   };
@@ -66,14 +50,6 @@ class App extends Component {
   guestPoemCreationLink = () => {
     this.props.history.push("/guest");
   };
-
-  // showUserLink = () => {
-  //   this.props.store.dispatch({
-  //     type: "CHANGE_SHOWN_USER",
-  //     payload: this.state.currUser[0]
-  //   });
-  //   this.props.history.push("/profile");
-  // };
 
   usersLink = id => {
     fetch(`${url}/users`)
@@ -106,6 +82,7 @@ class App extends Component {
       });
   };
 
+  //all of these push url's to history for react router. Various components use different links to navigate the site
   helpLink = () => {
     this.props.history.push("/help");
   };
@@ -127,14 +104,9 @@ class App extends Component {
     this.props.history.push(`/guest/poems`);
   };
 
-  //change all these to '-Link'
   poemCreationLink = () => {
     this.props.history.push("/poem/new");
   };
-
-  // showUsers = () => {
-  //   this.props.history.push("/users");
-  // };
 
   showUserLink = id => {
     this.props.history.push(`/users/${id}`);
@@ -153,7 +125,6 @@ class App extends Component {
         this.setState(
           {
             users: json
-            // currUser: json.filter(user => user.id === id)
           },
           () =>
             this.props.store.dispatch({
@@ -164,14 +135,6 @@ class App extends Component {
             })
         )
       )
-      // .then(() =>
-      //   this.props.store.dispatch({
-      //     type: "CHANGE_SHOWN_USER",
-      //     payload: this.state.users.filter(user => {
-      //       return user.id === this.state.currUser[0].id;
-      //     })
-      //   })
-      // )
       .then(() => this.showUserLink(id));
   };
 
@@ -381,8 +344,8 @@ class App extends Component {
     });
   };
 
-  //The UserDrawer prop list is enormous, I know. All child components stem off it, for 'guest' user and logged in user components.
-  //Once I get the app working, I'm going to refactor most of this into the redux store
+  //The UserDrawer prop list is enormous, I know. All child components stem off it, via react routes, for both 'guest' users and logged in user components.
+  //I plan to refactor most of this into the redux store
   render() {
     if (this.state.users.length !== 0) {
       return (
@@ -394,13 +357,19 @@ class App extends Component {
             poems={this.state.poems}
             store={this.props.store}
             currUser={this.state.currUser}
-            // showUser={this.showUser}
-            // showUsers={this.showUsers}
             showPoemLink={this.showPoemLink}
             showPoemsLink={this.showPoemsLink}
             showUserLink={this.showUserLink}
-            // profileLink={this.profileLink}
+            helpLink={this.helpLink}
             loginLink={this.loginLink}
+            logoutLink={this.logoutLink}
+            usersLink={this.usersLink}
+            guestUsersLink={this.guestUsersLink}
+            guestShowPoemLink={this.guestShowPoemLink}
+            poemCreationLink={this.poemCreationLink}
+            guestPoemCreationLink={this.guestPoemCreationLink}
+            guestShowPoemsLink={this.guestShowPoemsLink}
+            changeProfileImageLink={this.changeProfileImageLink}
             fetchPoems={this.fetchPoems}
             fetchUsers={this.fetchUsers}
             fetchUserInformation={this.fetchUserInformation}
@@ -410,16 +379,7 @@ class App extends Component {
             followUser={this.followUser}
             unFollowUser={this.unFollowUser}
             unFavoritePoem={this.unFavoritePoem}
-            changeProfileImageLink={this.changeProfileImageLink}
             updateUsers={this.updateUsers}
-            usersLink={this.usersLink}
-            guestUsersLink={this.guestUsersLink}
-            guestShowPoemLink={this.guestShowPoemLink}
-            poemCreationLink={this.poemCreationLink}
-            guestPoemCreationLink={this.guestPoemCreationLink}
-            guestShowPoemsLink={this.guestShowPoemsLink}
-            helpLink={this.helpLink}
-            logoutLink={this.logoutLink}
             defaultImage={defaultImage}
           />
         </div>

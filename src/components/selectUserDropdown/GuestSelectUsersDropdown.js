@@ -34,7 +34,7 @@ export default class SelectFieldDropdown extends Component {
 
   render() {
     const { values } = this.state;
-    if (this.props.currUser.lenngth !== 0) {
+    if (this.props.currUser.length !== 0) {
       return (
         <SelectField
           multiple={true}

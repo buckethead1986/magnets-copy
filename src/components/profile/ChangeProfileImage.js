@@ -19,14 +19,6 @@ class ChangeProfileImage extends React.Component {
     });
   }
 
-  handleClick = () => {
-    this.setState(prevState => {
-      return {
-        changingImage: !prevState.changingImage
-      };
-    });
-  };
-
   handleChange = e => {
     this.setState({
       image: e.target.value,
@@ -53,7 +45,10 @@ class ChangeProfileImage extends React.Component {
         this.setState({
           url: ""
         })
-      );
+      )
+      .then(() => {
+        this.props.showUserLink(this.props.currUser[0].id);
+      });
   };
 
   render() {
