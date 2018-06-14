@@ -147,12 +147,6 @@ class App extends Component {
         })
       )
       .then(() => this.fetchCurrentUser())
-      // .then(() => {
-      //   this.fetchRelationships();
-      //   this.fetchPoems();
-      //   this.fetchFavorites();
-      //   this.fetchWords();
-      // })
       .then(() => this.props.history.push("/poem/new"));
   };
 

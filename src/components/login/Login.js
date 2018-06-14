@@ -1,13 +1,6 @@
-// import React from "react";
-// import { RaisedButton, TextField } from "material-ui";
-// import { withStyles } from '@material-ui/core/styles';
-// import { Link } from "react-router-dom";
-
 import React from "react";
-// import { Grid, Row, Col } from "react-flexbox-grid";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-// import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
@@ -49,7 +42,8 @@ class Login extends React.Component {
     existingPassword: "",
     newUsername: "",
     newPassword: "",
-    loginError: false
+    loginError: false,
+    signupError: false
   };
 
   handleChange = name => event => {
@@ -87,43 +81,46 @@ class Login extends React.Component {
         }
       })
       .then(() => this.isAuthenticUser());
-    // .then(() => this.linkToPoemCreation());
-    // .then(() => this.props.fetchUserInformation())
   };
-  // .then(() => this.props.poemCreationLink());
 
-  //I couldnt figure out a way to incorporate if/then statements in the .then promise thread, so this was a workaround.
+  //if/then conditionals not allowed in promise thread
   isAuthenticUser = () => {
     if (!this.state.loginError) {
       this.props.fetchUserInformation();
     }
   };
 
-  // linkToPoemCreation = () => {
-  //   if (!this.state.loginError) {
-  //     this.props.poemCreationLink();
-  //   }
-  // };
-
   //This preventDefault() is causing a console warning of 'This synthetic event is reused for performance reasons', and wants me to change it to persist()
   //but that is causing an unwanted page refresh
   handleSignup = e => {
     e.preventDefault();
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    };
-    const body = {
-      username: this.state.newUsername,
-      password: this.state.newPassword,
-      image: this.props.defaultImage
-    };
-    fetch(`${this.props.url}/users`, {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(body)
-    }).then(() => this.handleSignupLogin(e));
-    // });
+    let exists = this.props.users.find(user => {
+      return user.username === this.state.newUsername;
+    });
+    if (
+      !exists &&
+      this.state.newPassword.length !== 0 &&
+      this.state.newUsername.length !== 0
+    ) {
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      };
+      const body = {
+        username: this.state.newUsername,
+        password: this.state.newPassword,
+        image: this.props.defaultImage
+      };
+      fetch(`${this.props.url}/users`, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body)
+      }).then(() => this.handleSignupLogin(e));
+    } else {
+      this.setState({
+        signupError: true
+      });
+    }
   };
 
   handleSignupLogin = e => {
@@ -154,42 +151,8 @@ class Login extends React.Component {
           });
         }
       })
-      // .then(() =>
-      //   console.log(
-      //     "auth?",
-      //     this.state.loginError,
-      //     localStorage.getItem("token")
-      //   )
-      // )
       .then(() => this.isAuthenticUser());
-    // .then(() => this.linkToPoemCreation());
-    // .then(() => this.props.fetchUserInformation())
   };
-
-  // login = () => {
-  //   const headers = {
-  //     Accept: "application/json",
-  //     "Content-Type": "application/json"
-  //   };
-  //   const body = this.state;
-  //   fetch(`${this.props.url}/auth`, {
-  //     method: "POST",
-  //     headers: headers,
-  //     body: JSON.stringify(body)
-  //   })
-  //     .then(res => res.json())
-  //     .then(json => {
-  //       if (!json.error) {
-  //         localStorage.setItem("token", json.jwt);
-  //       } else {
-  //         this.setState({
-  //           loginError: true
-  //         });
-  //       }
-  //     })
-  //     .then(() => this.props.fetchUsers())
-  //     .then(() => this.props.history.push("/profile"));
-  // };
 
   //renders login form on 'true' second argument, signup form on 'false'. Almost identical components.
   renderLoginForm = (classes, login) => {
@@ -231,6 +194,15 @@ class Login extends React.Component {
                     onChange={this.handleChange("existingPassword")}
                     margin="normal"
                   />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="subheading"
+                    component="h5"
+                    color="secondary"
+                  >
+                    Username and/or Password Incorrect
+                  </Typography>
                 </Grid>
               </Grid>
             ) : (
@@ -283,29 +255,66 @@ class Login extends React.Component {
             autoComplete="off"
             onSubmit={e => this.handleSignup(e)}
           >
-            <Grid container spacing={24}>
-              <Grid item xs={12}>
-                <TextField
-                  id="newUsername"
-                  label="Username"
-                  className={classes.textField}
-                  value={this.state.newUsername}
-                  onChange={this.handleChange("newUsername")}
-                  margin="normal"
-                />
+            {this.state.signupError ? (
+              <Grid container spacing={24}>
+                <Grid item xs={12}>
+                  <TextField
+                    error
+                    id="newUsername"
+                    label="Username"
+                    className={classes.textField}
+                    value={this.state.newUsername}
+                    onChange={this.handleChange("newUsername")}
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    error
+                    id="newPassword"
+                    label="Password"
+                    className={classes.textField}
+                    value={this.state.newPassword}
+                    type="password"
+                    onChange={this.handleChange("newPassword")}
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="subheading"
+                    component="h5"
+                    color="secondary"
+                  >
+                    Username taken or Username/Password was empty
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="newPassword"
-                  label="Password"
-                  className={classes.textField}
-                  value={this.state.newPassword}
-                  type="password"
-                  onChange={this.handleChange("newPassword")}
-                  margin="normal"
-                />
+            ) : (
+              <Grid container spacing={24}>
+                <Grid item xs={12}>
+                  <TextField
+                    id="newUsername"
+                    label="Username"
+                    className={classes.textField}
+                    value={this.state.newUsername}
+                    onChange={this.handleChange("newUsername")}
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="newPassword"
+                    label="Password"
+                    className={classes.textField}
+                    value={this.state.newPassword}
+                    type="password"
+                    onChange={this.handleChange("newPassword")}
+                    margin="normal"
+                  />
+                </Grid>
               </Grid>
-            </Grid>
+            )}
             <Button
               variant="raised"
               color="primary"
@@ -320,19 +329,8 @@ class Login extends React.Component {
     );
   };
 
-  // handleLogin = e => {
-  //   e.preventDefault();
-  //   console.log("clicked", e);
-  // };
-
-  // handleSignup = e => {
-  //   e.preventDefault();
-  //   console.log("clicking", e);
-  // };
-
   //All the red is from the single quote in "you're" (line 63). I spent some time researching this and it appears to be a 'Yeah, but it doesnt break, so theres no pressure to fix it' issue
   render() {
-    // const link = <a href={this.props.history.push("/profile")}>log in</a>;
     const { classes } = this.props;
     return (
       <div className={classes.root}>

@@ -354,6 +354,7 @@ class UserDrawer extends React.Component {
             return (
               <Login
                 url={this.props.url}
+                users={this.props.users}
                 fetchUserInformation={this.props.fetchUserInformation}
                 poemCreationLink={this.props.poemCreationLink}
                 defaultImage={this.props.defaultImage}
