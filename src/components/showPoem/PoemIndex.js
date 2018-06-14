@@ -1,7 +1,7 @@
 import React from "react";
 import Columns from "react-columns";
-import GuestPoemIndexCard from "./GuestPoemIndexCard";
-import GuestSelectUsersDropdown from "../selectUserDropdown/GuestSelectUsersDropdown";
+import PoemIndexCard from "./PoemIndexCard";
+import SelectUsersDropdown from "../selectUserDropdown/SelectUsersDropdown";
 
 //shows all poems as cards, includes favorite and following actions.
 class PoemIndex extends React.Component {
@@ -118,7 +118,7 @@ class PoemIndex extends React.Component {
       if (this.props.currUser.length !== 0) {
         return (
           <div key={index}>
-            <GuestPoemIndexCard
+            <PoemIndexCard
               showPoemLink={this.props.showPoemLink}
               url={this.props.url}
               currUser={this.props.currUser}
@@ -138,7 +138,7 @@ class PoemIndex extends React.Component {
       } else {
         return (
           <div key={index}>
-            <GuestPoemIndexCard
+            <PoemIndexCard
               guestShowPoemLink={this.props.guestShowPoemLink}
               url={this.props.url}
               currUser={this.props.currUser}
@@ -161,7 +161,7 @@ class PoemIndex extends React.Component {
     return (
       <div>
         <h3 align="center">{text}</h3>
-        <GuestSelectUsersDropdown
+        <SelectUsersDropdown
           users={this.props.users}
           filteredPoems={this.filteredPoems}
           favoritedPoems={this.state.favoritedPoems}

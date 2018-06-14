@@ -17,9 +17,9 @@ import {
 } from "@material-ui/core";
 import Help from "../../components/help/Help";
 import Login from "../login/Login";
-import GuestShowPoem from "../../components/showPoem/GuestShowPoem";
-import GuestPoemIndex from "../../components/showPoem/GuestPoemIndex";
-import GuestCreatePoemContainer from "../../components/containers/GuestCreatePoemContainer";
+import ShowPoem from "../../components/showPoem/ShowPoem";
+import PoemIndex from "../../components/showPoem/PoemIndex";
+import CreatePoemContainer from "../../components/containers/CreatePoemContainer";
 import ProfileContainer from "../../components/containers/ProfileContainer";
 import ChangeProfileImage from "./ChangeProfileImage";
 
@@ -398,7 +398,7 @@ class UserDrawer extends React.Component {
                       backgroundColor: ""
                     }}
                   >
-                    <GuestCreatePoemContainer
+                    <CreatePoemContainer
                       url={this.props.url}
                       users={this.props.users}
                       store={this.props.store}
@@ -422,7 +422,7 @@ class UserDrawer extends React.Component {
             ) {
               return (
                 <div>
-                  <GuestPoemIndex
+                  <PoemIndex
                     url={this.props.url}
                     users={this.props.users}
                     poems={this.props.poems}
@@ -471,7 +471,7 @@ class UserDrawer extends React.Component {
             if (this.props.poems.length !== 0) {
               return (
                 <div>
-                  <GuestShowPoem
+                  <ShowPoem
                     url={this.props.url}
                     users={this.props.users}
                     poems={this.props.poems}
@@ -507,7 +507,7 @@ class UserDrawer extends React.Component {
                         backgroundColor: ""
                       }}
                     >
-                      <GuestCreatePoemContainer
+                      <CreatePoemContainer
                         url={this.props.url}
                         users={this.props.users}
                         words={this.props.words}
@@ -536,7 +536,7 @@ class UserDrawer extends React.Component {
             ) {
               return (
                 <div>
-                  <GuestPoemIndex
+                  <PoemIndex
                     url={this.props.url}
                     users={this.props.users}
                     poems={this.props.poems}
@@ -565,7 +565,7 @@ class UserDrawer extends React.Component {
             if (this.props.poems.length !== 0) {
               return (
                 <div>
-                  <GuestShowPoem
+                  <ShowPoem
                     url={this.props.url}
                     users={this.props.users}
                     poems={this.props.poems}

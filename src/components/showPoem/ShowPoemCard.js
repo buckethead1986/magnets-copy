@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardActions, CardHeader, CardTitle } from "material-ui/Card";
-import GuestShowBox from "./GuestShowBox";
+import ShowBox from "./ShowBox";
 import AccountBox from "material-ui/svg-icons/action/account-box";
 import IconButton from "material-ui/IconButton";
 import StarBorder from "material-ui/svg-icons/toggle/star-border";
@@ -243,7 +243,7 @@ class Poem extends React.Component {
   renderBox = (word, index) => {
     return (
       <div key={index}>
-        <GuestShowBox
+        <ShowBox
           title={word[1]}
           left={word[2]}
           top={word[3] - 4}

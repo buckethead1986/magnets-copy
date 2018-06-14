@@ -1,5 +1,5 @@
 import React from "react";
-import GuestPoemIndexBox from "./GuestPoemIndexBox";
+import PoemIndexBox from "./PoemIndexBox";
 import IconButton from "material-ui/IconButton";
 import StarBorder from "material-ui/svg-icons/toggle/star-border";
 import Star from "material-ui/svg-icons/toggle/star";
@@ -192,7 +192,7 @@ class Poem extends React.Component {
   renderBox = (word, index) => {
     return (
       <div key={index} style={{ overflow: "hidden" }}>
-        <GuestPoemIndexBox
+        <PoemIndexBox
           title={word[1]}
           left={word[2]}
           top={word[3] - 4}

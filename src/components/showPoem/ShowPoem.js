@@ -1,5 +1,5 @@
 import React from "react";
-import GuestShowPoemCard from "./GuestShowPoemCard";
+import ShowPoemCard from "./ShowPoemCard";
 
 class Poem extends React.Component {
   constructor() {
@@ -26,7 +26,7 @@ class Poem extends React.Component {
   render() {
     if (this.props.currUser.length !== 0) {
       return (
-        <GuestShowPoemCard
+        <ShowPoemCard
           url={this.props.url}
           users={this.props.users}
           poem={this.state.poem}
@@ -45,7 +45,7 @@ class Poem extends React.Component {
       );
     } else {
       return (
-        <GuestShowPoemCard
+        <ShowPoemCard
           url={this.props.url}
           users={this.props.users}
           poem={this.state.poem}
