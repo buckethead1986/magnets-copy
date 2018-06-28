@@ -472,13 +472,13 @@ class UserDrawer extends React.Component {
               return (
                 <div>
                   <ShowPoem
+                    {...props}
                     url={this.props.url}
                     users={this.props.users}
                     poems={this.props.poems}
                     currUser={this.props.currUser}
                     showPoemsLink={this.props.showPoemsLink}
                     fetchPoems={this.props.fetchPoems}
-                    {...props}
                   />
                 </div>
               );
@@ -542,6 +542,7 @@ class UserDrawer extends React.Component {
                     poems={this.props.poems}
                     currUser={this.props.currUser}
                     showPoemLink={this.props.showPoemLink}
+                    fetchPoems={this.props.fetchPoems}
                     guestShowPoemLink={this.props.guestShowPoemLink}
                     relationships={this.props.relationships}
                     favorites={this.props.favorites}
@@ -550,6 +551,7 @@ class UserDrawer extends React.Component {
                     unFollowUser={this.props.unFollowUser}
                     unFavoritePoem={this.props.unFavoritePoem}
                     defaultImage={this.defaultImage}
+                    updateUsers={this.props.updateUsers}
                   />
                 </div>
               );
@@ -566,6 +568,7 @@ class UserDrawer extends React.Component {
               return (
                 <div>
                   <ShowPoem
+                    {...props}
                     url={this.props.url}
                     users={this.props.users}
                     poems={this.props.poems}
@@ -579,7 +582,6 @@ class UserDrawer extends React.Component {
                     unFollowUser={this.props.unFollowUser}
                     unFavoritePoem={this.props.unFavoritePoem}
                     updateUsers={this.props.updateUsers}
-                    {...props}
                   />
                 </div>
               );

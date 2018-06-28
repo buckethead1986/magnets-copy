@@ -1,25 +1,37 @@
 import React from "react";
-import PoemIndexBox from "./PoemIndexBox";
+import { Card, CardActions, CardHeader, CardTitle } from "material-ui/Card";
+import ShownPoemWordBox from "./ShownPoemWordBox";
+import AccountBox from "material-ui/svg-icons/action/account-box";
 import IconButton from "material-ui/IconButton";
 import StarBorder from "material-ui/svg-icons/toggle/star-border";
 import Star from "material-ui/svg-icons/toggle/star";
 import Clear from "material-ui/svg-icons/content/clear";
-import AccountBox from "material-ui/svg-icons/action/account-box";
-import { Card, CardActions, CardHeader } from "material-ui/Card";
 
-let styles = {
-  height: 550 * (window.innerWidth / 1000) * (1 / 3), //maintains relative size of poem box. relative proportions of 550 based on new window width to the original width of 1000, scaled 1/3 because of the 3 column layout
-  width: window.innerWidth * (1 / 3), //really its 1000 * window.innerWidth/1000 * (1/3), but it cancels
-  marginLeft: 6,
-  marginRight: 6,
-  position: "relative",
-  borderRadius: "50px 50px 50px 50px",
-  border: "#2196F3",
-  borderTopStyle: "solid",
-  borderBottomStyle: "solid"
+const styles = {
+  indexCard: {
+    height: 550 * (window.innerWidth / 1000) * (1 / 3), //maintains relative size of poem box. relative proportions of 550 based on new window width to the original width of 1000, scaled 1/3 because of the 3 column layout
+    width: window.innerWidth * (1 / 3), //really its 1000 * window.innerWidth/1000 * (1/3), but it cancels
+    marginLeft: 6,
+    marginRight: 6,
+    position: "relative",
+    borderRadius: "50px 50px 50px 50px",
+    border: "#2196F3",
+    borderTopStyle: "solid",
+    borderBottomStyle: "solid"
+  },
+  showCard: {
+    width: 1000,
+    height: 550,
+    position: "relative",
+    borderRadius: "50px 50px 50px 50px",
+    border: "#2196F3",
+    borderTopStyle: "solid",
+    borderBottomStyle: "solid"
+  }
 };
 
 //specific poem card, has favorite/unfavorite and follow/unfollow methods, updates state and redux store on change
+//this.props.indexCard is a boolean, true = to be rendered in the poemIndex list, false = single poem render. Slight differences in parameters and style
 class Poem extends React.Component {
   constructor() {
     super();
@@ -34,46 +46,79 @@ class Poem extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.currUser.length !== 0) {
-      this.setState(
-        {
-          poem: this.props.poem,
-          relationships: this.props.relationships,
-          favorites: this.props.favorites
-        },
-        () => {
-          this.checkFollowed();
-          this.checkFavorite(this.props.favorites);
-        }
-      );
-    } else {
-      this.setState({ poem: this.props.poem });
+    if (this.props.indexCard) {
+      if (this.props.currUser.length !== 0) {
+        this.setState(
+          {
+            poem: this.props.poem,
+            relationships: this.props.relationships,
+            favorites: this.props.favorites
+          },
+          () => {
+            this.checkFollowed(this.props.relationships);
+            this.checkFavorite(this.props.favorites);
+          }
+        );
+      } else {
+        this.setState({ poem: this.props.poem });
+      }
     }
   }
 
   //updates other poemIndexCards to reflect the new followed/following state when you follow a user
   componentWillReceiveProps(nextProps) {
-    if (this.props.currUser.length !== 0) {
-      this.setState(
-        {
-          poem: nextProps.poem,
-          relationships: nextProps.relationships,
-          followed: false,
-          favorite: false
-        },
-        () => {
-          this.checkFollowed();
-          this.checkFavorite(nextProps.favorites);
-        }
-      );
+    if (this.props.indexCard) {
+      if (this.props.currUser.length !== 0) {
+        this.setState(
+          {
+            poem: nextProps.poem,
+            relationships: nextProps.relationships,
+            followed: false,
+            favorite: false
+          },
+          () => {
+            this.checkFollowed(nextProps.relationships);
+            this.checkFavorite(nextProps.favorites);
+          }
+        );
+      } else {
+        this.setState({ poem: nextProps.poem });
+      }
     } else {
-      this.setState({ poem: nextProps.poem });
+      if (this.props.currUser.length !== 0) {
+        const favorite = nextProps.favorites.filter(poem => {
+          return (
+            poem.poem_id === nextProps.poem.id &&
+            poem.user_id === nextProps.currUser[0].id
+          );
+        });
+        if (favorite.length !== 0) {
+          this.setState(
+            {
+              poem: nextProps.poem,
+              relationships: nextProps.relationships,
+              followed: false,
+              favorite: true
+            },
+            () => this.checkFollowed(nextProps.relationships)
+          );
+        } else {
+          this.setState(
+            {
+              poem: nextProps.poem,
+              relationships: nextProps.relationships,
+              followed: false,
+              favorite: false
+            },
+            () => this.checkFollowed(nextProps.relationships)
+          );
+        }
+      }
     }
   }
 
   //checkFollowed and checkFavorite iterate through favorites and relationships arrays and update state if a match is found
-  checkFollowed = () => {
-    const relationships = this.state.relationships;
+  checkFollowed = relationships => {
     relationships.forEach(relationship => {
       if (
         relationship.follower_id === this.props.currUser[0].id &&
@@ -190,18 +235,35 @@ class Poem extends React.Component {
   };
 
   renderBox = (word, index) => {
-    return (
-      <div key={index} style={{ overflow: "hidden" }}>
-        <PoemIndexBox
-          title={word[1]}
-          left={word[2]}
-          top={word[3] - 4}
-          width={styles.width}
-          height={styles.height}
-          zIndex={word[4]}
-        />
-      </div>
-    );
+    if (this.props.indexCard) {
+      return (
+        <div key={index} style={{ overflow: "hidden" }}>
+          <ShownPoemWordBox
+            indexCard={this.props.indexCard}
+            title={word[1]}
+            left={word[2]}
+            top={word[3] - 4}
+            width={styles.indexCard.width}
+            height={styles.indexCard.height}
+            zIndex={word[4]}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <div key={index} style={{ overflow: "hidden" }}>
+          <ShownPoemWordBox
+            indexCard={this.props.indexCard}
+            title={word[1]}
+            left={word[2]}
+            top={word[3] - 4}
+            width={styles.showCard.width}
+            height={styles.showCard.height}
+            zIndex={word[4]}
+          />
+        </div>
+      );
+    }
   };
 
   deleteable = () => {
@@ -227,23 +289,30 @@ class Poem extends React.Component {
       .then(() => this.props.updateUsers());
   };
 
-  //poem splits the content of the poem into useable parts (each word is posted to the api as 'id/word/x-coord/y-coord/zIndex' in one string with | between words)
+  //poem splits the content of the poem into useable parts (each word is posted to the api as 'id/word/x-coord/y-coord' in one string with | between words)
   //poemWords returns the undraggable boxes with the correct coordinates
   //poemAuthor returns the Author of the poem
+  //humanReadablePoem returns a string of the poem as human readable text.
   render() {
     let poem;
     let poemWords;
     let poemAuthor = [];
-    if (this.state.poem.content !== undefined) {
-      poem = this.state.poem.content.split("|").map(word => {
+    let humanReadablePoem = [];
+    if (this.props.poem.content !== undefined) {
+      poem = this.props.poem.content.split("|").map(word => {
         return word.split("/");
       });
       poemWords = poem.map((word, index) => {
         return this.renderBox(word, index);
       });
       poemAuthor = this.props.users.filter(poemAuthor => {
-        return poemAuthor.id === this.state.poem.user_id;
+        return poemAuthor.id === this.props.poem.user_id;
       });
+      humanReadablePoem = poem
+        .map(word => {
+          return word[1];
+        })
+        .join(" ");
     }
     if (this.props.currUser.length !== 0) {
       return (
@@ -260,16 +329,30 @@ class Poem extends React.Component {
                 : this.props.defaultImage
             }
           />
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <div
-              onClick={() => {
-                this.props.showPoemLink(this.props.poem.id);
-              }}
-              style={styles}
-            >
-              {poemWords}
+          {this.props.indexCard ? (
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <div
+                onClick={() => {
+                  this.props.showPoemLink(this.props.poem.id);
+                }}
+                style={styles.indexCard}
+              >
+                {poemWords}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <div
+                  style={styles.showCard}
+                  onClick={() => window.history.back()}
+                >
+                  {poemWords}
+                </div>
+              </div>
+              <CardTitle title="Poem Text" subtitle={humanReadablePoem} />
+            </div>
+          )}
           <CardActions>
             {this.favoriteUnfavorite()}
             {this.followedUnfollowed(poemAuthor)}
@@ -292,16 +375,36 @@ class Poem extends React.Component {
                 : this.props.defaultImage
             }
           />
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          {this.props.indexCard ? (
             <div
-              onClick={() => {
-                this.props.guestShowPoemLink(this.props.poem.id);
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                paddingBottom: 20
               }}
-              style={styles}
             >
-              {poemWords}
+              <div
+                onClick={() => {
+                  this.props.guestShowPoemLink(this.props.poem.id);
+                }}
+                style={styles.indexCard}
+              >
+                {poemWords}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <div
+                  style={styles.showCard}
+                  onClick={() => window.history.back()}
+                >
+                  {poemWords}
+                </div>
+              </div>
+              <CardTitle title="Poem Text" subtitle={humanReadablePoem} />
+            </div>
+          )}
         </Card>
       );
     }

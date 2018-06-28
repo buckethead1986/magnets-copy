@@ -91,40 +91,42 @@ class Poem extends React.Component {
     });
   };
 
-  //post request to follow a user
-  followUser = () => {
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    };
-    fetch(`${this.props.url}/relationships`, {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify({
-        follower_id: this.props.currUser[0].id,
-        followed_id: this.props.poem.user_id
-      })
-    });
-    this.changeFollowed();
-  };
+  // //post request to follow a user
+  // followUser = () => {
+  //   console.log("in component");
+  //   const headers = {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json"
+  //   };
+  //   fetch(`${this.props.url}/relationships`, {
+  //     method: "POST",
+  //     headers: headers,
+  //     body: JSON.stringify({
+  //       follower_id: this.props.currUser[0].id,
+  //       followed_id: this.props.poem.user_id
+  //     })
+  //   });
+  //   this.changeFollowed();
+  // };
 
-  unFollowUser = relationships => {
-    const relationshipId = relationships.filter(relationship => {
-      return (
-        relationship.follower_id === this.props.currUser[0].id &&
-        relationship.followed_id === this.props.poem.user_id
-      );
-    })[0].id;
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    };
-    fetch(`${this.props.url}/relationships/${relationshipId}`, {
-      method: "DELETE",
-      headers: headers
-    });
-    this.changeFollowed();
-  };
+  // unFollowUser = relationships => {
+  //   console.log("in component unfollow");
+  //   const relationshipId = relationships.filter(relationship => {
+  //     return (
+  //       relationship.follower_id === this.props.currUser[0].id &&
+  //       relationship.followed_id === this.props.poem.user_id
+  //     );
+  //   })[0].id;
+  //   const headers = {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json"
+  //   };
+  //   fetch(`${this.props.url}/relationships/${relationshipId}`, {
+  //     method: "DELETE",
+  //     headers: headers
+  //   });
+  //   this.changeFollowed();
+  // };
 
   //followedUnfollowed modifies the rendered components depending on the state of 'followed'
   followedUnfollowed = poemAuthor => {

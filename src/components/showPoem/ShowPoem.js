@@ -1,7 +1,7 @@
 import React from "react";
-import ShowPoemCard from "./ShowPoemCard";
+import ShowCard from "./ShowCard";
 
-class Poem extends React.Component {
+class ShowPoem extends React.Component {
   constructor() {
     super();
 
@@ -11,9 +11,8 @@ class Poem extends React.Component {
   }
 
   componentDidMount() {
-    const id = window.location.href.split("/");
-    const thisPoemId = id[id.length - 1];
-    fetch(`${this.props.url}/poems/${thisPoemId}`)
+    const id = parseInt(this.props.match.params.id, 10);
+    fetch(`${this.props.url}/poems/${id}`)
       .then(res => res.json())
       .then(json =>
         this.setState({
@@ -26,7 +25,8 @@ class Poem extends React.Component {
   render() {
     if (this.props.currUser.length !== 0) {
       return (
-        <ShowPoemCard
+        <ShowCard
+          indexCard={false}
           url={this.props.url}
           users={this.props.users}
           poem={this.state.poem}
@@ -45,7 +45,8 @@ class Poem extends React.Component {
       );
     } else {
       return (
-        <ShowPoemCard
+        <ShowCard
+          indexCard={false}
           url={this.props.url}
           users={this.props.users}
           poem={this.state.poem}
@@ -58,4 +59,4 @@ class Poem extends React.Component {
   }
 }
 
-export default Poem;
+export default ShowPoem;

@@ -1,6 +1,6 @@
 import React from "react";
 import Columns from "react-columns";
-import PoemIndexCard from "./PoemIndexCard";
+import ShowCard from "./ShowCard";
 import SelectUsersDropdown from "../selectUserDropdown/SelectUsersDropdown";
 
 //shows all poems as cards, includes favorite and following actions.
@@ -118,12 +118,14 @@ class PoemIndex extends React.Component {
       if (this.props.currUser.length !== 0) {
         return (
           <div key={index}>
-            <PoemIndexCard
+            <ShowCard
+              indexCard={true}
               showPoemLink={this.props.showPoemLink}
               url={this.props.url}
               currUser={this.props.currUser}
               users={this.props.users}
               poem={poem}
+              fetchPoems={this.props.fetchPoems}
               followUser={this.props.followUser}
               unFollowUser={this.props.unFollowUser}
               relationships={this.props.relationships}
@@ -131,6 +133,7 @@ class PoemIndex extends React.Component {
               unFavoritePoem={this.props.unFavoritePoem}
               favorites={this.props.favorites}
               defaultImage={this.defaultImage}
+              updateUsers={this.props.updateUsers}
             />
             <br />
           </div>
@@ -138,7 +141,7 @@ class PoemIndex extends React.Component {
       } else {
         return (
           <div key={index}>
-            <PoemIndexCard
+            <ShowCard
               guestShowPoemLink={this.props.guestShowPoemLink}
               url={this.props.url}
               currUser={this.props.currUser}

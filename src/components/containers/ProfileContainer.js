@@ -1,7 +1,7 @@
 import React from "react";
 import Avatar from "material-ui/Avatar";
 import { Grid, Row, Col } from "react-flexbox-grid";
-import PoemIndexCard from "../showPoem/PoemIndexCard";
+import ShowCard from "../showPoem/ShowCard";
 import Columns from "react-columns";
 
 class ProfileContainer extends React.Component {
@@ -72,7 +72,8 @@ class ProfileContainer extends React.Component {
       mappedShownUserPoems = shownUser.poems.map((poem, index) => {
         return (
           <div key={index}>
-            <PoemIndexCard
+            <ShowCard
+              indexCard={true}
               showPoemLink={this.props.showPoemLink}
               url={this.props.url}
               currUser={this.props.currUser}

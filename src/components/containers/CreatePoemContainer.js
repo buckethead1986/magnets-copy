@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { DragDropContext } from "react-dnd";
 import { Grid, Row, Col } from "react-flexbox-grid";
+import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import HTML5Backend from "react-dnd-html5-backend";
 import Container from "../draggableWordBoxes/Container";
-import { withStyles } from "@material-ui/core/styles";
 import SelectWordsListDropdown from "../draggableWordBoxes/SelectWordsListDropdown";
 import CustomDragLayer from "../draggableWordBoxes/CustomDragLayer";
 import Button from "@material-ui/core/Button";
