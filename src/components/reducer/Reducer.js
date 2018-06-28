@@ -6,7 +6,8 @@ export default function reducer(
     image: "",
     shownUser: {},
     wordsList: 1,
-    wordsGroup: {}
+    wordsGroup: {},
+    userDropdownValues: []
   },
   action
 ) {

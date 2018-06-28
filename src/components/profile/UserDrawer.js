@@ -424,6 +424,7 @@ class UserDrawer extends React.Component {
                 <div>
                   <PoemIndex
                     url={this.props.url}
+                    store={this.props.store}
                     users={this.props.users}
                     poems={this.props.poems}
                     currUser={this.props.currUser}
@@ -538,6 +539,7 @@ class UserDrawer extends React.Component {
                 <div>
                   <PoemIndex
                     url={this.props.url}
+                    store={this.props.store}
                     users={this.props.users}
                     poems={this.props.poems}
                     currUser={this.props.currUser}
