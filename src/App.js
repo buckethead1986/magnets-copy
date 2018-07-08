@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import UserDrawer from "./components/profile/UserDrawer";
 
-const url = "https://magnets-api.herokuapp.com/api/v1";
+// const url = "https://magnets-api.herokuapp.com/api/v1";
+const url = "http://localhost:3001/api/v1";
 
 const defaultImage =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNps8d9m-xAllIL4UPQZ76BtwbSYNs4UmkLqi6e2s4UnpGoW";

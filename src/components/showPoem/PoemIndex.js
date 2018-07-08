@@ -142,6 +142,7 @@ class PoemIndex extends React.Component {
         return (
           <div key={index}>
             <ShowCard
+              indexCard={true}
               guestShowPoemLink={this.props.guestShowPoemLink}
               url={this.props.url}
               currUser={this.props.currUser}
