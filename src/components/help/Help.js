@@ -100,7 +100,7 @@ const PaperSheet = props => {
         <ul>
           <li>
             <Typography variant="subheading">
-              Click on a 'All Poems' to the left
+              Click on 'All Poems' to the left
             </Typography>
           </li>
           <li>
